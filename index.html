@@ -192,49 +192,251 @@ body{font-family:var(--mono);display:flex;flex-direction:column;min-height:100vh
 
 <!-- ══════════════════ SCREEN 1: INTRO ══════════════════ -->
 <div id="s-intro" class="screen active">
-  <div class="logo-ring">
-    <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
-      <ellipse cx="19" cy="19" rx="15" ry="8.5" stroke="#C49B42" stroke-width="0.8"/>
-      <circle cx="19" cy="19" r="5.5" stroke="#C49B42" stroke-width="0.8"/>
-      <circle cx="19" cy="19" r="2.5" fill="#C49B42"/>
-      <line x1="19" y1="3" x2="19" y2="0.5" stroke="#7a5e28" stroke-width="0.8"/>
-      <line x1="19" y1="35" x2="19" y2="37.5" stroke="#7a5e28" stroke-width="0.8"/>
-      <line x1="3" y1="19" x2="0.5" y2="19" stroke="#7a5e28" stroke-width="0.8"/>
-      <line x1="35" y1="19" x2="37.5" y2="19" stroke="#7a5e28" stroke-width="0.8"/>
-    </svg>
+
+  <style>
+    #s-intro {
+      background: radial-gradient(ellipse at 50% 40%, rgba(196,155,66,0.04) 0%, transparent 65%),
+                  radial-gradient(ellipse at 50% 80%, rgba(26,128,128,0.03) 0%, transparent 60%);
+      position: relative;
+      overflow: hidden;
+    }
+    #s-intro::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+    .intro-wrap {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 560px;
+      width: 100%;
+      padding: 0 24px;
+    }
+    .logo-outer {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+    .logo-outer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(196,155,66,0.15);
+      animation: rotateRing 12s linear infinite;
+    }
+    .logo-outer::after {
+      content: '';
+      position: absolute;
+      inset: -14px;
+      border-radius: 50%;
+      border: 1px solid rgba(196,155,66,0.06);
+    }
+    .logo-inner {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 1px solid rgba(196,155,66,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(196,155,66,0.03);
+    }
+    @keyframes rotateRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .intro-brand {
+      font-family: var(--serif);
+      font-size: 72px;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .intro-brand em { color: var(--gold); font-style: italic; }
+    .intro-tag {
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      color: var(--dim);
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+    .intro-divider {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, var(--border2), transparent);
+      margin-bottom: 40px;
+    }
+    .intro-desc-new {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 300;
+      color: #5a7070;
+      line-height: 1.9;
+      text-align: center;
+      margin-bottom: 48px;
+      max-width: 420px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      width: 100%;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .feat-cell {
+      background: var(--bg2);
+      padding: 20px 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+    .feat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .feat-title {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text);
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+    .feat-sub {
+      font-size: 9px;
+      color: var(--dim);
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+    }
+    .begin-btn {
+      width: 100%;
+      max-width: 320px;
+      padding: 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--teal);
+      color: var(--tealb);
+      border-radius: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 20px;
+    }
+    .begin-btn:hover {
+      background: rgba(26,128,128,0.08);
+      border-color: var(--tealb);
+    }
+    .intro-footer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .footer-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+    .footer-lbl {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+  </style>
+
+  <div class="intro-wrap">
+    <div class="logo-outer">
+      <div class="logo-inner">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <ellipse cx="20" cy="20" rx="16" ry="9" stroke="#C49B42" stroke-width="0.8" opacity="0.8"/>
+          <circle cx="20" cy="20" r="6" stroke="#C49B42" stroke-width="0.8" opacity="0.8"/>
+          <circle cx="20" cy="20" r="2.5" fill="#C49B42" opacity="0.9"/>
+          <line x1="20" y1="2" x2="20" y2="0" stroke="#7a5e28" stroke-width="0.8"/>
+          <line x1="20" y1="40" x2="20" y2="38" stroke="#7a5e28" stroke-width="0.8"/>
+          <line x1="2" y1="20" x2="0" y2="20" stroke="#7a5e28" stroke-width="0.8"/>
+          <line x1="40" y1="20" x2="38" y2="20" stroke="#7a5e28" stroke-width="0.8"/>
+        </svg>
+      </div>
+    </div>
+
+    <h1 class="intro-brand">Aur<em>veil</em></h1>
+    <p class="intro-tag">See through the surface</p>
+
+    <div class="intro-divider"></div>
+
+    <p class="intro-desc-new">
+      AI-powered visual health observation. Position yourself in front of your camera and let Aurveil silently read what your body is communicating.
+    </p>
+
+    <div class="features-grid">
+      <div class="feat-cell">
+        <div class="feat-icon" style="background:rgba(26,128,128,0.08);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="6" stroke="#1a8080" stroke-width="1"/>
+            <circle cx="8" cy="8" r="2.5" fill="#1a8080"/>
+          </svg>
+        </div>
+        <div class="feat-title">Real-time<br>Detection</div>
+        <div class="feat-sub">BlazeFace AI<br>30fps scanning</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon" style="background:rgba(196,155,66,0.08);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="2" y="2" width="12" height="12" rx="2" stroke="#C49B42" stroke-width="1"/>
+            <path d="M5 8h6M8 5v6" stroke="#C49B42" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="feat-title">Claude Vision<br>Analysis</div>
+        <div class="feat-sub">Streaming AI<br>observations</div>
+      </div>
+      <div class="feat-cell">
+        <div class="feat-icon" style="background:rgba(74,92,92,0.12);">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2z" stroke="#4a5c5c" stroke-width="1"/>
+            <path d="M8 5v3l2 2" stroke="#4a5c5c" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="feat-title">Private<br>by Design</div>
+        <div class="feat-sub">No storage<br>No tracking</div>
+      </div>
+    </div>
+
+    <button class="begin-btn" onclick="show('s-scanner');boot()">Begin Scan</button>
+
+    <div class="intro-footer">
+      <span class="footer-lbl">Not a medical device</span>
+      <div class="footer-dot"></div>
+      <span class="footer-lbl">Health awareness only</span>
+      <div class="footer-dot"></div>
+      <span class="footer-lbl">Onada Innovative</span>
+    </div>
   </div>
-
-  <h1 class="brand">Aur<em>veil</em></h1>
-  <p class="tagline">See through the surface</p>
-
-  <p class="intro-desc">
-    AI-powered visual health observation. Position yourself in front of your camera and let Aurveil analyze what your body may be silently communicating.
-  </p>
-
-  <div class="feature-row">
-    <div class="feature">
-      <div class="feature-icon" style="color:var(--teal);">⬡</div>
-      <div class="feature-lbl">Real-time<br>Detection</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon" style="color:var(--gold);">◈</div>
-      <div class="feature-lbl">AI Vision<br>Analysis</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon" style="color:var(--dim);">◉</div>
-      <div class="feature-lbl">100%<br>Local</div>
-    </div>
-  </div>
-
-  <div style="margin-bottom:20px;display:flex;flex-direction:column;align-items:center;gap:8px;">
-  <label style="font-size:9px;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;">Anthropic API Key</label>
-  <input id="apiKey" type="password" placeholder="sk-ant-..."
-    style="background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:11px;padding:10px 16px;border-radius:1px;width:300px;outline:none;letter-spacing:0.04em;"
-    oninput="saveKey(this.value)"/>
-  <p style="font-size:9px;color:var(--muted);letter-spacing:0.04em;">Stored in session only · Never sent to any server</p>
-</div>
-<button class="btn btn-primary" onclick="if(!getKey()){alert('Please enter your Anthropic API key first.');return;}show('s-scanner');boot()">BEGIN SCAN</button>
-  <p style="font-size:9px;color:var(--muted);margin-top:20px;letter-spacing:0.06em;">Not a medical device · For health awareness purposes only</p>
 </div>
 
 
