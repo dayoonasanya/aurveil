@@ -11,217 +11,198 @@
 html{scroll-behavior:smooth;}
 body{font-family:"Manrope",sans-serif;background:#F9FAFB;color:#0a1831;min-height:100vh;}
 :root{
-  --navy:#0a1831;--navy2:#13224d;--navy3:#0e1d3f;
-  --orange:#ff6b35;--orange2:#d85e32;--orange3:#fb923c;
-  --bg:#F9FAFB;--bg2:#f7f7f8;--bg3:#ffffff;
-  --border:#e5e7eb;--border2:#f1f2f4;--border3:#d1d5db;
-  --text:#0a1831;--text2:#333333;--text3:#838e9c;
+  --navy:#0a1831;--navy2:#13224d;
+  --orange:#ff6b35;--orange2:#d85e32;
+  --bg:#F9FAFB;--bg2:#f7f7f8;
+  --border:#e5e7eb;--border2:#f1f2f4;
+  --text3:#838e9c;
   --success:#10b981;--warning:#f59e0b;--error:#ef4444;
   --shadow-sm:0 1px 2px rgba(0,0,0,0.05);
   --shadow-md:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);
   --shadow-lg:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
-  --shadow-xl:0 20px 25px -5px rgba(0,0,0,0.1),0 10px 10px -5px rgba(0,0,0,0.04);
-  --r-sm:0.5rem;--r-md:0.75rem;--r-lg:1rem;--r-xl:1.25rem;--r-2xl:1.5rem;--r-full:9999px;
-  --serif:"Cormorant Garamond",serif;
-  --mono:"JetBrains Mono",monospace;
+  --r-lg:1rem;--r-xl:1.25rem;--r-2xl:1.5rem;--r-full:9999px;
+  --serif:"Cormorant Garamond",serif;--mono:"JetBrains Mono",monospace;
 }
 .screen{display:none;flex-direction:column;min-height:100vh;}
 .screen.active{display:flex;}
-
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:68px;}
 .nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
-.nav-logo-mark{width:36px;height:36px;background:var(--navy);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;}
+.nav-logo-mark{width:36px;height:36px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;}
 .nav-brand{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--navy);letter-spacing:0.05em;}
 .nav-brand em{color:var(--orange);font-style:italic;}
-.nav-tag{font-size:11px;background:#fff3ee;color:var(--orange);border:1px solid #fde8dd;padding:3px 10px;border-radius:var(--r-full);font-weight:600;letter-spacing:0.04em;}
-.nav-right{display:flex;align-items:center;gap:10px;}
-
-/* BUTTONS */
-.btn{font-family:"Manrope",sans-serif;font-size:14px;font-weight:600;padding:10px 22px;border-radius:var(--r-lg);cursor:pointer;transition:all 0.2s;border:1.5px solid transparent;display:inline-flex;align-items:center;gap:7px;text-decoration:none;}
-.btn-navy{background:var(--navy);color:#fff;border-color:var(--navy);}
-.btn-navy:hover{background:var(--navy2);}
-.btn-orange{background:var(--orange);color:#fff;border-color:var(--orange);}
-.btn-orange:hover{background:var(--orange2);}
-.btn-outline{background:#fff;color:var(--navy);border-color:var(--border3);}
-.btn-outline:hover{border-color:var(--navy);background:var(--bg2);}
-.btn-ghost{background:transparent;border:none;color:var(--text3);padding:8px 14px;}
-.btn-ghost:hover{color:var(--navy);background:var(--bg2);}
-.btn-lg{padding:14px 32px;font-size:15px;}
-.btn-full{width:100%;justify-content:center;}
-.btn:disabled{opacity:0.35;cursor:not-allowed;}
+.nav-tag{font-size:11px;background:#fff3ee;color:var(--orange);border:1px solid #fde8dd;padding:3px 10px;border-radius:var(--r-full);font-weight:600;}
+#nav-badge{display:none;font-size:11px;font-weight:700;padding:5px 14px;border-radius:var(--r-full);background:var(--bg2);color:var(--text3);border:1px solid var(--border);}
+.btn{font-family:"Manrope",sans-serif;font-size:14px;font-weight:600;padding:10px 22px;border-radius:var(--r-lg);cursor:pointer;transition:all 0.2s;border:1.5px solid transparent;display:inline-flex;align-items:center;gap:7px;}
+.btn-navy{background:var(--navy);color:#fff;} .btn-navy:hover{background:var(--navy2);}
+.btn-orange{background:var(--orange);color:#fff;} .btn-orange:hover{background:var(--orange2);}
+.btn-outline{background:#fff;color:var(--navy);border-color:var(--border);} .btn-outline:hover{border-color:var(--navy);}
+.btn-ghost{background:transparent;border:none;color:var(--text3);padding:8px 14px;} .btn-ghost:hover{color:var(--navy);background:var(--bg2);}
+.btn-lg{padding:14px 32px;font-size:15px;} .btn-full{width:100%;justify-content:center;} .btn:disabled{opacity:0.3;cursor:not-allowed;}
 
 /* HERO */
 #s-intro{background:#fff;padding-top:68px;}
-.hero{padding:88px 40px 72px;text-align:center;background:linear-gradient(180deg,#fff8f5 0%,#fff 60%);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero{padding:88px 40px 72px;text-align:center;background:linear-gradient(180deg,#fff8f5,#fff);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
 .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,107,53,0.04) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;}
-.hero-pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--border);padding:6px 16px;border-radius:var(--r-full);font-size:12px;font-weight:600;color:var(--text2);margin-bottom:28px;box-shadow:var(--shadow-sm);}
-.hero-pill-dot{width:7px;height:7px;border-radius:50%;background:var(--success);animation:blink 2s infinite;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.35;}}
-.hero-title{font-family:var(--serif);font-size:72px;font-weight:300;color:var(--navy);line-height:1.05;margin-bottom:20px;letter-spacing:-0.01em;}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--border);padding:6px 16px;border-radius:var(--r-full);font-size:12px;font-weight:600;color:#333;margin-bottom:28px;box-shadow:var(--shadow-sm);}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--success);animation:pd 2s infinite;}
+@keyframes pd{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.hero-title{font-family:var(--serif);font-size:70px;font-weight:300;color:var(--navy);line-height:1.05;margin-bottom:20px;}
 .hero-title em{color:var(--orange);font-style:italic;}
-.hero-title span{display:block;}
-.hero-sub{font-size:18px;color:var(--text3);line-height:1.75;max-width:500px;margin:0 auto 40px;font-weight:400;}
+.hero-sub{font-size:18px;color:var(--text3);line-height:1.75;max-width:500px;margin:0 auto 40px;}
 .hero-cta{display:flex;gap:12px;justify-content:center;margin-bottom:60px;}
-.hero-stats{display:flex;gap:48px;justify-content:center;padding-top:40px;border-top:1px solid var(--border2);}
+.hero-stats{display:flex;gap:48px;justify-content:center;padding-top:40px;border-top:1px solid var(--border2);flex-wrap:wrap;}
 .stat-num{font-size:28px;font-weight:800;color:var(--navy);display:block;}
 .stat-lbl{font-size:12px;color:var(--text3);font-weight:500;margin-top:2px;}
-
-/* FEATURES */
-.section{padding:80px 40px;max-width:1140px;margin:0 auto;width:100%;}
-.section-center{text-align:center;}
-.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;color:var(--orange);text-transform:uppercase;margin-bottom:10px;}
-.section-h{font-family:var(--serif);font-size:42px;font-weight:300;color:var(--navy);line-height:1.15;margin-bottom:12px;}
-.section-sub{font-size:16px;color:var(--text3);line-height:1.7;max-width:440px;margin:0 auto 52px;}
+.sec{padding:80px 40px;}
+.sec-inner{max-width:1100px;margin:0 auto;}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;color:var(--orange);text-transform:uppercase;margin-bottom:10px;text-align:center;}
+.sec-h{font-family:var(--serif);font-size:42px;font-weight:300;color:var(--navy);text-align:center;margin-bottom:10px;}
+.sec-sub{font-size:16px;color:var(--text3);text-align:center;max-width:440px;margin:0 auto 52px;line-height:1.7;}
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .feat-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);padding:28px 24px;box-shadow:var(--shadow-sm);transition:all 0.2s;}
-.feat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:var(--orange3);}
+.feat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:#fde8dd;}
 .feat-icon{width:48px;height:48px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:22px;}
-.ic-orange{background:#fff3ee;}
-.ic-navy{background:#eef1f8;}
-.ic-green{background:#ecfdf5;}
-.ic-amber{background:#fffbeb;}
-.ic-red{background:#fef2f2;}
-.ic-blue{background:#eff6ff;}
+.ic-o{background:#fff3ee;} .ic-n{background:#eef1f8;} .ic-g{background:#ecfdf5;} .ic-a{background:#fffbeb;} .ic-r{background:#fef2f2;} .ic-b{background:#eff6ff;}
 .feat-h{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;}
 .feat-p{font-size:13px;color:var(--text3);line-height:1.65;}
-.feat-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;padding:2px 8px;border-radius:var(--r-full);margin-top:10px;text-transform:uppercase;}
-.badge-new{background:#fff3ee;color:var(--orange);}
-.badge-live{background:#ecfdf5;color:var(--success);}
-
-/* HOW IT WORKS */
-.how-section{background:var(--navy);padding:80px 40px;}
+.badge-pill{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;padding:2px 8px;border-radius:var(--r-full);margin-top:10px;text-transform:uppercase;}
+.b-new{background:#fff3ee;color:var(--orange);} .b-live{background:#ecfdf5;color:var(--success);}
+.how-sec{background:var(--navy);padding:80px 40px;}
 .how-inner{max-width:960px;margin:0 auto;text-align:center;}
-.how-section .section-eyebrow{color:var(--orange);}
-.how-section .section-h{color:#fff;}
-.how-section .section-sub{color:#94a3b8;}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:52px;}
-.steps::before{content:"";position:absolute;top:24px;left:12.5%;right:12.5%;height:1px;background:rgba(255,255,255,0.1);}
-.step{text-align:center;padding:0 12px;}
-.step-num{width:48px;height:48px;border-radius:50%;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);color:var(--orange);font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative;z-index:1;}
-.step-h{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;}
-.step-p{font-size:12px;color:#64748b;line-height:1.5;}
-
-/* AREAS */
-.areas-section{background:var(--bg);padding:80px 40px;border-top:1px solid var(--border);}
-.areas-inner{max-width:1140px;margin:0 auto;}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative;margin-top:52px;}
+.steps::before{content:"";position:absolute;top:24px;left:10%;right:10%;height:1px;background:rgba(255,255,255,0.1);}
+.step{text-align:center;padding:0 8px;}
+.step-num{width:48px;height:48px;border-radius:50%;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);color:var(--orange);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;position:relative;z-index:1;}
+.step-h{font-size:12px;font-weight:700;color:#fff;margin-bottom:5px;}
+.step-p{font-size:11px;color:#64748b;line-height:1.5;}
 .areas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px;}
 .area-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);padding:20px;text-align:center;}
 .area-icon{font-size:28px;margin-bottom:10px;}
 .area-h{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;}
 .area-p{font-size:11px;color:var(--text3);line-height:1.5;}
-
-/* CTA */
-.cta-section{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:88px 40px;text-align:center;}
+.cta-sec{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:88px 40px;text-align:center;}
 .cta-h{font-family:var(--serif);font-size:48px;font-weight:300;color:#fff;margin-bottom:14px;}
 .cta-h em{color:var(--orange);font-style:italic;}
 .cta-sub{font-size:16px;color:#94a3b8;margin-bottom:36px;}
-.cta-disc{font-size:11px;color:#475569;margin-top:16px;}
-
-/* FOOTER */
-footer{background:#060f1e;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+footer{background:#060f1e;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
 .footer-brand{font-family:var(--serif);font-size:20px;color:#e2e8f0;}
 .footer-brand em{color:var(--orange);font-style:italic;}
-.footer-links{display:flex;gap:20px;}
-.footer-links a{font-size:12px;color:#475569;text-decoration:none;}
-.footer-links a:hover{color:var(--orange);}
 .footer-copy{font-size:11px;color:#334155;}
 
-/* SCANNER SCREEN */
-#s-scanner{background:var(--bg);padding-top:68px;}
-.scanner-wrap{max-width:860px;margin:0 auto;padding:32px 24px;width:100%;}
-.page-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
-.page-h{font-size:22px;font-weight:700;color:var(--navy);}
-.page-sub{font-size:13px;color:var(--text3);margin-top:3px;}
-#badge{font-size:11px;font-weight:700;padding:5px 14px;border-radius:var(--r-full);background:var(--bg2);color:var(--text3);transition:all 0.3s;border:1px solid var(--border);}
-
-.vp-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);overflow:hidden;box-shadow:var(--shadow-md);}
-.vp{position:relative;width:100%;aspect-ratio:4/3;background:var(--navy);}
+/* SCANNER */
+#s-scanner{background:#060d1a;padding-top:68px;min-height:100vh;color:#e2e8f0;}
+.scan-wrap{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;}
+.cam-panel{background:#0b1320;border:1px solid #1e2d45;border-radius:16px;overflow:hidden;}
+.cam-header{padding:14px 18px;border-bottom:1px solid #1e2d45;display:flex;align-items:center;justify-content:space-between;}
+.cam-title{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:#4a6080;text-transform:uppercase;}
+#sys-status{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:3px;background:#0d1f12;color:#10b981;border:1px solid #1a4a28;letter-spacing:0.08em;}
+.vp{position:relative;width:100%;aspect-ratio:4/3;background:#030608;}
 #vid{width:100%;height:100%;object-fit:cover;display:none;transform:scaleX(-1);}
 #cvs{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;transform:scaleX(-1);}
-.crn{position:absolute;width:22px;height:22px;display:none;}
-.c-tl{top:14px;left:14px;border-top:2px solid rgba(255,107,53,0.7);border-left:2px solid rgba(255,107,53,0.7);}
-.c-tr{top:14px;right:14px;border-top:2px solid rgba(255,107,53,0.7);border-right:2px solid rgba(255,107,53,0.7);}
-.c-bl{bottom:14px;left:14px;border-bottom:2px solid rgba(255,107,53,0.7);border-left:2px solid rgba(255,107,53,0.7);}
-.c-br{bottom:14px;right:14px;border-bottom:2px solid rgba(255,107,53,0.7);border-right:2px solid rgba(255,107,53,0.7);}
+.crn{position:absolute;width:24px;height:24px;display:none;}
+.c-tl{top:12px;left:12px;border-top:2px solid rgba(255,107,53,0.7);border-left:2px solid rgba(255,107,53,0.7);}
+.c-tr{top:12px;right:12px;border-top:2px solid rgba(255,107,53,0.7);border-right:2px solid rgba(255,107,53,0.7);}
+.c-bl{bottom:12px;left:12px;border-bottom:2px solid rgba(255,107,53,0.7);border-left:2px solid rgba(255,107,53,0.7);}
+.c-br{bottom:12px;right:12px;border-bottom:2px solid rgba(255,107,53,0.7);border-right:2px solid rgba(255,107,53,0.7);}
 #cam-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;padding:40px;}
-#cam-prompt p{font-size:13px;color:#94a3b8;text-align:center;line-height:1.6;max-width:260px;}
-#cam-load{display:none;position:absolute;inset:0;background:rgba(10,24,49,0.85);flex-direction:column;align-items:center;justify-content:center;gap:10px;}
-#load-txt{font-size:11px;color:#94a3b8;letter-spacing:0.08em;font-family:var(--mono);}
-.vp-footer{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
-.vp-hint{font-size:11px;color:var(--text3);}
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;}
-.mc{background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);padding:16px;box-shadow:var(--shadow-sm);}
-.mc-lbl{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
-.mc-val{font-size:22px;font-weight:700;color:var(--navy);}
-.scan-actions{margin-top:16px;display:flex;gap:10px;}
-.privacy-note{font-size:11px;color:var(--text3);text-align:center;margin-top:10px;}
+#cam-prompt p{font-size:11px;color:#4a6080;text-align:center;line-height:1.7;max-width:240px;font-family:var(--mono);letter-spacing:0.04em;}
+#cam-load{display:none;position:absolute;inset:0;background:rgba(3,6,8,0.92);flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+#load-txt{font-size:10px;color:#4a6080;letter-spacing:0.12em;font-family:var(--mono);}
+.ecg-panel{padding:0 18px 10px;background:#060d1a;}
+#ecg-canvas{width:100%;height:52px;display:block;}
+.cam-footer{padding:10px 18px;border-top:1px solid #1e2d45;display:flex;align-items:center;justify-content:space-between;}
+.cam-hint{font-family:var(--mono);font-size:9px;color:#2a3d55;letter-spacing:0.06em;text-transform:uppercase;}
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.mc{background:#0b1320;border:1px solid #1e2d45;border-radius:10px;padding:12px;}
+.mc-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;color:#4a6080;text-transform:uppercase;margin-bottom:4px;}
+.mc-val{font-family:var(--mono);font-size:18px;color:#e2e8f0;}
+.vitals-panel{display:flex;flex-direction:column;gap:14px;}
+.vitals-card{background:#0b1320;border:1px solid #1e2d45;border-radius:14px;overflow:hidden;}
+.vitals-head{padding:12px 16px;border-bottom:1px solid #1e2d45;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:#4a6080;text-transform:uppercase;}
+.vitals-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e2d45;}
+.vital{background:#0b1320;padding:14px 16px;}
+.vital-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;color:#4a6080;text-transform:uppercase;margin-bottom:4px;}
+.vital-val{font-family:var(--mono);font-size:22px;color:#e2e8f0;line-height:1;}
+.vital-unit{font-size:10px;color:#4a6080;margin-top:2px;font-family:var(--mono);}
+.vital-status{font-size:9px;font-weight:700;margin-top:4px;font-family:var(--mono);letter-spacing:0.06em;}
+.vs-ok{color:var(--success);} .vs-warn{color:var(--warning);} .vs-meas{color:#4a6080;}
+.phase-card{background:#0b1320;border:1px solid #1e2d45;border-radius:14px;padding:16px;}
+.phase-head{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:#4a6080;text-transform:uppercase;margin-bottom:14px;}
+.phase-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #0d1a2a;}
+.phase-item:last-child{border-bottom:none;}
+.phase-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.pd-done{background:var(--success);}
+.pd-active{background:var(--orange);animation:pd 1s infinite;}
+.pd-idle{background:#1e2d45;}
+.phase-name{font-family:var(--mono);font-size:11px;color:#e2e8f0;flex:1;}
+.phase-state{font-family:var(--mono);font-size:9px;color:#4a6080;letter-spacing:0.06em;}
+.finger-card{background:#0b1320;border:1px solid #1e2d45;border-radius:14px;padding:16px;}
+.finger-head{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:#4a6080;text-transform:uppercase;margin-bottom:14px;}
+.finger-row{display:flex;gap:10px;justify-content:center;align-items:flex-end;margin-bottom:14px;height:80px;}
+.finger-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.finger-body{width:20px;border-radius:10px 10px 4px 4px;border:2px solid #1e2d45;transition:all 0.4s;background:#0d1a2a;}
+.finger-num{font-family:var(--mono);font-size:8px;color:#4a6080;letter-spacing:0.04em;}
+.f-done .finger-body{border-color:var(--success);background:rgba(16,185,129,0.15);}
+.f-done .finger-num{color:var(--success);}
+.f-active .finger-body{border-color:var(--orange);background:rgba(255,107,53,0.15);box-shadow:0 0 12px rgba(255,107,53,0.3);}
+.f-active .finger-num{color:var(--orange);}
+.finger-prompt{font-family:var(--mono);font-size:10px;color:#4a6080;text-align:center;letter-spacing:0.06em;min-height:16px;line-height:1.5;}
+.finger-progress{height:3px;background:#1e2d45;border-radius:2px;margin-top:10px;overflow:hidden;}
+.finger-fill{height:100%;background:var(--orange);border-radius:2px;transition:width 0.1s linear;}
+.spinner{width:18px;height:18px;border:2px solid #1e2d45;border-top-color:var(--orange);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-/* ANALYSIS SCREEN */
+/* ANALYSIS */
 #s-analysis{background:var(--bg);padding-top:68px;}
-.analysis-wrap{max-width:860px;margin:0 auto;padding:32px 24px;width:100%;}
-
+.analysis-wrap{max-width:860px;margin:0 auto;padding:32px 24px;}
+.page-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
+.page-h{font-size:22px;font-weight:700;color:var(--navy);}
+.page-sub{font-size:13px;color:var(--text3);margin-top:3px;}
+.vitals-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.vb-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);text-align:center;}
+.vb-lbl{font-size:10px;font-weight:700;letter-spacing:0.06em;color:var(--text3);text-transform:uppercase;margin-bottom:4px;}
+.vb-val{font-size:20px;font-weight:800;color:var(--navy);}
+.vb-unit{font-size:10px;color:var(--text3);}
 .report-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:16px;}
 .report-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-start;background:linear-gradient(135deg,#fff8f5,#fff);}
-#thumb{width:110px;height:82px;border-radius:var(--r-lg);object-fit:cover;border:2px solid var(--border3);transform:scaleX(-1);flex-shrink:0;}
-.report-meta-info{flex:1;}
+#thumb{width:110px;height:82px;border-radius:12px;object-fit:cover;border:2px solid #fde8dd;transform:scaleX(-1);flex-shrink:0;}
 .report-badge{font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--orange);text-transform:uppercase;background:#fff3ee;padding:3px 10px;border-radius:var(--r-full);display:inline-block;margin-bottom:6px;}
-.report-ts{font-size:13px;color:var(--text3);margin-bottom:10px;}
+.report-ts-txt{font-size:13px;color:var(--text3);margin-bottom:10px;}
 .legend{display:flex;gap:14px;flex-wrap:wrap;}
 .leg-item{display:flex;align-items:center;gap:5px;}
 .leg-dot{width:8px;height:8px;border-radius:50%;}
 .leg-lbl{font-size:11px;font-weight:600;color:var(--text3);}
-
-/* Wellness score */
 .wellness-wrap{padding:20px 24px;border-bottom:1px solid var(--border);}
 .wellness-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;}
 .wellness-lbl{font-size:13px;font-weight:700;color:var(--navy);}
 .wellness-num{font-size:28px;font-weight:800;color:var(--navy);}
-.wellness-unit{font-size:13px;color:var(--text3);font-weight:500;}
-.wellness-bar{height:10px;background:var(--border);border-radius:var(--r-full);overflow:hidden;}
+.wellness-unit{font-size:13px;color:var(--text3);}
+.wellness-bar-bg{height:10px;background:var(--border);border-radius:var(--r-full);overflow:hidden;}
 .wellness-fill{height:100%;border-radius:var(--r-full);background:linear-gradient(90deg,var(--orange),var(--success));transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
 .wellness-desc{font-size:12px;color:var(--text3);margin-top:6px;}
-
-/* Findings */
 .findings-wrap{padding:20px 24px;}
 .fp-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
 .finding{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2);}
 .finding:last-child{border-bottom:none;}
 .f-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
-.d-g{background:var(--success);}
-.d-a{background:var(--warning);}
-.d-r{background:var(--error);}
+.d-g{background:var(--success);} .d-a{background:var(--warning);} .d-r{background:var(--error);}
 .f-tag{font-size:9px;font-weight:700;letter-spacing:0.06em;padding:2px 8px;border-radius:var(--r-full);flex-shrink:0;margin-top:2px;text-transform:uppercase;}
-.t-g{background:#ecfdf5;color:var(--success);}
-.t-a{background:#fffbeb;color:var(--warning);}
-.t-r{background:#fef2f2;color:var(--error);}
+.t-g{background:#ecfdf5;color:var(--success);} .t-a{background:#fffbeb;color:var(--warning);} .t-r{background:#fef2f2;color:var(--error);}
 .f-area{font-size:10px;font-weight:700;color:var(--text3);min-width:100px;flex-shrink:0;padding-top:3px;letter-spacing:0.04em;text-transform:uppercase;}
 .f-obs{font-size:14px;color:var(--navy);line-height:1.6;}
-
-.summary-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);box-shadow:var(--shadow-sm);padding:20px 24px;margin-bottom:16px;}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);padding:20px 24px;margin-bottom:16px;box-shadow:var(--shadow-sm);}
 .sum-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;}
 .sum-txt{font-size:14px;color:var(--navy2);line-height:1.75;}
-
 .tips-card{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r-2xl);padding:24px;margin-bottom:16px;}
 .tips-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--orange);text-transform:uppercase;margin-bottom:14px;}
-.tips-list{display:flex;flex-direction:column;gap:8px;}
-.tip-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#e2e8f0;line-height:1.5;}
-.tip-icon{flex-shrink:0;margin-top:1px;color:var(--orange);}
-
+.tip-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#e2e8f0;line-height:1.5;margin-bottom:8px;}
 .disc-note{font-size:11px;color:var(--text3);line-height:1.6;padding:12px 0;}
-
 .loading-state{display:flex;align-items:center;gap:10px;padding:24px 0;font-size:13px;color:var(--text3);}
-.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* misc */
-.pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--success);animation:blink 1.2s infinite;}
 </style>
 </head>
 <body>
 
-<!-- ══ NAV (shared) ══ -->
-<nav id="main-nav">
+<nav>
   <div class="nav-logo" onclick="show('s-intro')">
     <div class="nav-logo-mark">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -234,239 +215,218 @@ footer{background:#060f1e;padding:32px 40px;display:flex;align-items:center;just
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <span class="nav-tag">AI Health Observer</span>
-    <span id="badge" style="display:none;">OFFLINE</span>
+    <span id="nav-badge"></span>
   </div>
-  <div class="nav-right" id="nav-actions">
-    <button class="btn btn-orange" onclick="show('s-scanner');boot()">Begin Scan</button>
-  </div>
+  <button class="btn btn-orange" onclick="show('s-scanner');boot()">Begin Scan</button>
 </nav>
 
-<!-- ══════════════ SCREEN 1: INTRO ══════════════ -->
-<div id="s-intro" class="screen active">
 
-  <!-- HERO -->
+<!-- INTRO -->
+<div id="s-intro" class="screen active">
   <section class="hero">
-    <div class="hero-pill">
-      <span class="hero-pill-dot"></span>
-      AI-Powered Visual Health Analysis
-    </div>
-    <h1 class="hero-title">
-      <span>See What Your</span>
-      <span>Body Is <em>Telling</em> You</span>
-    </h1>
-    <p class="hero-sub">Aurveil uses your camera and Claude AI Vision to observe visible health indicators — skin, eyes, lips, posture and more — in real time.</p>
+    <div class="hero-pill"><span class="pulse-dot"></span>AI-Powered Visual Health Analysis</div>
+    <h1 class="hero-title">See What Your Body<br>Is <em>Telling</em> You</h1>
+    <p class="hero-sub">Aurveil uses your camera and Claude AI to observe visible health indicators — heart rate, skin, eyes, posture and more — in real time.</p>
     <div class="hero-cta">
-      <button class="btn btn-orange btn-lg" onclick="show('s-scanner');boot()">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor"/></svg>
-        Start Free Scan
-      </button>
+      <button class="btn btn-orange btn-lg" onclick="show('s-scanner');boot()">Start Free Scan →</button>
       <button class="btn btn-outline btn-lg" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Learn More</button>
     </div>
     <div class="hero-stats">
-      <div><span class="stat-num">7</span><span class="stat-lbl">Body Areas Analyzed</span></div>
-      <div><span class="stat-num">30<small style="font-size:16px;">fps</small></span><span class="stat-lbl">Live Detection</span></div>
-      <div><span class="stat-num">0</span><span class="stat-lbl">Data Stored</span></div>
+      <div><span class="stat-num">7</span><span class="stat-lbl">Body Areas</span></div>
+      <div><span class="stat-num">rPPG</span><span class="stat-lbl">Heart Rate Detection</span></div>
+      <div><span class="stat-num">5</span><span class="stat-lbl">Biometric Stages</span></div>
       <div><span class="stat-num">100%</span><span class="stat-lbl">Private</span></div>
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section id="features" style="padding:80px 40px;background:#fff;border-bottom:1px solid var(--border);">
-    <div style="max-width:1100px;margin:0 auto;">
-      <div class="section-center">
-        <p class="section-eyebrow">What Aurveil Does</p>
-        <h2 class="section-h" style="font-family:var(--serif);font-size:40px;font-weight:300;color:var(--navy);margin-bottom:10px;">Everything in One Scan</h2>
-        <p style="font-size:16px;color:var(--text3);max-width:420px;margin:0 auto 52px;line-height:1.7;">Six powerful capabilities working together the moment you face your camera.</p>
-      </div>
+  <section id="features" class="sec" style="background:#fff;border-bottom:1px solid var(--border);">
+    <div class="sec-inner">
+      <div class="eyebrow">What Aurveil Does</div>
+      <h2 class="sec-h">Everything in One Scan</h2>
+      <p class="sec-sub">Six powerful capabilities working together the moment you face your camera.</p>
       <div class="feat-grid">
-        <div class="feat-card">
-          <div class="feat-icon ic-orange">👁</div>
-          <div class="feat-h">Real-Time Face Detection</div>
-          <p class="feat-p">TensorFlow BlazeFace runs at 30fps, tracking your face with landmark dots and a live confidence score before analysis begins.</p>
-          <span class="feat-badge badge-live">LIVE</span>
-        </div>
-        <div class="feat-card">
-          <div class="feat-icon ic-navy">🧠</div>
-          <div class="feat-h">Claude Vision Analysis</div>
-          <p class="feat-p">Anthropic's Claude AI reads your visible physical indicators with the precision of a clinical visual triage assessment.</p>
-          <span class="feat-badge badge-new">AI-POWERED</span>
-        </div>
-        <div class="feat-card">
-          <div class="feat-icon ic-green">📊</div>
-          <div class="feat-h">Wellness Score</div>
-          <p class="feat-p">Every scan produces a 0–100 wellness score calculated from the ratio of normal to flagged observations across all areas.</p>
-          <span class="feat-badge badge-new">NEW</span>
-        </div>
-        <div class="feat-card">
-          <div class="feat-icon ic-amber">💡</div>
-          <div class="feat-h">Personalized Health Tips</div>
-          <p class="feat-p">Based on what Aurveil observes, you receive targeted wellness tips relevant to your specific visible indicators.</p>
-          <span class="feat-badge badge-new">NEW</span>
-        </div>
-        <div class="feat-card">
-          <div class="feat-icon ic-red">🔒</div>
-          <div class="feat-h">100% Private</div>
-          <p class="feat-p">Your camera feed never leaves your device. No video is stored, recorded, or transmitted. Analysis happens on a secure proxy.</p>
-          <span class="feat-badge badge-live">SECURE</span>
-        </div>
-        <div class="feat-card">
-          <div class="feat-icon ic-blue">📋</div>
-          <div class="feat-h">Color-Coded Report</div>
-          <p class="feat-p">Findings are categorized as Normal, Monitor, or Consult a Doctor — making it easy to understand what needs attention.</p>
-          <span class="feat-badge badge-new">DETAILED</span>
-        </div>
+        <div class="feat-card"><div class="feat-icon ic-o">❤️</div><div class="feat-h">Heart Rate via rPPG</div><p class="feat-p">Real remote photoplethysmography — Aurveil samples your forehead's green channel to detect your pulse and estimate BPM in real time.</p><span class="badge-pill b-live">REAL MEASUREMENT</span></div>
+        <div class="feat-card"><div class="feat-icon ic-n">🧠</div><div class="feat-h">Claude Vision Analysis</div><p class="feat-p">Anthropic's Claude AI reads your visible physical indicators with the precision of a clinical visual triage assessment.</p><span class="badge-pill b-new">AI-POWERED</span></div>
+        <div class="feat-card"><div class="feat-icon ic-g">✋</div><div class="feat-h">5-Finger Biometric Scan</div><p class="feat-p">Sequential finger scanning protocol — raise each finger on command while Aurveil collects biometric timing data across all five digits.</p><span class="badge-pill b-new">NEW</span></div>
+        <div class="feat-card"><div class="feat-icon ic-a">📊</div><div class="feat-h">Wellness Score</div><p class="feat-p">Every scan produces a 0–100 wellness score calculated from the ratio of normal to flagged observations across all body areas.</p><span class="badge-pill b-new">NEW</span></div>
+        <div class="feat-card"><div class="feat-icon ic-r">🔒</div><div class="feat-h">100% Private</div><p class="feat-p">Camera feed never leaves your device. No video stored or transmitted. Analysis happens through a secure encrypted proxy.</p><span class="badge-pill b-live">SECURE</span></div>
+        <div class="feat-card"><div class="feat-icon ic-b">💡</div><div class="feat-h">Personalized Tips</div><p class="feat-p">Based on what Aurveil observes, you receive targeted wellness tips relevant to your specific visible health indicators.</p><span class="badge-pill b-new">DETAILED</span></div>
       </div>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
-  <section class="how-section">
+  <section class="how-sec">
     <div class="how-inner">
-      <p class="section-eyebrow">How It Works</p>
-      <h2 class="section-h" style="font-family:var(--serif);font-size:40px;font-weight:300;color:#fff;margin-bottom:10px;">From Camera to Report in Seconds</h2>
-      <p style="font-size:16px;color:#64748b;max-width:420px;margin:0 auto;">No setup. No downloads. Just your face and your camera.</p>
+      <div class="eyebrow">How It Works</div>
+      <h2 class="sec-h" style="color:#fff;">Five Biometric Stages</h2>
+      <p style="font-size:16px;color:#64748b;max-width:420px;margin:0 auto;">One complete health snapshot from your camera.</p>
       <div class="steps">
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-h">Enable Camera</div>
-          <p class="step-p">Allow camera access and position head and chest in the frame</p>
-        </div>
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-h">Face Confirmed</div>
-          <p class="step-p">AI detects your face in real time and unlocks the analysis button</p>
-        </div>
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-h">AI Observes</div>
-          <p class="step-p">Claude Vision analyzes 7 body areas from a single captured frame</p>
-        </div>
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-h">Get Your Report</div>
-          <p class="step-p">Receive color-coded findings, wellness score, and personalized tips</p>
-        </div>
+        <div class="step"><div class="step-num">1</div><div class="step-h">Face Lock</div><p class="step-p">AI confirms human presence at high confidence</p></div>
+        <div class="step"><div class="step-num">2</div><div class="step-h">Pulse Capture</div><p class="step-p">rPPG samples forehead for heart rate</p></div>
+        <div class="step"><div class="step-num">3</div><div class="step-h">Finger Scan</div><p class="step-p">5-finger sequential biometric protocol</p></div>
+        <div class="step"><div class="step-num">4</div><div class="step-h">AI Observes</div><p class="step-p">Claude Vision analyzes 7 body areas</p></div>
+        <div class="step"><div class="step-num">5</div><div class="step-h">Full Report</div><p class="step-p">Vitals, findings, score and wellness tips</p></div>
       </div>
     </div>
   </section>
 
-  <!-- AREAS ANALYZED -->
-  <section style="padding:80px 40px;background:#fff;border-top:1px solid var(--border);">
-    <div style="max-width:1100px;margin:0 auto;text-align:center;">
-      <p class="section-eyebrow">Body Areas</p>
-      <h2 class="section-h" style="font-family:var(--serif);font-size:40px;font-weight:300;color:var(--navy);margin-bottom:10px;">7 Areas Observed Per Scan</h2>
-      <p style="font-size:16px;color:var(--text3);margin-bottom:48px;">Every scan covers these clinically relevant visible indicators.</p>
+  <section class="sec" style="background:#fff;border-top:1px solid var(--border);">
+    <div class="sec-inner" style="text-align:center;">
+      <div class="eyebrow">Body Areas</div>
+      <h2 class="sec-h">7 Areas Observed Per Scan</h2>
+      <p class="sec-sub">Every scan covers these clinically relevant visible indicators.</p>
       <div class="areas-grid">
-        <div class="area-card"><div class="area-icon">🎨</div><div class="area-h">Complexion</div><p class="area-p">Skin tone, pallor, jaundice, flushing, rashes</p></div>
-        <div class="area-card"><div class="area-icon">👁️</div><div class="area-h">Eyes</div><p class="area-p">Sclera clarity, redness, yellowing, puffiness</p></div>
-        <div class="area-card"><div class="area-icon">💋</div><div class="area-h">Lips</div><p class="area-p">Color, moisture, pallor, cyanosis signs</p></div>
-        <div class="area-card"><div class="area-icon">🔄</div><div class="area-h">Facial Symmetry</div><p class="area-p">Asymmetry indicators, FAST stroke signals</p></div>
-        <div class="area-card"><div class="area-icon">🫙</div><div class="area-h">Neck</div><p class="area-p">Visible swelling, thyroid area, posture</p></div>
-        <div class="area-card"><div class="area-icon">🧍</div><div class="area-h">Posture</div><p class="area-p">Energy, forward lean, fatigue indicators</p></div>
-        <div class="area-card"><div class="area-icon">✨</div><div class="area-h">Overall</div><p class="area-p">General visible wellness impression</p></div>
-        <div class="area-card" style="background:linear-gradient(135deg,#fff8f5,#fff);border-color:var(--orange3);">
-          <div class="area-icon">🔬</div>
-          <div class="area-h" style="color:var(--orange);">Wellness Score</div>
-          <p class="area-p">0–100 aggregate score from all findings</p>
-        </div>
+        <div class="area-card"><div class="area-icon">🎨</div><div class="area-h">Complexion</div><p class="area-p">Skin tone, pallor, jaundice, flushing</p></div>
+        <div class="area-card"><div class="area-icon">👁️</div><div class="area-h">Eyes</div><p class="area-p">Sclera clarity, redness, puffiness</p></div>
+        <div class="area-card"><div class="area-icon">💋</div><div class="area-h">Lips</div><p class="area-p">Color, moisture, pallor, cyanosis</p></div>
+        <div class="area-card"><div class="area-icon">🔄</div><div class="area-h">Facial Symmetry</div><p class="area-p">Asymmetry, FAST stroke signals</p></div>
+        <div class="area-card"><div class="area-icon">🫙</div><div class="area-h">Neck</div><p class="area-p">Swelling, thyroid, posture angle</p></div>
+        <div class="area-card"><div class="area-icon">🧍</div><div class="area-h">Posture</div><p class="area-p">Energy, lean, fatigue indicators</p></div>
+        <div class="area-card"><div class="area-icon">❤️</div><div class="area-h">Heart Rate</div><p class="area-p">rPPG real-time BPM estimation</p></div>
+        <div class="area-card" style="background:linear-gradient(135deg,#fff8f5,#fff);border-color:#fde8dd;"><div class="area-icon">✨</div><div class="area-h" style="color:var(--orange);">Wellness Score</div><p class="area-p">0–100 aggregate from all findings</p></div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="cta-section">
+  <section class="cta-sec">
     <h2 class="cta-h">Ready to See What <em>Aurveil</em> Sees?</h2>
-    <p class="cta-sub">Takes 30 seconds. No signup. No credit card. Completely private.</p>
+    <p class="cta-sub">Takes 60 seconds. No signup. No credit card. Completely private.</p>
     <button class="btn btn-orange btn-lg" onclick="show('s-scanner');boot()">Start Your Free Scan →</button>
-    <p class="cta-disc">Not a medical device · For health awareness purposes only · Onada Innovative Ltd</p>
+    <p style="font-size:11px;color:#334155;margin-top:16px;">Not a medical device · For health awareness purposes only · Onada Innovative Ltd</p>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <span class="footer-brand">Aur<em>veil</em></span>
-    <div class="footer-links">
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
-      <a href="https://onadainnovative.com">Onada Innovative</a>
-    </div>
     <span class="footer-copy">© 2026 Onada Innovative Ltd. All rights reserved.</span>
   </footer>
 </div>
 
 
-<!-- ══════════════ SCREEN 2: SCANNER ══════════════ -->
+<!-- SCANNER -->
 <div id="s-scanner" class="screen">
-  <div class="scanner-wrap">
-    <div class="page-top">
-      <div>
-        <div class="page-h">Live Body Scanner</div>
-        <div class="page-sub">Position head and upper chest in frame · Good lighting recommended</div>
-      </div>
-      <span id="badge">OFFLINE</span>
-    </div>
-
-    <div class="vp-card">
-      <div class="vp" id="viewport">
-        <video id="vid" autoplay muted playsinline></video>
-        <canvas id="cvs"></canvas>
-        <div class="crn c-tl" id="c0"></div>
-        <div class="crn c-tr" id="c1"></div>
-        <div class="crn c-bl" id="c2"></div>
-        <div class="crn c-br" id="c3"></div>
-        <div id="cam-prompt">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-            <rect x="4" y="14" width="44" height="30" rx="4" stroke="#334155" stroke-width="1.5" fill="none"/>
-            <circle cx="26" cy="29" r="10" stroke="#334155" stroke-width="1.5" fill="none"/>
-            <circle cx="26" cy="29" r="4" fill="#334155"/>
-            <path d="M19 11h10a2 2 0 0 1 2 2v1H17v-1a2 2 0 0 1 2-2z" fill="#334155"/>
-          </svg>
-          <p>Allow camera access to begin scanning</p>
-          <button class="btn btn-orange" onclick="boot()">Enable Camera</button>
+  <div class="scan-wrap">
+    <div>
+      <div class="cam-panel">
+        <div class="cam-header">
+          <span class="cam-title">AURVEIL BIOMETRIC SCANNER v2.0</span>
+          <span id="sys-status">OFFLINE</span>
         </div>
-        <div id="cam-load">
-          <div class="spinner" style="width:24px;height:24px;border-width:2px;border-top-color:var(--orange);"></div>
-          <p id="load-txt">INITIALIZING</p>
+        <div class="vp" id="viewport">
+          <video id="vid" autoplay muted playsinline></video>
+          <canvas id="cvs"></canvas>
+          <div class="crn c-tl" id="c0"></div>
+          <div class="crn c-tr" id="c1"></div>
+          <div class="crn c-bl" id="c2"></div>
+          <div class="crn c-br" id="c3"></div>
+          <div id="cam-prompt">
+            <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+              <rect x="4" y="14" width="44" height="30" rx="4" stroke="#2a3d55" stroke-width="1.5" fill="none"/>
+              <circle cx="26" cy="29" r="10" stroke="#2a3d55" stroke-width="1.5" fill="none"/>
+              <circle cx="26" cy="29" r="4" fill="#2a3d55"/>
+              <path d="M19 11h14a2 2 0 0 1 2 2v1H17v-1a2 2 0 0 1 2-2z" fill="#2a3d55"/>
+            </svg>
+            <p>ENABLE CAMERA TO BEGIN<br>BIOMETRIC SCAN PROTOCOL</p>
+            <button class="btn btn-orange" onclick="boot()" style="font-size:12px;padding:9px 20px;">INITIALIZE SCANNER</button>
+          </div>
+          <div id="cam-load">
+            <div class="spinner"></div>
+            <p id="load-txt">INITIALIZING</p>
+          </div>
+        </div>
+        <div class="ecg-panel">
+          <canvas id="ecg-canvas" height="52"></canvas>
+        </div>
+        <div class="cam-footer">
+          <span class="cam-hint">🔒 NO DATA STORED OR TRANSMITTED</span>
+          <button class="btn btn-ghost" onclick="show('s-intro')" style="font-size:11px;color:#2a3d55;">← EXIT</button>
         </div>
       </div>
-      <div class="vp-footer">
-        <span class="vp-hint">🔒 Camera feed never stored or transmitted</span>
-        <button class="btn btn-ghost btn-sm" onclick="show('s-intro')">← Back</button>
+      <div class="metrics-row" style="margin-top:14px;">
+        <div class="mc"><div class="mc-lbl">Humans</div><div class="mc-val" id="mFaces">—</div></div>
+        <div class="mc"><div class="mc-lbl">Confidence</div><div class="mc-val" id="mConf">—</div></div>
+        <div class="mc"><div class="mc-lbl">Alignment</div><div class="mc-val" id="mAlign" style="font-size:13px;padding-top:3px;">—</div></div>
+        <div class="mc"><div class="mc-lbl">Scan Rate</div><div class="mc-val" id="mFps">—</div></div>
       </div>
     </div>
 
-    <div class="metrics">
-      <div class="mc"><div class="mc-lbl">Humans</div><div class="mc-val" id="mFaces">—</div></div>
-      <div class="mc"><div class="mc-lbl">Confidence</div><div class="mc-val" id="mConf">—</div></div>
-      <div class="mc"><div class="mc-lbl">Alignment</div><div class="mc-val" id="mAlign" style="font-size:14px;padding-top:5px;">—</div></div>
-      <div class="mc"><div class="mc-lbl">Scan Rate</div><div class="mc-val" id="mFps">—</div></div>
-    </div>
+    <div class="vitals-panel">
+      <div class="vitals-card">
+        <div class="vitals-head">Live Biometrics</div>
+        <div class="vitals-grid">
+          <div class="vital">
+            <div class="vital-lbl">Heart Rate</div>
+            <div class="vital-val" id="v-hr">—</div>
+            <div class="vital-unit">BPM (rPPG)</div>
+            <div class="vital-status vs-meas" id="v-hr-s">MEASURING</div>
+          </div>
+          <div class="vital">
+            <div class="vital-lbl">HRV</div>
+            <div class="vital-val" id="v-hrv">—</div>
+            <div class="vital-unit">MS</div>
+            <div class="vital-status vs-meas" id="v-hrv-s">MEASURING</div>
+          </div>
+          <div class="vital">
+            <div class="vital-lbl">Skin Signal</div>
+            <div class="vital-val" id="v-perf">—</div>
+            <div class="vital-unit">AMPLITUDE</div>
+            <div class="vital-status vs-meas" id="v-perf-s">SAMPLING</div>
+          </div>
+          <div class="vital">
+            <div class="vital-lbl">Face Lock</div>
+            <div class="vital-val" id="v-conf">—</div>
+            <div class="vital-unit">CONFIDENCE</div>
+            <div class="vital-status vs-meas" id="v-conf-s">WAITING</div>
+          </div>
+        </div>
+      </div>
 
-    <div class="scan-actions">
-      <button id="analyzeBtn" class="btn btn-orange btn-full" disabled onclick="analyze()">Analyze Aura →</button>
+      <div class="phase-card">
+        <div class="phase-head">Scan Protocol</div>
+        <div class="phase-item"><div class="phase-dot pd-idle" id="pd1"></div><span class="phase-name">Face Lock</span><span class="phase-state" id="ps1">WAITING</span></div>
+        <div class="phase-item"><div class="phase-dot pd-idle" id="pd2"></div><span class="phase-name">Pulse Capture (rPPG)</span><span class="phase-state" id="ps2">WAITING</span></div>
+        <div class="phase-item"><div class="phase-dot pd-idle" id="pd3"></div><span class="phase-name">Finger Biometrics</span><span class="phase-state" id="ps3">WAITING</span></div>
+        <div class="phase-item"><div class="phase-dot pd-idle" id="pd4"></div><span class="phase-name">AI Vision Analysis</span><span class="phase-state" id="ps4">WAITING</span></div>
+      </div>
+
+      <div class="finger-card">
+        <div class="finger-head">Finger Biometric Protocol</div>
+        <div class="finger-row" id="finger-row">
+          <div class="finger-wrap" id="f1"><div class="finger-body" style="height:48px;"></div><div class="finger-num">I</div></div>
+          <div class="finger-wrap" id="f2"><div class="finger-body" style="height:60px;"></div><div class="finger-num">II</div></div>
+          <div class="finger-wrap" id="f3"><div class="finger-body" style="height:64px;"></div><div class="finger-num">III</div></div>
+          <div class="finger-wrap" id="f4"><div class="finger-body" style="height:58px;"></div><div class="finger-num">IV</div></div>
+          <div class="finger-wrap" id="f5"><div class="finger-body" style="height:44px;"></div><div class="finger-num">V</div></div>
+        </div>
+        <div class="finger-prompt" id="finger-prompt">AWAITING PULSE CAPTURE</div>
+        <div class="finger-progress"><div class="finger-fill" id="finger-fill" style="width:0%"></div></div>
+      </div>
+
+      <button id="analyzeBtn" class="btn btn-orange btn-full" disabled onclick="analyze()" style="padding:14px;font-size:13px;letter-spacing:0.04em;">BEGIN CLINICAL ANALYSIS →</button>
+      <p style="font-family:var(--mono);font-size:9px;color:#2a3d55;text-align:center;letter-spacing:0.05em;text-transform:uppercase;">Complete all stages to unlock</p>
     </div>
-    <p class="privacy-note">All processing secured through encrypted proxy · No data retained</p>
   </div>
 </div>
 
 
-<!-- ══════════════ SCREEN 3: ANALYSIS ══════════════ -->
+<!-- ANALYSIS -->
 <div id="s-analysis" class="screen">
   <div class="analysis-wrap">
-    <div class="page-top" style="margin-bottom:20px;">
-      <div>
-        <div class="page-h">Aurveil Report</div>
-        <div class="page-sub" id="scan-ts"></div>
-      </div>
+    <div class="page-top">
+      <div><div class="page-h">Aurveil Report</div><div class="page-sub" id="scan-ts"></div></div>
       <button class="btn btn-outline" onclick="show('s-scanner')">← Rescan</button>
     </div>
-
-    <!-- Report card -->
+    <div class="vitals-bar">
+      <div class="vb-card"><div class="vb-lbl">Heart Rate</div><div class="vb-val"><span id="r-hr">—</span><span class="vb-unit"> bpm</span></div></div>
+      <div class="vb-card"><div class="vb-lbl">HRV</div><div class="vb-val"><span id="r-hrv">—</span><span class="vb-unit"> ms</span></div></div>
+      <div class="vb-card"><div class="vb-lbl">Skin Signal</div><div class="vb-val"><span id="r-perf">—</span></div></div>
+      <div class="vb-card"><div class="vb-lbl">Wellness</div><div class="vb-val"><span id="r-score">—</span><span class="vb-unit">/100</span></div></div>
+    </div>
     <div class="report-card">
       <div class="report-head">
-        <canvas id="thumb"></canvas>
-        <div class="report-meta-info">
+  <canvas id="thumb"></canvas>
+        <div>
           <span class="report-badge">Aurveil Visual Observation Report</span>
-          <div class="report-ts" id="report-ts-inner"></div>
+          <div class="report-ts-txt" id="report-ts"></div>
           <div class="legend">
             <div class="leg-item"><div class="leg-dot" style="background:var(--success);"></div><span class="leg-lbl">Normal</span></div>
             <div class="leg-item"><div class="leg-dot" style="background:var(--warning);"></div><span class="leg-lbl">Monitor</span></div>
@@ -474,195 +434,278 @@ footer{background:#060f1e;padding:32px 40px;display:flex;align-items:center;just
           </div>
         </div>
       </div>
-
-      <!-- Wellness Score -->
       <div class="wellness-wrap" id="wellness-wrap" style="display:none;">
-        <div class="wellness-top">
-          <span class="wellness-lbl">Wellness Score</span>
-          <span><span class="wellness-num" id="wellness-num">0</span><span class="wellness-unit"> / 100</span></span>
-        </div>
-        <div class="wellness-bar"><div class="wellness-fill" id="wellness-fill" style="width:0%;"></div></div>
-        <div class="wellness-desc" id="wellness-desc"></div>
+        <div class="wellness-top"><span class="wellness-lbl">Wellness Score</span><span><span class="wellness-num" id="w-num">0</span><span class="wellness-unit"> / 100</span></span></div>
+        <div class="wellness-bar-bg"><div class="wellness-fill" id="w-fill" style="width:0%;"></div></div>
+        <div class="wellness-desc" id="w-desc"></div>
       </div>
-
-      <!-- Findings -->
       <div class="findings-wrap">
-        <div class="fp-head">
-          Observations
-          <span id="load-ind" style="display:none;"><span class="pulse"></span></span>
-        </div>
-        <div id="findings-list">
-          <div class="loading-state">
-            <div class="spinner"></div>
-            Preparing analysis...
-          </div>
-        </div>
-      </div>
+        <div class="fp-head">Observations <span id="load-ind" style="display:none;"><div class="spinner" style="width:12px;height:12px;border-width:1.5px;display:inline-block;vertical-align:middle;margin-left:4px;"></div></span></div>
+        <div id="findings-list"><div class="loading-state"><div class="spinner"></div>Analyzing — please wait about 10 seconds...</div></div>
+      <iv>
     </div>
-
-    <!-- Summary -->
-    <div class="summary-card" id="summary-card" style="display:none;">
-      <div class="sum-head">Summary</div>
-      <div class="sum-txt" id="summary-txt"></div>
-    </div>
-
-    <!-- Tips -->
-    <div class="tips-card" id="tips-card" style="display:none;">
-      <div class="tips-head">💡 Wellness Tips</div>
-      <div class="tips-list" id="tips-list"></div>
-    </div>
-
+    <div class="summary-card" id="summary-card" style="display:none;"><div class="sum-head">Summary</div><div class="sum-txt" id="summary-txt"></div></div>
+    <div class="tips-card" id="tips-card" style="display:none;"><div class="tips-head">💡 Wellness Tips</div><div id="tips-list"></div></div>
     <p class="disc-note" id="disc-txt"></p>
-
-    <div style="display:flex;gap:10px;margin-top:4px;">
-      <button class="btn btn-orange btn-full" onclick="show('s-scanner')">New Scan →</button>
-    </div>
+    <button class="btn btn-orange btn-full" onclick="show('s-scanner')" style="margin-top:8px;">New Scan →</button>
   </div>
 </div>
 
 
-<!-- SCRIPTS -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+<script src="httpcdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.0.7/dist/blazeface.js"></script>
 <script>
 let model=null,vid=null,cvs=null,ctx=null;
 let scanY=0,scanDir=1,frameCount=0,lastFpsT=Date.now(),fps=0;
-let detected=false,analyzing=false;
+let faceDetected=false,analyzing=false,phase=0;
+let greenSamples=[],sampleTimes=[];
+let estimatedHR=null,estimatedHRV=null,skinAmplitude=null;
+let fingerStep=0,fingerInterval=null;
+let ecgOffset=0,ecgBPM=72;
+const ecgCvs=document.getElementById('ecg-canvas');
+const ecgCtx=ecgCvs.getContext('2d');
 
 function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  const b=document.getElementById("badge");
-  if(id==="s-scanner"||id==="s-analysis"){b.style.display="inline-block";}
-  else{b.style.display="none";}
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const nb=document.getElementById('nav-badge');
+  nb.style.display=(id==='s-scanner'||id==='s-analysis')?'inline-block':'none';
 }
 
-function setBadge(txt,type){
-  const el=document.getElementById("badge");
+function setSysStatus(txt,col){
+  const el=document.getElementById('sys-status');
   el.textContent=txt;
-  const s={
-    scan:"background:#eff6ff;color:#2563eb;border-color:#bfdbfe",
-    ok:"background:#ecfdf5;color:#16a34a;border-color:#bbf7d0",
-    warn:"background:#fffbeb;color:#d97706;border-color:#fde68a",
-    err:"background:#fef2f2;color:#dc2626;border-color:#fecaca",
-    off:"background:var(--bg2);color:var(--text3);border-color:var(--border)"
-  }[type]||"background:var(--bg2);color:var(--text3);border-color:var(--border)";
-  el.style.cssText=`font-size:11px;font-weight:700;padding:5px 14px;border-radius:9999px;transition:all 0.3s;border:1px solid;${s}`;
+  const m={ok:'background:#0d1f12;color:#10b981;border:1px solid #1a4a28',warn:'background:#1a1200;color:#f59e0b;border:1px solid #3a2800',err:'background:#1a0a0a;color:#ef4444;border:1px solid #3a1010',info:'background:#0a1225;color:#3b82f6;border:1px solid #1a2a50',off:'background:#0d1320;color:#4a6080;border:1px solid #1e2d45'};
+  el.style.cssText='font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:3px;letter-spacing:0.08em;'+(m[col]||m.off);
+}
+
+function setPhase(n,state,dot){
+  const ps=document.getElementById('ps'+n);
+  const pd=document.getElementById('pd'+n);
+  if(ps)ps.textContent=state;
+  if(pd){pd.className='phase-dot';pd.classList.add(dot==='done'?'pd-done':dot==='active'?'pd-active':'pd-idle');}
+}
+
+function setVital(id,val,sid,status,cls){
+  const e=document.getElementById(id);if(e)e.textContent=val;
+  const se=document.getElementById(sid);if(se){se.textContent=status;se.className='vital-status '+cls;}
 }
 
 function setM(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 
+// ECG
+function drawECG(){
+  const w=ecgCvs.offsetWidth||600;
+  ecgCvs.width=w;
+  ecgCtx.fillStyle='#060d1a';
+  ecgCtx.fillRect(0,0,w,52);
+  ecgCtx.strokeStyle=estimatedHR?'#10b981':'#1a3d28';
+  ecgCtx.lineWidth=1.5;
+  ecgCtx.beginPath();
+  const period=w*60/(ecgBPM*2);
+  for(let x=0;x<w;x++){
+    const t=((x+ecgOffset)%period)/period;
+    let y=26;
+    if(t<0.08)y=26;
+    else if(t<0.13){y=26-(t-0.08)*1200;}
+    else if(t<0.17){y=26+(t-0.13)*1800;}
+    else if(t<0.21){y=26-(t-0.17)*500;}
+    else if(t<0.28){y=26+(t-0.21)*150;}
+    else if(t<0.36){y=26-(t-0.28)*80;}
+    else y=26;
+    y=Math.max(5,Math.min(48,y));
+    x===0?ecgCtx.moveTo(x,y):ecgCtx.lineTo(x,y);
+  }
+  ecgCtx.stroke();
+  ecgOffset=(ecgOffset+2.5)%period;
+}
+setInterval(drawECG,33);
+
 async function boot(){
-  if(model){return;}
-  const cp=document.getElementById("cam-prompt");
-  const cl=document.getElementById("cam-load");
-  const lt=document.getElementById("load-txt");
-  cp.style.display="none";
-  cl.style.display="flex";
-  lt.textContent="REQUESTING CAMERA";
+  if(model)return;
+  const cp=document.getElementById('cam-prompt');
+  const cl=document.getElementById('cam-load');
+  const lt=document.getElementById('load-txt');
+  cp.style.display='none';cl.style.display='flex';
+  lt.textContent='REQUESTING CAMERA ACCESS';
+  setSysStatus('CONNECTING','warn');
   try{
-    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:640},height:{ideal:480}}});
-    vid=document.getElementById("vid");
-    vid.srcObject=stream;
-    vid.style.display="block";
-    cvs=document.getElementById("cvs");
-    ctx=cvs.getContext("2d");
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}}});
+    vid=document.getElementById('vid');vid.srcObject=stream;vid.style.display='block';
+    cvs=document.getElementById('cvs');ctx=cvs.getContext('2d');
     vid.onloadedmetadata=async()=>{
       cvs.width=vid.videoWidth;cvs.height=vid.videoHeight;
-      ["c0","c1","c2","c3"].forEach(id=>document.getElementById(id).style.display="block");
-      lt.textContent="LOADING AI MODEL";
-      setBadge("LOADING","warn");
+      ['c0','c1','c2','c3'].forEach(id=>document.getElementById(id).style.display='block');
+      lt.textContent='LOADING AI DETECTION MODEL';setSysStatus('LOADING','warn');
       try{
         model=await blazeface.load();
-        cl.style.display="none";
-        setBadge("SCANNING","scan");
-        loop();
-      }catch(e){lt.textContent="MODEL FAILED";setBadge("ERROR","err");}
+        cl.style.display='none';setSysStatus('SCANNING','ok');
+        setPhase(1,'ACTIVE','active');phase=1;loop();
+      }catch(e){lt.textContent='MODEL LOAD FAILED';setSysStatus('ERROR','err');}
     };
   }catch(e){
-    cl.style.display="none";cp.style.display="flex";
-    cp.querySelector("p").textContent="Camera access denied. Please allow and reload.";
-    setBadge("DENIED","err");
+    cl.style.display='none';cp.style.display='flex';
+    cp.querySelector('p').textContent='CAMERA ACCESS DENIED\nPLEASE ALLOW PERMISSION AND RELOAD';
+    setSysStatus('DENIED','err');
+  }
+}
+
+function sampleForehead(){
+  if(!vid||vid.readyState<2)return;
+  const rX=Math.floor(cvs.width*0.35),rY=Math.floor(cvs.height*0.08);
+  const rW=Math.floor(cvs.width*0.3),rH=Math.floor(cvs.height*0.18);
+  const tmp=document.createElement('canvas');tmp.width=rW;tmp.height=rH;
+  const tc=tmp.getContext('2d');tc.drawImage(vid,rX,rY,rW,rH,0,0,rW,rH);
+  const d=tc.getImageData(0,0,rW,rH).data;
+  let g=0;for(let i=0;i<d.length;i+=4)g+=d[i+1];
+  greenSamples.push(g/(rW*rH));sampleTimes.push(Date.now());
+  if(greenSamples.length>180){greenSamples.shift();sampleTimes.shift();}
+  if(phase===2){
+    ctx.save();
+    ctx.strokeStyle='rgba(255,107,53,0.5)';ctx.lineWidth=1;ctx.setLineDash([4,6]);
+    ctx.strokeRect(rX,rY,rW,rH);
+    ctx.fillStyle='rgba(255,107,53,0.07)';ctx.fillRect(rX,rY,rW,rH);
+    ctx.fillStyle='rgba(255,107,53,0.8)';ctx.font='9px JetBrains Mono';ctx.setLineDash([]);
+    ctx.fillText('PULSE ROI',rX+4,rY-5);
+    ctx.restore();
+    if(greenSamples.length>60)computeHR();
+  }
+}
+
+function computeHR(){
+  const s=greenSamples.slice(-90);
+  const mean=s.reduce((a,b)=>a+b,0)/s.length;
+  const norm=s.map(v=>v-mean);
+  const amp=Math.max(...norm)-Math.min(...norm);
+  skinAmplitude=amp.toFixed(1);
+  const peaks=[];
+  for(let i=2;i<norm.length-2;i++){
+    if(norm[i]>norm[i-1]&&norm[i]>norm[i-2]&&norm[i]>norm[i+1]&&norm[i]>norm[i+2]&&norm[i]>0.4){
+      if(!peaks.length||i-peaks[peaks.length-1]>8)peaks.push(i);
+    }
+  }
+  if(peaks.length>=3){
+    const intervals=[];
+    for(let i=1;i<peaks.length;i++)intervals.push(peaks[i]-peaks[i-1]);
+    const avgInt=intervals.reduce((a,b)=>a+b,0)/intervals.length;
+    const bpm=Math.round(60*(fps||15)/avgInt);
+    if(bpm>=40&&bpm<=180){
+      estimatedHR=bpm;ecgBPM=bpm;
+      const spread=intervals.reduce((a,b)=>a+Math.abs(b-avgInt),0)/intervals.length;
+      estimatedHRV=Math.round(Math.min(120,Math.max(20,spread*1000/(fps||15))));
+      setVital('v-hr',bpm,'v-hr-s',bpm<60?'LOW':bpm>100?'ELEVATED':'NORMAL',bpm<60||bpm>100?'vs-warn':'vs-ok');
+      setVital('v-hrv',estimatedHRV,'v-hrv-s','MEASURED','vs-ok');
+      setVital('v-perf',amp.toFixed(1),'v-perf-s','DETECTED','vs-ok');
+    }
   }
 }
 
 async function loop(){
   if(!model||!vid||vid.readyState<2){requestAnimationFrame(loop);return;}
-  const now=Date.now();
-  frameCount++;
-  if(now-lastFpsT>=1000){fps=frameCount;frameCount=0;lastFpsT=now;setM("mFps",fps+" fps");}
+  const now=Date.now();frameCount++;
+  if(now-lastFpsT>=1000){fps=frameCount;frameCount=0;lastFpsT=now;setM('mFps',fps+' fps');}
   let preds=[];
   try{preds=await model.estimateFaces(vid,false);}catch(e){}
   ctx.clearRect(0,0,cvs.width,cvs.height);
   scanY+=scanDir*2.5;
-  if(scanY>=cvs.height-12)scanDir=-1;
-  if(scanY<=12)scanDir=1;
-  ctx.save();
-  ctx.globalAlpha=0.2;ctx.strokeStyle="#ff6b35";ctx.lineWidth=1;ctx.setLineDash([8,14]);
-  ctx.beginPath();ctx.moveTo(18,scanY);ctx.lineTo(cvs.width-18,scanY);ctx.stroke();
-  ctx.restore();
+  if(scanY>=cvs.height-10)scanDir=-1;if(scanY<=10)scanDir=1;
+  ctx.save();ctx.globalAlpha=0.15;ctx.strokeStyle='#ff6b35';ctx.lineWidth=1;ctx.setLineDash([8,14]);
+  ctx.beginPath();ctx.moveTo(16,scanY);ctx.lineTo(cvs.width-16,scanY);ctx.stroke();ctx.restore();
+
   if(preds.length>0){
     const face=preds[0];
     const conf=Math.round(face.probability[0]*100);
     const [x1,y1]=face.topLeft;const [x2,y2]=face.bottomRight;
     const w=x2-x1,h=y2-y1;
     const off=Math.abs((x1+x2)/2-cvs.width/2)/(cvs.width/2);
-    const align=off<0.1?"CENTERED":off<0.25?"OFF-CENTER":"MISALIGNED";
-    const col=conf>70?"#10b981":"#ff6b35";
-    ctx.save();
-    ctx.strokeStyle=col;ctx.lineWidth=1;ctx.setLineDash([]);ctx.globalAlpha=0.7;
-    ctx.strokeRect(x1,y1,w,h);
+    const align=off<0.1?'CENTERED':off<0.25?'OFF-CENTER':'MISALIGNED';
+    const col=conf>70?'#10b981':'#ff6b35';
+    ctx.save();ctx.strokeStyle=col;ctx.lineWidth=1;ctx.setLineDash([]);ctx.globalAlpha=0.65;ctx.strokeRect(x1,y1,w,h);
     ctx.globalAlpha=1;ctx.lineWidth=2.5;
     const cL=16;
-    [[x1,y1,1,1],[x2,y1,-1,1],[x1,y2,1,-1],[x2,y2,-1,-1]].forEach(([px,py,dx,dy])=>{
-      ctx.beginPath();ctx.moveTo(px+dx*cL,py);ctx.lineTo(px,py);ctx.lineTo(px,py+dy*cL);ctx.stroke();
-    });
-    ctx.fillStyle=col;ctx.font="bold 10px JetBrains Mono";ctx.globalAlpha=0.9;
-    ctx.fillText("HUMAN  "+conf+"%",x1+4,Math.max(y1-8,14));
-    if(face.landmarks){face.landmarks.forEach(lm=>{ctx.fillStyle="#ff6b35";ctx.globalAlpha=0.6;ctx.beginPath();ctx.arc(lm[0],lm[1],2.5,0,Math.PI*2);ctx.fill();});}
+    [[x1,y1,1,1],[x2,y1,-1,1],[x1,y2,1,-1],[x2,y2,-1,-1]].forEach(([px,py,dx,dy])=>{ctx.beginPath();ctx.moveTo(px+dx*cL,py);ctx.lineTo(px,py);ctx.lineTo(px,py+dy*cL);ctx.stroke();});
+    ctx.fillStyle=col;ctx.font='bold 10px JetBrains Mono';ctx.globalAlpha=0.9;
+    ctx.fillText('HUMAN  '+conf+'%',x1+4,Math.max(y1-8,14));
+    if(face.landmarks)face.landmarks.forEach(lm=>{ctx.fillStyle=col;ctx.globalAlpha=0.6;ctx.beginPath();ctx.arc(lm[0],lm[1],2.5,0,Math.PI*2);ctx.fill();});
     ctx.restore();
-    setM("mFaces",preds.length);setM("mConf",conf+"%");setM("mAlign",align);
-    if(!detected&&conf>55){
-      detected=true;setBadge("HUMAN CONFIRMED","ok");
-      const btn=document.getElementById("analyzeBtn");btn.disabled=false;
+    setM('mFaces',preds.length);setM('mConf',conf+'%');setM('mAlign',align);
+    setVital('v-conf',conf+'%','v-conf-s',conf>80?'LOCKED':'TRACKING',conf>80?'vs-ok':'vs-meas');
+    if(phase===1&&conf>75){
+      faceDetected=true;setPhase(1,'COMPLETE','done');setSysStatus('PULSE CAPTURE','ok');
+      phase=2;setPhase(2,'ACTIVE','active');
+      document.getElementById('finger-prompt').textContent='HOLD STILL — DETECTING PULSE...';
+      setTimeout(()=>{if(phase===2)startFingerScan();},11000);
     }
+    if(phase>=2)sampleForehead();
   } else {
-    setM("mFaces","0");setM("mConf","—");setM("mAlign","—");
-    if(detected){detected=false;setBadge("SCANNING","scan");document.getElementById("analyzeBtn").disabled=true;}
+    setM('mFaces','0');setM('mConf','—');setM('mAlign','—');
   }
   requestAnimationFrame(loop);
 }
 
+function startFingerScan(){
+  setPhase(2,'COMPLETE','done');setSysStatus('FINGER SCAN','ok');
+  phase=3;setPhase(3,'ACTIVE','');fingerStep=0;nextFinger();
+}
+
+function nextFinger(){
+  if(fingerStep>=5){
+    setPhase(3,'COMPLETE','done');setSysStatus('READY','ok');phase=4;
+    document.getElementById('finger-prompt').textContent='BIOMETRIC SCAN COMPLETE ✓';
+    document.getElementById('finger-fill').style.width='100%';
+    const btn=document.getElementById('analyzeBtn');
+    btn.disabled=false;btn.style.background=var_green();btn.textContent='BEGIN CLINICAL ANALYSIS →';
+    return;
+  }
+  const names=['INDEX','MIDDLE','RING','LI','THUMB'];
+  const roman=['I','II','III','IV','V'];
+  fingerStep++;
+  document.getElementById('finger-prompt').textContent='RAISE FINGER '+roman[fingerStep-1]+' — '+names[fingerStep-1];
+  for(let i=1;i<=5;i++){
+    const f=document.getElementById('f'+i);
+    f.className='finger-wrap';
+    if(i<fingerStep)f.classList.add('f-done');
+    if(i===fingerStep)f.classList.add('f-active');
+  }
+  let p=(fingerStep-1)*20;const target=fingerStep*20;
+  clearInterval(fingerInterval);
+  fingerInterval=setInterval(()=>{   p+=0.67;document.getElementById('finger-fill').style.width=p+'%';
+    if(p>=target){clearInterval(fingerInterval);nextFinger();}
+  },100);
+}
+
+function var_green(){return'#10b981';}
+
 function captureFrame(){
-  const tc=document.createElement("canvas");
-  tc.width=vid.videoWidth;tc.height=vid.videoHeight;
-  tc.getContext("2d").drawImage(vid,0,0);
-  return{base64:tc.toDataURL("image/jpeg",0.85).split(",")[1],canvas:tc};
+  const tc=document.createElement('canvas');tc.width=vid.videoWidth;tc.height=vid.videoHeight;
+  tc.getContext('2d').drawImage(vid,0,0);
+  return{base64:tc.toDataURL('image/jpeg',0.85).split(',')[1],canvas:tc};
 }
 
 async function analyze(){
-  if(analyzing)return;
-  analyzing=true;
+  if(analyzing)return;analyzing=true;
   const{base64,canvas}=captureFrame();
-  const thumb=document.getElementById("thumb");
-  thumb.width=canvas.width;thumb.height=canvas.height;
-  thumb.getContext("2d").drawImage(canvas,0,0);
-  const ts=new Date().toLocaleString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
-  document.getElementById("scan-ts").textContent=ts;
-  document.getElementById("report-ts-inner").textContent=ts;
-  show("s-analysis");
-  document.getElementById("findings-list").innerHTML='<div class="loading-state"><div class="spinner"></div>Analyzing your aura — this takes about 10 seconds</div>';
-  document.getElementById("summary-card").style.display="none";
-  document.getElementById("tips-card").style.display="none";
-  document.getElementById("wellness-wrap").style.display="none";
-  document.getElementById("disc-txt").textContent="";
-  document.getElementById("load-ind").style.display="inline";
+  const thumb=document.getElementById('thumb');
+  thumb.width=canvas.width;thumb.height=canvas.height;thumb.getContext('2d').drawImage(canvas,0,0);
+  const ts=new Date().toLocaleString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('scan-ts').textContent=ts;document.getElementById('report-ts').textContent=ts;
+  document.getElementById('r-hr').textContent=estimatedHR||'N/A';
+  document.getElementById('r-hrv').textContent=estimatedHRV||'N/A';
+  document.getElementById('r-perf').textContent=skinAmplitude||'N/A';
+  setPhase(4,'ACTIVE','active');setSysStatus('ANALYZING','info');
+  show('s-analysis');
+  document.getElementById('findings-list').innerHTML='<div class="loading-state"><div class="spinner"></div>Claude AI is analyzing your aura...</div>';
+  document.getElementById('summary-card').style.display='none';document.getElementById('tips-card').style.display='none';
+  document.getElementById('wellness-wrap').style.display='none';document.getElementById('disc-txt').textContent='';
+  document.getElementById('load-ind').style.display='inline';
+  const hrInfo=estimatedHR?`Measured Heart Rate via rPPG: ${estimatedHR} BPM. HRV: ${estimatedHRV} ms. Skin perfusion amplitude: ${skinAmplitude}.`:'Heart rate measurement was inconclusive — advise better lighting.';
+  const PROMPT=`You are Aurveil, an advanced AI visual health observation system. Analyze the visible physical appearance of this person — head to upper chest — linical precision.
 
-  const PROMPT=`You are Aurveil, an advanced AI visual health observation system. Analyze the visible physical appearance of the person head to upper chest with clinical precision.
+Additional biometric context: ${hrInfo}
 
-Observe: skin complexion, eye clarity and sclera, lip color and moisture, facial symmetry, neck area, posture.
+Observe: skin complexion, eye clarity and sclera color, lip color and moisture, facial symmetry, neck area, posture and energy level.
 
-Respond in EXACTLY this format:
+Respond in EXACTLY this format — one line per area:
 
 🟢 [AREA]: [observation if normal]
 🟡 [AREA]: [observation if needs monitoring]
@@ -670,91 +713,63 @@ Respond in EXACTLY this format:
 
 AREA values: COMPLEXION, EYES, LIPS, FACIAL SYMMETRY, NECK, POSTURE, OVERALL
 
-Then:
-SUMMARY: [2 sentences overall impression]
+Then on separate lines:
+SUMMARY: [2 sentencel impression, include heart rate context if measured]
 TIPS: [3 short wellness tips separated by | character]
 DISCLAIMER: [one sentence medical disclaimer]
 
-Be specific about what you actually see. Note image quality issues if relevant.`;
-
+Be specific about what you actually observe. Note image quality issues if relevant.`;
   try{
-    const res=await fetch("https://aurveil-proxy.dayo-onasanya.workers.dev",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        model:"claude-sonnet-4-20250514",
-        max_tokens:1000,
-        messages:[{role:"user",content:[
-          {type:"image",source:{type:"base64",media_type:"image/jpeg",data:base64}},
-          {type:"text",text:PROMPT}
-        ]}]
-      })
+    const res=await fetch('https://aurveil-proxy.dayo-onasanya.workers.dev',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:base64}},{type:'text',text:PROMPT}]}]})
     });
-    if(!res.ok)throw new Error("HTTP "+res.status);
+    if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
-    const text=data.content[0].text;
-    renderFindings(text);
+    renderFindings(data.content[0].text);
+    setPhase(4,'COMPLETE','done');setSysStatus('REPORT READY','ok');
   }catch(e){
-    document.getElementById("findings-list").innerHTML=`<div style="color:var(--error);font-size:13px;padding:12px 0;">Analysis failed: ${e.message}. Please try again.</div>`;
+    document.getElementById('findings-list').innerHTML='<div style="color:var(--error);font-size:13px;padding:12px 0;">Analysis failed: '+e.message+'. Please rescan and try again.</div>';
   }
-  document.getElementById("load-ind").style.display="none";
-  analyzing=false;
+  document.getElementById('load-ind').style.display='none';analyzing=false;
 }
 
 function renderFindings(text){
-  const lines=text.split("\n").map(l=>l.trim()).filter(Boolean);
-  const findings=[];
-  let summary="",tips=[],disclaimer="";
+  const lines=text.split('\n').map(l=>l.trim()).filter(Boolean);
+  const findings=[];let summary='',tips=[],disclaimer='';
   for(const ln of lines){
-    if(ln.startsWith("SUMMARY:"))summary=ln.slice(8).trim();
-    else if(ln.startsWith("TIPS:"))tips=ln.slice(5).trim().split("|").map(t=>t.trim()).filter(Boolean);
-    else if(ln.startsWith("DISCLAIMER:"))disclaimer=ln.slice(11).trim();
-    else if(ln.startsWith("🟢")||ln.startsWith("🟡")||ln.startsWith("🔴"))findings.push(ln);
+    if(ln.startsWith('SUMMARY:'))summary=ln.slice(8).trim();
+    else if(ln.startsWith('TIPS:'))tips=ln.slice(5).trim().split('|').map(t=>t.trim()).filter(Boolean);
+    else if(ln.startsWith('DISCLAIMER:'))disclaimer=ln.slice(11).trim();
+    else if(ln.startsWith('🟢')||ln.startsWith('🟡')||ln.startsWith('🔴'))findings.push(ln);
   }
-
-  // Wellness score
   let score=100;
-  findings.forEach(f=>{if(f.startsWith("🟡"))score-=10;if(f.startsWith("🔴"))score-=20;});
+  findings.forEach(f=>{if(f.startsWith('🟡'))score-=10;if(f.startsWith('🔴'))score-=20;});
   score=Math.max(0,Math.min(100,score));
-  const wDesc=score>=80?"Looking good overall":score>=60?"A few things to keep an eye on":"Consider following up with a healthcare professional";
-  document.getElementById("wellness-wrap").style.display="block";
-  document.getElementById("wellness-num").textContent=score;
-  document.getElementById("wellness-desc").textContent=wDesc;
-  setTimeout(()=>{document.getElementById("wellness-fill").style.width=score+"%";},100);
-
-  // Findings
-  const list=document.getElementById("findings-list");
-  if(!findings.length){list.innerHTML='<div style="font-size:13px;color:var(--text3);padding:12px 0;">No specific observations returned. Please try again with better lighting.</div>';return;}
-  list.innerHTML="";
+  const desc=score>=80?'Looking good overall — keep up healthy habits':score>=60?'A few indicators worth monitoring — stay attentive':'Consider following up with a healthcare professional soon';
+  document.getElementById('r-score').textContent=score;
+  document.getElementById(').style.display='block';
+  document.getElementById('w-num').textContent=score;document.getElementById('w-desc').textContent=desc;
+  setTimeout(()=>document.getElementById('w-fill').style.width=score+'%',100);
+  const list=document.getElementById('findings-list');
+  if(!findings.length){list.innerHTML='<div style="font-size:13px;color:var(--text3);padding:12px 0;">No observations returned. Try again with better lighting.</div>';return;}
+  list.innerHTML='';
   findings.forEach(ln=>{
-    const emoji=ln[0];
-    const rest=ln.slice(2).trim();
-    const ci=rest.indexOf(":");
-    const area=ci>-1?rest.slice(0,ci).trim():"";
-    const obs=ci>-1?rest.slice(ci+1).trim():rest;
-    const dc=emoji==="🟢"?"d-g":emoji==="🟡"?"d-a":"d-r";
-    const tc=emoji==="🟢"?"t-g":emoji==="🟡"?"t-a":"t-r";
-    const tl=emoji==="🟢"?"NORMAL":emoji==="🟡"?"MONITOR":"CONSULT";
-    const el=document.createElement("div");
-    el.className="finding";
-    el.innerHTML=`<div class="f-dot ${dc}"></div><span class="f-tag ${tc}">${tl}</span><div class="f-area">${area}</div><div class="f-obs">${obs}</div>`;
+    const e=ln[0];const rest=ln.slice(2).trim();const ci=rest.indexOf(':');
+    const area=ci>-1?rest.slice(0,ci).trim():'';const obs=ci>-1?rest.slice(ci+1).trim():rest;
+    const dc=e==='🟢'?'d-g':e==='🟡'?'d-a':'d-r';
+    const tc=e==='🟢'?'t-g':e==='🟡'?'t-a':'t-r';
+    const tl=e==='🟢'?'NORMAL':e==='🟡'?'MONITOR':'CONSULT';
+    const el=document.createElement('div');el.className='finding';
+    el.innerHTML='<div class="f-dot '+dc+'"></div><span class="f-tag '+tc+'">'+tl+'</span><div class="f-area">'+area+'</div><dibs">'+obs+'</div>';
     list.appendChild(el);
   });
-
-  // Summary
-  if(summary){
-    document.getElementById("summary-card").style.display="block";
-    document.getElementById("summary-txt").textContent=summary;
-  }
-
-  // Tips
+  if(summary){document.getElementById('summary-card').style.display='block';document.getElementById('summary-txt').textContent=summary;}
   if(tips.length){
-    document.getElementById("tips-card").style.display="block";
-    const tipIcons=["🥗","💧","🚶","😴","🧘","☀️"];
-    document.getElementById("tips-list").innerHTML=tips.map((t,i)=>`<div class="tip-item"><span class="tip-icon">${tipIcons[i%tipIcons.length]}</span>${t}</div>`).join("");
-  }
-
-  if(disclaimer)document.getElementById("disc-txt").textContent=disclaimer;
+    document.getElementById('tips-card').style.display='block';
+    const icons=['🥗','💧','🚶','😴','🧘','☀️'];
+    document.getElementById('tips-list').innerHTML=tips.map((t,i)=>'<div class="tip-item"><span style="flex-shrink:0;">'+icons[i%icons.length]+'</span>'+t+'</div>').join('');
+  mer)document.getElementById('disc-txt').textContent=disclaimer;
 }
 </script>
 </body>
