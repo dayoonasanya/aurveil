@@ -3,845 +3,758 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Aurveil — See Through the Surface</title>
+<title>Aurveil — AI Visual Health Observer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&family=JetBrains+Mono:wght@300;400&display=swap">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;background:#06080a;color:#ddd8cc;}
-
+html{scroll-behavior:smooth;}
+body{font-family:"Manrope",sans-serif;background:#F9FAFB;color:#0a1831;min-height:100vh;}
 :root{
-  --bg:#06080a;
-  --bg2:#0b0e10;
-  --bg3:#101417;
-  --border:#182020;
-  --border2:#223030;
-  --gold:#C49B42;
-  --gold2:#7a5e28;
-  --gold3:#3a2c12;
-  --teal:#1a8080;
-  --tealb:#20aaaa;
-  --text:#ddd8cc;
-  --dim:#4a5c5c;
-  --muted:#1e2c2c;
-  --green:#1e7a50;
-  --greenb:#26a06a;
-  --amber:#b87020;
-  --amberb:#e09030;
-  --red:#b03030;
-  --redb:#d84040;
-  --serif:'Cormorant Garamond',serif;
-  --mono:'JetBrains Mono',monospace;
+  --navy:#0a1831;--navy2:#13224d;--navy3:#0e1d3f;
+  --orange:#ff6b35;--orange2:#d85e32;--orange3:#fb923c;
+  --bg:#F9FAFB;--bg2:#f7f7f8;--bg3:#ffffff;
+  --border:#e5e7eb;--border2:#f1f2f4;--border3:#d1d5db;
+  --text:#0a1831;--text2:#333333;--text3:#838e9c;
+  --success:#10b981;--warning:#f59e0b;--error:#ef4444;
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);
+  --shadow-lg:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
+  --shadow-xl:0 20px 25px -5px rgba(0,0,0,0.1),0 10px 10px -5px rgba(0,0,0,0.04);
+  --r-sm:0.5rem;--r-md:0.75rem;--r-lg:1rem;--r-xl:1.25rem;--r-2xl:1.5rem;--r-full:9999px;
+  --serif:"Cormorant Garamond",serif;
+  --mono:"JetBrains Mono",monospace;
 }
-
-body{font-family:var(--mono);display:flex;flex-direction:column;min-height:100vh;}
-.screen{display:none;flex-direction:column;}
+.screen{display:none;flex-direction:column;min-height:100vh;}
 .screen.active{display:flex;}
 
-/* ─── INTRO ─── */
-#s-intro{
-  min-height:100vh;align-items:center;justify-content:center;
-  text-align:center;padding:48px 24px;
-}
-.logo-ring{
-  width:80px;height:80px;border-radius:50%;
-  border:1px solid var(--gold2);
-  display:flex;align-items:center;justify-content:center;
-  margin:0 auto 32px;position:relative;
-}
-.logo-ring::before{
-  content:'';position:absolute;inset:-10px;border-radius:50%;
-  border:1px solid var(--muted);
-}
-.logo-ring::after{
-  content:'';position:absolute;inset:-20px;border-radius:50%;
-  border:1px solid #111820;
-}
-.brand{font-family:var(--serif);font-size:58px;font-weight:300;letter-spacing:0.18em;color:var(--text);line-height:1;}
-.brand em{color:var(--gold);font-style:italic;}
-.tagline{font-size:10px;letter-spacing:0.28em;color:var(--dim);margin:10px 0 48px;text-transform:uppercase;}
-.intro-desc{
-  font-family:var(--serif);font-size:17px;font-weight:300;
-  color:var(--dim);line-height:1.85;max-width:400px;margin:0 auto 52px;
-}
-.feature-row{display:flex;gap:32px;margin-bottom:52px;justify-content:center;}
-.feature{text-align:center;}
-.feature-icon{font-size:18px;margin-bottom:6px;}
-.feature-lbl{font-size:9px;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:68px;}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
+.nav-logo-mark{width:36px;height:36px;background:var(--navy);border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;}
+.nav-brand{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--navy);letter-spacing:0.05em;}
+.nav-brand em{color:var(--orange);font-style:italic;}
+.nav-tag{font-size:11px;background:#fff3ee;color:var(--orange);border:1px solid #fde8dd;padding:3px 10px;border-radius:var(--r-full);font-weight:600;letter-spacing:0.04em;}
+.nav-right{display:flex;align-items:center;gap:10px;}
 
-/* ─── BUTTONS ─── */
-.btn{
-  background:transparent;border:1px solid var(--border2);color:var(--dim);
-  font-family:var(--mono);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;
-  padding:12px 30px;border-radius:1px;cursor:pointer;transition:all 0.18s;
-}
-.btn:hover:not(:disabled){border-color:var(--gold2);color:var(--gold);}
-.btn:disabled{opacity:0.2;cursor:not-allowed;}
-.btn-primary{border-color:var(--teal);color:var(--tealb);}
-.btn-primary:hover:not(:disabled){background:rgba(26,128,128,0.07);}
-.btn-gold{border-color:var(--gold2);color:var(--gold);}
-.btn-gold:hover:not(:disabled){background:rgba(196,155,66,0.07);}
-.btn-full{width:100%;padding:13px;display:block;}
-.btn-sm{padding:8px 18px;font-size:9px;}
+/* BUTTONS */
+.btn{font-family:"Manrope",sans-serif;font-size:14px;font-weight:600;padding:10px 22px;border-radius:var(--r-lg);cursor:pointer;transition:all 0.2s;border:1.5px solid transparent;display:inline-flex;align-items:center;gap:7px;text-decoration:none;}
+.btn-navy{background:var(--navy);color:#fff;border-color:var(--navy);}
+.btn-navy:hover{background:var(--navy2);}
+.btn-orange{background:var(--orange);color:#fff;border-color:var(--orange);}
+.btn-orange:hover{background:var(--orange2);}
+.btn-outline{background:#fff;color:var(--navy);border-color:var(--border3);}
+.btn-outline:hover{border-color:var(--navy);background:var(--bg2);}
+.btn-ghost{background:transparent;border:none;color:var(--text3);padding:8px 14px;}
+.btn-ghost:hover{color:var(--navy);background:var(--bg2);}
+.btn-lg{padding:14px 32px;font-size:15px;}
+.btn-full{width:100%;justify-content:center;}
+.btn:disabled{opacity:0.35;cursor:not-allowed;}
 
-/* ─── SCANNER SCREEN ─── */
-#s-scanner{min-height:100vh;padding:20px;max-width:780px;width:100%;margin:0 auto;}
-.bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.bar-brand{font-family:var(--serif);font-size:24px;font-weight:300;letter-spacing:0.14em;color:var(--text);}
-.bar-brand em{color:var(--gold);font-style:italic;}
-#badge{
-  font-size:9px;letter-spacing:0.12em;padding:4px 12px;
-  border:1px solid var(--border2);color:var(--dim);border-radius:1px;
-  text-transform:uppercase;transition:all 0.3s;
-}
+/* HERO */
+#s-intro{background:#fff;padding-top:68px;}
+.hero{padding:88px 40px 72px;text-align:center;background:linear-gradient(180deg,#fff8f5 0%,#fff 60%);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,107,53,0.04) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--border);padding:6px 16px;border-radius:var(--r-full);font-size:12px;font-weight:600;color:var(--text2);margin-bottom:28px;box-shadow:var(--shadow-sm);}
+.hero-pill-dot{width:7px;height:7px;border-radius:50%;background:var(--success);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.35;}}
+.hero-title{font-family:var(--serif);font-size:72px;font-weight:300;color:var(--navy);line-height:1.05;margin-bottom:20px;letter-spacing:-0.01em;}
+.hero-title em{color:var(--orange);font-style:italic;}
+.hero-title span{display:block;}
+.hero-sub{font-size:18px;color:var(--text3);line-height:1.75;max-width:500px;margin:0 auto 40px;font-weight:400;}
+.hero-cta{display:flex;gap:12px;justify-content:center;margin-bottom:60px;}
+.hero-stats{display:flex;gap:48px;justify-content:center;padding-top:40px;border-top:1px solid var(--border2);}
+.stat-num{font-size:28px;font-weight:800;color:var(--navy);display:block;}
+.stat-lbl{font-size:12px;color:var(--text3);font-weight:500;margin-top:2px;}
 
-/* Viewport */
-.vp{
-  position:relative;width:100%;aspect-ratio:4/3;
-  background:var(--bg2);border:1px solid var(--border);border-radius:3px;overflow:hidden;
-}
+/* FEATURES */
+.section{padding:80px 40px;max-width:1140px;margin:0 auto;width:100%;}
+.section-center{text-align:center;}
+.section-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;color:var(--orange);text-transform:uppercase;margin-bottom:10px;}
+.section-h{font-family:var(--serif);font-size:42px;font-weight:300;color:var(--navy);line-height:1.15;margin-bottom:12px;}
+.section-sub{font-size:16px;color:var(--text3);line-height:1.7;max-width:440px;margin:0 auto 52px;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.feat-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);padding:28px 24px;box-shadow:var(--shadow-sm);transition:all 0.2s;}
+.feat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:var(--orange3);}
+.feat-icon{width:48px;height:48px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:22px;}
+.ic-orange{background:#fff3ee;}
+.ic-navy{background:#eef1f8;}
+.ic-green{background:#ecfdf5;}
+.ic-amber{background:#fffbeb;}
+.ic-red{background:#fef2f2;}
+.ic-blue{background:#eff6ff;}
+.feat-h{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.feat-p{font-size:13px;color:var(--text3);line-height:1.65;}
+.feat-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;padding:2px 8px;border-radius:var(--r-full);margin-top:10px;text-transform:uppercase;}
+.badge-new{background:#fff3ee;color:var(--orange);}
+.badge-live{background:#ecfdf5;color:var(--success);}
+
+/* HOW IT WORKS */
+.how-section{background:var(--navy);padding:80px 40px;}
+.how-inner{max-width:960px;margin:0 auto;text-align:center;}
+.how-section .section-eyebrow{color:var(--orange);}
+.how-section .section-h{color:#fff;}
+.how-section .section-sub{color:#94a3b8;}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:52px;}
+.steps::before{content:"";position:absolute;top:24px;left:12.5%;right:12.5%;height:1px;background:rgba(255,255,255,0.1);}
+.step{text-align:center;padding:0 12px;}
+.step-num{width:48px;height:48px;border-radius:50%;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);color:var(--orange);font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;position:relative;z-index:1;}
+.step-h{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;}
+.step-p{font-size:12px;color:#64748b;line-height:1.5;}
+
+/* AREAS */
+.areas-section{background:var(--bg);padding:80px 40px;border-top:1px solid var(--border);}
+.areas-inner{max-width:1140px;margin:0 auto;}
+.areas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px;}
+.area-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);padding:20px;text-align:center;}
+.area-icon{font-size:28px;margin-bottom:10px;}
+.area-h{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.area-p{font-size:11px;color:var(--text3);line-height:1.5;}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:88px 40px;text-align:center;}
+.cta-h{font-family:var(--serif);font-size:48px;font-weight:300;color:#fff;margin-bottom:14px;}
+.cta-h em{color:var(--orange);font-style:italic;}
+.cta-sub{font-size:16px;color:#94a3b8;margin-bottom:36px;}
+.cta-disc{font-size:11px;color:#475569;margin-top:16px;}
+
+/* FOOTER */
+footer{background:#060f1e;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.footer-brand{font-family:var(--serif);font-size:20px;color:#e2e8f0;}
+.footer-brand em{color:var(--orange);font-style:italic;}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:12px;color:#475569;text-decoration:none;}
+.footer-links a:hover{color:var(--orange);}
+.footer-copy{font-size:11px;color:#334155;}
+
+/* SCANNER SCREEN */
+#s-scanner{background:var(--bg);padding-top:68px;}
+.scanner-wrap{max-width:860px;margin:0 auto;padding:32px 24px;width:100%;}
+.page-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+.page-h{font-size:22px;font-weight:700;color:var(--navy);}
+.page-sub{font-size:13px;color:var(--text3);margin-top:3px;}
+#badge{font-size:11px;font-weight:700;padding:5px 14px;border-radius:var(--r-full);background:var(--bg2);color:var(--text3);transition:all 0.3s;border:1px solid var(--border);}
+
+.vp-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);overflow:hidden;box-shadow:var(--shadow-md);}
+.vp{position:relative;width:100%;aspect-ratio:4/3;background:var(--navy);}
 #vid{width:100%;height:100%;object-fit:cover;display:none;transform:scaleX(-1);}
 #cvs{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;transform:scaleX(-1);}
-
-/* Corners */
 .crn{position:absolute;width:22px;height:22px;display:none;}
-.c-tl{top:14px;left:14px;border-top:1px solid var(--gold2);border-left:1px solid var(--gold2);}
-.c-tr{top:14px;right:14px;border-top:1px solid var(--gold2);border-right:1px solid var(--gold2);}
-.c-bl{bottom:14px;left:14px;border-bottom:1px solid var(--gold2);border-left:1px solid var(--gold2);}
-.c-br{bottom:14px;right:14px;border-bottom:1px solid var(--gold2);border-right:1px solid var(--gold2);}
+.c-tl{top:14px;left:14px;border-top:2px solid rgba(255,107,53,0.7);border-left:2px solid rgba(255,107,53,0.7);}
+.c-tr{top:14px;right:14px;border-top:2px solid rgba(255,107,53,0.7);border-right:2px solid rgba(255,107,53,0.7);}
+.c-bl{bottom:14px;left:14px;border-bottom:2px solid rgba(255,107,53,0.7);border-left:2px solid rgba(255,107,53,0.7);}
+.c-br{bottom:14px;right:14px;border-bottom:2px solid rgba(255,107,53,0.7);border-right:2px solid rgba(255,107,53,0.7);}
+#cam-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;padding:40px;}
+#cam-prompt p{font-size:13px;color:#94a3b8;text-align:center;line-height:1.6;max-width:260px;}
+#cam-load{display:none;position:absolute;inset:0;background:rgba(10,24,49,0.85);flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+#load-txt{font-size:11px;color:#94a3b8;letter-spacing:0.08em;font-family:var(--mono);}
+.vp-footer{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
+.vp-hint{font-size:11px;color:var(--text3);}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;}
+.mc{background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);padding:16px;box-shadow:var(--shadow-sm);}
+.mc-lbl{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;}
+.mc-val{font-size:22px;font-weight:700;color:var(--navy);}
+.scan-actions{margin-top:16px;display:flex;gap:10px;}
+.privacy-note{font-size:11px;color:var(--text3);text-align:center;margin-top:10px;}
 
-/* Center prompt */
-#cam-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;}
-#cam-prompt p{font-size:11px;color:var(--dim);letter-spacing:0.06em;max-width:280px;text-align:center;line-height:1.6;}
+/* ANALYSIS SCREEN */
+#s-analysis{background:var(--bg);padding-top:68px;}
+.analysis-wrap{max-width:860px;margin:0 auto;padding:32px 24px;width:100%;}
 
-/* Load overlay */
-#cam-load{display:none;position:absolute;inset:0;background:rgba(6,8,10,0.85);flex-direction:column;align-items:center;justify-content:center;gap:10px;}
-#load-txt{font-size:10px;color:var(--dim);letter-spacing:0.12em;}
+.report-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:16px;}
+.report-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-start;background:linear-gradient(135deg,#fff8f5,#fff);}
+#thumb{width:110px;height:82px;border-radius:var(--r-lg);object-fit:cover;border:2px solid var(--border3);transform:scaleX(-1);flex-shrink:0;}
+.report-meta-info{flex:1;}
+.report-badge{font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--orange);text-transform:uppercase;background:#fff3ee;padding:3px 10px;border-radius:var(--r-full);display:inline-block;margin-bottom:6px;}
+.report-ts{font-size:13px;color:var(--text3);margin-bottom:10px;}
+.legend{display:flex;gap:14px;flex-wrap:wrap;}
+.leg-item{display:flex;align-items:center;gap:5px;}
+.leg-dot{width:8px;height:8px;border-radius:50%;}
+.leg-lbl{font-size:11px;font-weight:600;color:var(--text3);}
 
-/* Metrics */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;}
-.mc{background:var(--bg2);border:1px solid var(--border);border-radius:2px;padding:10px 12px;}
-.mc-lbl{font-size:9px;color:var(--dim);letter-spacing:0.1em;margin-bottom:4px;text-transform:uppercase;}
-.mc-val{font-size:20px;color:var(--text);}
-
-/* ─── ANALYSIS SCREEN ─── */
-#s-analysis{min-height:100vh;padding:20px;max-width:780px;width:100%;margin:0 auto;}
-
-.thumb-wrap{
-  display:flex;gap:16px;align-items:flex-start;
-  margin-bottom:14px;padding-bottom:14px;
-  border-bottom:1px solid var(--border);
-}
-#thumb{
-  width:130px;height:98px;object-fit:cover;border-radius:3px;
-  border:1px solid var(--border);transform:scaleX(-1);flex-shrink:0;
-}
-.report-meta{flex:1;}
-.report-label{font-size:9px;letter-spacing:0.14em;color:var(--dim);margin-bottom:6px;text-transform:uppercase;}
-.report-ts{font-size:11px;color:var(--muted);letter-spacing:0.06em;margin-bottom:12px;}
-.legend{display:flex;gap:18px;}
-.leg-item{display:flex;align-items:center;gap:6px;}
-.leg-dot{width:7px;height:7px;border-radius:50%;}
-.leg-lbl{font-size:9px;letter-spacing:0.06em;color:var(--dim);text-transform:uppercase;}
+/* Wellness score */
+.wellness-wrap{padding:20px 24px;border-bottom:1px solid var(--border);}
+.wellness-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;}
+.wellness-lbl{font-size:13px;font-weight:700;color:var(--navy);}
+.wellness-num{font-size:28px;font-weight:800;color:var(--navy);}
+.wellness-unit{font-size:13px;color:var(--text3);font-weight:500;}
+.wellness-bar{height:10px;background:var(--border);border-radius:var(--r-full);overflow:hidden;}
+.wellness-fill{height:100%;border-radius:var(--r-full);background:linear-gradient(90deg,var(--orange),var(--success));transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
+.wellness-desc{font-size:12px;color:var(--text3);margin-top:6px;}
 
 /* Findings */
-.findings-panel{
-  background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:18px 20px;
-  min-height:260px;
-}
-.fp-head{font-size:9px;letter-spacing:0.14em;color:var(--dim);margin-bottom:14px;display:flex;align-items:center;gap:10px;text-transform:uppercase;}
-.finding{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--muted);}
+.findings-wrap{padding:20px 24px;}
+.fp-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.finding{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2);}
 .finding:last-child{border-bottom:none;}
-.f-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px;}
-.d-g{background:var(--greenb);}
-.d-a{background:var(--amberb);}
-.d-r{background:var(--redb);}
-.f-area{font-size:9px;letter-spacing:0.1em;color:var(--dim);min-width:105px;flex-shrink:0;padding-top:3px;text-transform:uppercase;}
-.f-obs{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--text);line-height:1.55;}
+.f-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.d-g{background:var(--success);}
+.d-a{background:var(--warning);}
+.d-r{background:var(--error);}
+.f-tag{font-size:9px;font-weight:700;letter-spacing:0.06em;padding:2px 8px;border-radius:var(--r-full);flex-shrink:0;margin-top:2px;text-transform:uppercase;}
+.t-g{background:#ecfdf5;color:var(--success);}
+.t-a{background:#fffbeb;color:var(--warning);}
+.t-r{background:#fef2f2;color:var(--error);}
+.f-area{font-size:10px;font-weight:700;color:var(--text3);min-width:100px;flex-shrink:0;padding-top:3px;letter-spacing:0.04em;text-transform:uppercase;}
+.f-obs{font-size:14px;color:var(--navy);line-height:1.6;}
 
-.summary-box{
-  margin-top:12px;padding:16px 18px;
-  background:var(--bg3);border:1px solid var(--border);border-radius:2px;
-}
-.sum-lbl{font-size:9px;letter-spacing:0.14em;color:var(--dim);margin-bottom:8px;text-transform:uppercase;}
-.sum-txt{font-family:var(--serif);font-size:16px;font-weight:300;color:var(--text);line-height:1.75;}
+.summary-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);box-shadow:var(--shadow-sm);padding:20px 24px;margin-bottom:16px;}
+.sum-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;}
+.sum-txt{font-size:14px;color:var(--navy2);line-height:1.75;}
 
-.disc{font-size:10px;color:var(--muted);margin-top:12px;line-height:1.6;letter-spacing:0.02em;}
+.tips-card{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r-2xl);padding:24px;margin-bottom:16px;}
+.tips-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--orange);text-transform:uppercase;margin-bottom:14px;}
+.tips-list{display:flex;flex-direction:column;gap:8px;}
+.tip-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#e2e8f0;line-height:1.5;}
+.tip-icon{flex-shrink:0;margin-top:1px;color:var(--orange);}
 
-/* ─── UTILITIES ─── */
-.pulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 1.2s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.15;}}
+.disc-note{font-size:11px;color:var(--text3);line-height:1.6;padding:12px 0;}
 
-.loading-line{
-  display:flex;align-items:center;gap:10px;padding:14px 0;
-  font-size:11px;color:var(--dim);letter-spacing:0.06em;
-}
+.loading-state{display:flex;align-items:center;gap:10px;padding:24px 0;font-size:13px;color:var(--text3);}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-.scan-line-anim{
-  width:100%;height:1px;background:var(--border);border-radius:1px;overflow:hidden;
-  margin-top:16px;
-}
-.scan-line-anim::after{
-  content:'';display:block;height:1px;width:40%;background:var(--gold2);
-  animation:sweep 2s ease-in-out infinite;
-}
-@keyframes sweep{0%{transform:translateX(-100%);}100%{transform:translateX(350%);}}
+/* misc */
+.pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--success);animation:blink 1.2s infinite;}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════ SCREEN 1: INTRO ══════════════════ -->
+<!-- ══ NAV (shared) ══ -->
+<nav id="main-nav">
+  <div class="nav-logo" onclick="show('s-intro')">
+    <div class="nav-logo-mark">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <ellipse cx="10" cy="10" rx="9" ry="5" stroke="#ff6b35" stroke-width="1"/>
+        <circle cx="10" cy="10" r="3" stroke="#ff6b35" stroke-width="1"/>
+        <circle cx="10" cy="10" r="1.2" fill="#ff6b35"/>
+      </svg>
+    </div>
+    <span class="nav-brand">Aur<em>veil</em></span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="nav-tag">AI Health Observer</span>
+    <span id="badge" style="display:none;">OFFLINE</span>
+  </div>
+  <div class="nav-right" id="nav-actions">
+    <button class="btn btn-orange" onclick="show('s-scanner');boot()">Begin Scan</button>
+  </div>
+</nav>
+
+<!-- ══════════════ SCREEN 1: INTRO ══════════════ -->
 <div id="s-intro" class="screen active">
 
-  <style>
-    #s-intro {
-      background: radial-gradient(ellipse at 50% 40%, rgba(196,155,66,0.04) 0%, transparent 65%),
-                  radial-gradient(ellipse at 50% 80%, rgba(26,128,128,0.03) 0%, transparent 60%);
-      position: relative;
-      overflow: hidden;
-    }
-    #s-intro::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size: 36px 36px;
-      pointer-events: none;
-    }
-    .intro-wrap {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      max-width: 560px;
-      width: 100%;
-      padding: 0 24px;
-    }
-    .logo-outer {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 36px;
-    }
-    .logo-outer::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 1px solid rgba(196,155,66,0.15);
-      animation: rotateRing 12s linear infinite;
-    }
-    .logo-outer::after {
-      content: '';
-      position: absolute;
-      inset: -14px;
-      border-radius: 50%;
-      border: 1px solid rgba(196,155,66,0.06);
-    }
-    .logo-inner {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      border: 1px solid rgba(196,155,66,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(196,155,66,0.03);
-    }
-    @keyframes rotateRing {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .intro-brand {
-      font-family: var(--serif);
-      font-size: 72px;
-      font-weight: 300;
-      letter-spacing: 0.2em;
-      color: var(--text);
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-    .intro-brand em { color: var(--gold); font-style: italic; }
-    .intro-tag {
-      font-size: 10px;
-      letter-spacing: 0.32em;
-      color: var(--dim);
-      text-transform: uppercase;
-      margin-bottom: 48px;
-    }
-    .intro-divider {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, transparent, var(--border2), transparent);
-      margin-bottom: 40px;
-    }
-    .intro-desc-new {
-      font-family: var(--serif);
-      font-size: 18px;
-      font-weight: 300;
-      color: #5a7070;
-      line-height: 1.9;
-      text-align: center;
-      margin-bottom: 48px;
-      max-width: 420px;
-    }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      width: 100%;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: 40px;
-    }
-    .feat-cell {
-      background: var(--bg2);
-      padding: 20px 16px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      align-items: center;
-    }
-    .feat-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-    }
-    .feat-title {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: var(--text);
-      text-transform: uppercase;
-      line-height: 1.4;
-    }
-    .feat-sub {
-      font-size: 9px;
-      color: var(--dim);
-      letter-spacing: 0.04em;
-      line-height: 1.5;
-    }
-    .begin-btn {
-      width: 100%;
-      max-width: 320px;
-      padding: 16px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      background: transparent;
-      border: 1px solid var(--teal);
-      color: var(--tealb);
-      border-radius: 1px;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin-bottom: 20px;
-    }
-    .begin-btn:hover {
-      background: rgba(26,128,128,0.08);
-      border-color: var(--tealb);
-    }
-    .intro-footer {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .footer-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--muted);
-    }
-    .footer-lbl {
-      font-size: 9px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-  </style>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-pill">
+      <span class="hero-pill-dot"></span>
+      AI-Powered Visual Health Analysis
+    </div>
+    <h1 class="hero-title">
+      <span>See What Your</span>
+      <span>Body Is <em>Telling</em> You</span>
+    </h1>
+    <p class="hero-sub">Aurveil uses your camera and Claude AI Vision to observe visible health indicators — skin, eyes, lips, posture and more — in real time.</p>
+    <div class="hero-cta">
+      <button class="btn btn-orange btn-lg" onclick="show('s-scanner');boot()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="8" r="2.5" fill="currentColor"/></svg>
+        Start Free Scan
+      </button>
+      <button class="btn btn-outline btn-lg" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Learn More</button>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-num">7</span><span class="stat-lbl">Body Areas Analyzed</span></div>
+      <div><span class="stat-num">30<small style="font-size:16px;">fps</small></span><span class="stat-lbl">Live Detection</span></div>
+      <div><span class="stat-num">0</span><span class="stat-lbl">Data Stored</span></div>
+      <div><span class="stat-num">100%</span><span class="stat-lbl">Private</span></div>
+    </div>
+  </section>
 
-  <div class="intro-wrap">
-    <div class="logo-outer">
-      <div class="logo-inner">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-          <ellipse cx="20" cy="20" rx="16" ry="9" stroke="#C49B42" stroke-width="0.8" opacity="0.8"/>
-          <circle cx="20" cy="20" r="6" stroke="#C49B42" stroke-width="0.8" opacity="0.8"/>
-          <circle cx="20" cy="20" r="2.5" fill="#C49B42" opacity="0.9"/>
-          <line x1="20" y1="2" x2="20" y2="0" stroke="#7a5e28" stroke-width="0.8"/>
-          <line x1="20" y1="40" x2="20" y2="38" stroke="#7a5e28" stroke-width="0.8"/>
-          <line x1="2" y1="20" x2="0" y2="20" stroke="#7a5e28" stroke-width="0.8"/>
-          <line x1="40" y1="20" x2="38" y2="20" stroke="#7a5e28" stroke-width="0.8"/>
-        </svg>
+  <!-- FEATURES -->
+  <section id="features" style="padding:80px 40px;background:#fff;border-bottom:1px solid var(--border);">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="section-center">
+        <p class="section-eyebrow">What Aurveil Does</p>
+        <h2 class="section-h" style="font-family:var(--serif);font-size:40px;font-weight:300;color:var(--navy);margin-bottom:10px;">Everything in One Scan</h2>
+        <p style="font-size:16px;color:var(--text3);max-width:420px;margin:0 auto 52px;line-height:1.7;">Six powerful capabilities working together the moment you face your camera.</p>
+      </div>
+      <div class="feat-grid">
+        <div class="feat-card">
+          <div class="feat-icon ic-orange">👁</div>
+          <div class="feat-h">Real-Time Face Detection</div>
+          <p class="feat-p">TensorFlow BlazeFace runs at 30fps, tracking your face with landmark dots and a live confidence score before analysis begins.</p>
+          <span class="feat-badge badge-live">LIVE</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon ic-navy">🧠</div>
+          <div class="feat-h">Claude Vision Analysis</div>
+          <p class="feat-p">Anthropic's Claude AI reads your visible physical indicators with the precision of a clinical visual triage assessment.</p>
+          <span class="feat-badge badge-new">AI-POWERED</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon ic-green">📊</div>
+          <div class="feat-h">Wellness Score</div>
+          <p class="feat-p">Every scan produces a 0–100 wellness score calculated from the ratio of normal to flagged observations across all areas.</p>
+          <span class="feat-badge badge-new">NEW</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon ic-amber">💡</div>
+          <div class="feat-h">Personalized Health Tips</div>
+          <p class="feat-p">Based on what Aurveil observes, you receive targeted wellness tips relevant to your specific visible indicators.</p>
+          <span class="feat-badge badge-new">NEW</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon ic-red">🔒</div>
+          <div class="feat-h">100% Private</div>
+          <p class="feat-p">Your camera feed never leaves your device. No video is stored, recorded, or transmitted. Analysis happens on a secure proxy.</p>
+          <span class="feat-badge badge-live">SECURE</span>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon ic-blue">📋</div>
+          <div class="feat-h">Color-Coded Report</div>
+          <p class="feat-p">Findings are categorized as Normal, Monitor, or Consult a Doctor — making it easy to understand what needs attention.</p>
+          <span class="feat-badge badge-new">DETAILED</span>
+        </div>
       </div>
     </div>
+  </section>
 
-    <h1 class="intro-brand">Aur<em>veil</em></h1>
-    <p class="intro-tag">See through the surface</p>
-
-    <div class="intro-divider"></div>
-
-    <p class="intro-desc-new">
-      AI-powered visual health observation. Position yourself in front of your camera and let Aurveil silently read what your body is communicating.
-    </p>
-
-    <div class="features-grid">
-      <div class="feat-cell">
-        <div class="feat-icon" style="background:rgba(26,128,128,0.08);">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <circle cx="8" cy="8" r="6" stroke="#1a8080" stroke-width="1"/>
-            <circle cx="8" cy="8" r="2.5" fill="#1a8080"/>
-          </svg>
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="how-inner">
+      <p class="section-eyebrow">How It Works</p>
+      <h2 class="section-h" style="font-family:var(--serif);font-size:40px;font-weight:300;color:#fff;margin-bottom:10px;">From Camera to Report in Seconds</h2>
+      <p style="font-size:16px;color:#64748b;max-width:420px;margin:0 auto;">No setup. No downloads. Just your face and your camera.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-h">Enable Camera</div>
+          <p class="step-p">Allow camera access and position head and chest in the frame</p>
         </div>
-        <div class="feat-title">Real-time<br>Detection</div>
-        <div class="feat-sub">BlazeFace AI<br>30fps scanning</div>
-      </div>
-      <div class="feat-cell">
-        <div class="feat-icon" style="background:rgba(196,155,66,0.08);">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <rect x="2" y="2" width="12" height="12" rx="2" stroke="#C49B42" stroke-width="1"/>
-            <path d="M5 8h6M8 5v6" stroke="#C49B42" stroke-width="1"/>
-          </svg>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-h">Face Confirmed</div>
+          <p class="step-p">AI detects your face in real time and unlocks the analysis button</p>
         </div>
-        <div class="feat-title">Claude Vision<br>Analysis</div>
-        <div class="feat-sub">Streaming AI<br>observations</div>
-      </div>
-      <div class="feat-cell">
-        <div class="feat-icon" style="background:rgba(74,92,92,0.12);">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2z" stroke="#4a5c5c" stroke-width="1"/>
-            <path d="M8 5v3l2 2" stroke="#4a5c5c" stroke-width="1" stroke-linecap="round"/>
-          </svg>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-h">AI Observes</div>
+          <p class="step-p">Claude Vision analyzes 7 body areas from a single captured frame</p>
         </div>
-        <div class="feat-title">Private<br>by Design</div>
-        <div class="feat-sub">No storage<br>No tracking</div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-h">Get Your Report</div>
+          <p class="step-p">Receive color-coded findings, wellness score, and personalized tips</p>
+        </div>
       </div>
     </div>
+  </section>
 
-    <button class="begin-btn" onclick="show('s-scanner');boot()">Begin Scan</button>
-
-    <div class="intro-footer">
-      <span class="footer-lbl">Not a medical device</span>
-      <div class="footer-dot"></div>
-      <span class="footer-lbl">Health awareness only</span>
-      <div class="footer-dot"></div>
-      <span class="footer-lbl">Onada Innovative</span>
+  <!-- AREAS ANALYZED -->
+  <section style="padding:80px 40px;background:#fff;border-top:1px solid var(--border);">
+    <div style="max-width:1100px;margin:0 auto;text-align:center;">
+      <p class="section-eyebrow">Body Areas</p>
+      <h2 class="section-h" style="font-family:var(--serif);font-size:40px;font-weight:300;color:var(--navy);margin-bottom:10px;">7 Areas Observed Per Scan</h2>
+      <p style="font-size:16px;color:var(--text3);margin-bottom:48px;">Every scan covers these clinically relevant visible indicators.</p>
+      <div class="areas-grid">
+        <div class="area-card"><div class="area-icon">🎨</div><div class="area-h">Complexion</div><p class="area-p">Skin tone, pallor, jaundice, flushing, rashes</p></div>
+        <div class="area-card"><div class="area-icon">👁️</div><div class="area-h">Eyes</div><p class="area-p">Sclera clarity, redness, yellowing, puffiness</p></div>
+        <div class="area-card"><div class="area-icon">💋</div><div class="area-h">Lips</div><p class="area-p">Color, moisture, pallor, cyanosis signs</p></div>
+        <div class="area-card"><div class="area-icon">🔄</div><div class="area-h">Facial Symmetry</div><p class="area-p">Asymmetry indicators, FAST stroke signals</p></div>
+        <div class="area-card"><div class="area-icon">🫙</div><div class="area-h">Neck</div><p class="area-p">Visible swelling, thyroid area, posture</p></div>
+        <div class="area-card"><div class="area-icon">🧍</div><div class="area-h">Posture</div><p class="area-p">Energy, forward lean, fatigue indicators</p></div>
+        <div class="area-card"><div class="area-icon">✨</div><div class="area-h">Overall</div><p class="area-p">General visible wellness impression</p></div>
+        <div class="area-card" style="background:linear-gradient(135deg,#fff8f5,#fff);border-color:var(--orange3);">
+          <div class="area-icon">🔬</div>
+          <div class="area-h" style="color:var(--orange);">Wellness Score</div>
+          <p class="area-p">0–100 aggregate score from all findings</p>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2 class="cta-h">Ready to See What <em>Aurveil</em> Sees?</h2>
+    <p class="cta-sub">Takes 30 seconds. No signup. No credit card. Completely private.</p>
+    <button class="btn btn-orange btn-lg" onclick="show('s-scanner');boot()">Start Your Free Scan →</button>
+    <p class="cta-disc">Not a medical device · For health awareness purposes only · Onada Innovative Ltd</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-brand">Aur<em>veil</em></span>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="https://onadainnovative.com">Onada Innovative</a>
+    </div>
+    <span class="footer-copy">© 2026 Onada Innovative Ltd. All rights reserved.</span>
+  </footer>
 </div>
 
 
-<!-- ══════════════════ SCREEN 2: SCANNER ══════════════════ -->
+<!-- ══════════════ SCREEN 2: SCANNER ══════════════ -->
 <div id="s-scanner" class="screen">
-  <div class="bar">
-    <span class="bar-brand">Aur<em>veil</em></span>
-    <span id="badge">OFFLINE</span>
-  </div>
-
-  <div class="vp" id="viewport">
-    <video id="vid" autoplay muted playsinline></video>
-    <canvas id="cvs"></canvas>
-
-    <div class="crn c-tl" id="c0"></div>
-    <div class="crn c-tr" id="c1"></div>
-    <div class="crn c-bl" id="c2"></div>
-    <div class="crn c-br" id="c3"></div>
-
-    <div id="cam-prompt">
-      <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
-        <rect x="3" y="12" width="40" height="27" rx="3" stroke="#223030" stroke-width="1.2" fill="none"/>
-        <circle cx="23" cy="25.5" r="9" stroke="#223030" stroke-width="1.2" fill="none"/>
-        <circle cx="23" cy="25.5" r="4" fill="#223030"/>
-        <path d="M17 9h8a2 2 0 0 1 2 2v1H15V11a2 2 0 0 1 2-2z" fill="#223030"/>
-        <circle cx="38" cy="19" r="2" fill="#223030"/>
-      </svg>
-      <p>Head and upper chest in frame<br>Good lighting recommended</p>
-      <button class="btn" id="enableBtn" onclick="boot()">ENABLE CAMERA</button>
+  <div class="scanner-wrap">
+    <div class="page-top">
+      <div>
+        <div class="page-h">Live Body Scanner</div>
+        <div class="page-sub">Position head and upper chest in frame · Good lighting recommended</div>
+      </div>
+      <span id="badge">OFFLINE</span>
     </div>
 
-    <div id="cam-load">
-      <p id="load-txt">INITIALIZING</p>
-      <div class="scan-line-anim" style="width:180px;margin-top:8px;"></div>
-    </div>
-  </div>
-
-  <div class="metrics">
-    <div class="mc"><div class="mc-lbl">Humans</div><div class="mc-val" id="mFaces">—</div></div>
-    <div class="mc"><div class="mc-lbl">Confidence</div><div class="mc-val" id="mConf">—</div></div>
-    <div class="mc"><div class="mc-lbl">Alignment</div><div class="mc-val" id="mAlign" style="font-size:13px;padding-top:4px;">—</div></div>
-    <div class="mc"><div class="mc-lbl">Scan rate</div><div class="mc-val" id="mFps">—</div></div>
-  </div>
-
-  <button id="analyzeBtn" class="btn btn-gold btn-full" style="margin-top:10px;" disabled onclick="analyze()">
-    ANALYZE AURA →
-  </button>
-  <p style="font-size:9px;color:var(--muted);text-align:center;margin-top:8px;letter-spacing:0.05em;">Camera feed is never stored or transmitted · All processing is local</p>
-</div>
-
-
-<!-- ══════════════════ SCREEN 3: ANALYSIS ══════════════════ -->
-<div id="s-analysis" class="screen">
-  <div class="bar">
-    <span class="bar-brand">Aur<em>veil</em></span>
-    <button class="btn btn-sm" onclick="show('s-scanner')">← RESCAN</button>
-  </div>
-
-  <div class="thumb-wrap">
-    <canvas id="thumb"></canvas>
-    <div class="report-meta">
-      <div class="report-label">Aurveil Visual Observation Report</div>
-      <div class="report-ts" id="scan-ts"></div>
-      <div class="legend">
-        <div class="leg-item"><div class="leg-dot" style="background:var(--greenb);"></div><span class="leg-lbl">Normal</span></div>
-        <div class="leg-item"><div class="leg-dot" style="background:var(--amberb);"></div><span class="leg-lbl">Monitor</span></div>
-        <div class="leg-item"><div class="leg-dot" style="background:var(--redb);"></div><span class="leg-lbl">Consult doctor</span></div>
+    <div class="vp-card">
+      <div class="vp" id="viewport">
+        <video id="vid" autoplay muted playsinline></video>
+        <canvas id="cvs"></canvas>
+        <div class="crn c-tl" id="c0"></div>
+        <div class="crn c-tr" id="c1"></div>
+        <div class="crn c-bl" id="c2"></div>
+        <div class="crn c-br" id="c3"></div>
+        <div id="cam-prompt">
+          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+            <rect x="4" y="14" width="44" height="30" rx="4" stroke="#334155" stroke-width="1.5" fill="none"/>
+            <circle cx="26" cy="29" r="10" stroke="#334155" stroke-width="1.5" fill="none"/>
+            <circle cx="26" cy="29" r="4" fill="#334155"/>
+            <path d="M19 11h10a2 2 0 0 1 2 2v1H17v-1a2 2 0 0 1 2-2z" fill="#334155"/>
+          </svg>
+          <p>Allow camera access to begin scanning</p>
+          <button class="btn btn-orange" onclick="boot()">Enable Camera</button>
+        </div>
+        <div id="cam-load">
+          <div class="spinner" style="width:24px;height:24px;border-width:2px;border-top-color:var(--orange);"></div>
+          <p id="load-txt">INITIALIZING</p>
+        </div>
+      </div>
+      <div class="vp-footer">
+        <span class="vp-hint">🔒 Camera feed never stored or transmitted</span>
+        <button class="btn btn-ghost btn-sm" onclick="show('s-intro')">← Back</button>
       </div>
     </div>
-  </div>
 
-  <div class="findings-panel">
-    <div class="fp-head">
-      Observations
-      <span id="load-ind" style="display:none;"><span class="pulse"></span></span>
+    <div class="metrics">
+      <div class="mc"><div class="mc-lbl">Humans</div><div class="mc-val" id="mFaces">—</div></div>
+      <div class="mc"><div class="mc-lbl">Confidence</div><div class="mc-val" id="mConf">—</div></div>
+      <div class="mc"><div class="mc-lbl">Alignment</div><div class="mc-val" id="mAlign" style="font-size:14px;padding-top:5px;">—</div></div>
+      <div class="mc"><div class="mc-lbl">Scan Rate</div><div class="mc-val" id="mFps">—</div></div>
     </div>
-    <div id="findings-list"></div>
-  </div>
 
-  <div id="summary-wrap" style="display:none;" class="summary-box">
-    <div class="sum-lbl">Summary</div>
-    <div class="sum-txt" id="summary-txt"></div>
+    <div class="scan-actions">
+      <button id="analyzeBtn" class="btn btn-orange btn-full" disabled onclick="analyze()">Analyze Aura →</button>
+    </div>
+    <p class="privacy-note">All processing secured through encrypted proxy · No data retained</p>
   </div>
-
-  <p class="disc" id="disc-txt"></p>
 </div>
 
 
-<!-- ══════════════════ SCRIPTS ══════════════════ -->
+<!-- ══════════════ SCREEN 3: ANALYSIS ══════════════ -->
+<div id="s-analysis" class="screen">
+  <div class="analysis-wrap">
+    <div class="page-top" style="margin-bottom:20px;">
+      <div>
+        <div class="page-h">Aurveil Report</div>
+        <div class="page-sub" id="scan-ts"></div>
+      </div>
+      <button class="btn btn-outline" onclick="show('s-scanner')">← Rescan</button>
+    </div>
+
+    <!-- Report card -->
+    <div class="report-card">
+      <div class="report-head">
+        <canvas id="thumb"></canvas>
+        <div class="report-meta-info">
+          <span class="report-badge">Aurveil Visual Observation Report</span>
+          <div class="report-ts" id="report-ts-inner"></div>
+          <div class="legend">
+            <div class="leg-item"><div class="leg-dot" style="background:var(--success);"></div><span class="leg-lbl">Normal</span></div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--warning);"></div><span class="leg-lbl">Monitor</span></div>
+            <div class="leg-item"><div class="leg-dot" style="background:var(--error);"></div><span class="leg-lbl">Consult Doctor</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wellness Score -->
+      <div class="wellness-wrap" id="wellness-wrap" style="display:none;">
+        <div class="wellness-top">
+          <span class="wellness-lbl">Wellness Score</span>
+          <span><span class="wellness-num" id="wellness-num">0</span><span class="wellness-unit"> / 100</span></span>
+        </div>
+        <div class="wellness-bar"><div class="wellness-fill" id="wellness-fill" style="width:0%;"></div></div>
+        <div class="wellness-desc" id="wellness-desc"></div>
+      </div>
+
+      <!-- Findings -->
+      <div class="findings-wrap">
+        <div class="fp-head">
+          Observations
+          <span id="load-ind" style="display:none;"><span class="pulse"></span></span>
+        </div>
+        <div id="findings-list">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            Preparing analysis...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-card" id="summary-card" style="display:none;">
+      <div class="sum-head">Summary</div>
+      <div class="sum-txt" id="summary-txt"></div>
+    </div>
+
+    <!-- Tips -->
+    <div class="tips-card" id="tips-card" style="display:none;">
+      <div class="tips-head">💡 Wellness Tips</div>
+      <div class="tips-list" id="tips-list"></div>
+    </div>
+
+    <p class="disc-note" id="disc-txt"></p>
+
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <button class="btn btn-orange btn-full" onclick="show('s-scanner')">New Scan →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.0.7/dist/blazeface.js"></script>
 <script>
-let model=null, vid=null, cvs=null, ctx=null;
-let scanY=0, scanDir=1, frameCount=0, lastFpsT=Date.now(), fps=0;
-let detected=false, streaming=false;
+let model=null,vid=null,cvs=null,ctx=null;
+let scanY=0,scanDir=1,frameCount=0,lastFpsT=Date.now(),fps=0;
+let detected=false,analyzing=false;
 
-// ── API key ──
-function getKey(){return sessionStorage.getItem('aurveil_key')||'';}
-function saveKey(k){if(k)sessionStorage.setItem('aurveil_key',k);}
-
-// ── screen switch ──
 function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  const b=document.getElementById("badge");
+  if(id==="s-scanner"||id==="s-analysis"){b.style.display="inline-block";}
+  else{b.style.display="none";}
 }
 
-// ── badge ──
-function setBadge(txt, type){
-  const el=document.getElementById('badge');
+function setBadge(txt,type){
+  const el=document.getElementById("badge");
   el.textContent=txt;
-  const styles={
-    scan:'color:#1a8080;border-color:#1a3c3c',
-    ok:'color:#26a06a;border-color:#1a3c2a',
-    warn:'color:#c07820;border-color:#503010',
-    err:'color:#d84040;border-color:#501818',
-    off:'color:#4a5c5c;border-color:#182020'
-  };
-  el.style.cssText=`font-size:9px;letter-spacing:0.12em;padding:4px 12px;border:1px solid;border-radius:1px;text-transform:uppercase;transition:all 0.3s;${styles[type]||styles.off}`;
+  const s={
+    scan:"background:#eff6ff;color:#2563eb;border-color:#bfdbfe",
+    ok:"background:#ecfdf5;color:#16a34a;border-color:#bbf7d0",
+    warn:"background:#fffbeb;color:#d97706;border-color:#fde68a",
+    err:"background:#fef2f2;color:#dc2626;border-color:#fecaca",
+    off:"background:var(--bg2);color:var(--text3);border-color:var(--border)"
+  }[type]||"background:var(--bg2);color:var(--text3);border-color:var(--border)";
+  el.style.cssText=`font-size:11px;font-weight:700;padding:5px 14px;border-radius:9999px;transition:all 0.3s;border:1px solid;${s}`;
 }
 
 function setM(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
 
-// ── boot camera ──
 async function boot(){
-  const cp=document.getElementById('cam-prompt');
-  const cl=document.getElementById('cam-load');
-  const lt=document.getElementById('load-txt');
-  if(model){cl.style.display='none';return;}
-  cp.style.display='none';
-  cl.style.display='flex';
-  lt.textContent='REQUESTING CAMERA ACCESS';
-
+  if(model){return;}
+  const cp=document.getElementById("cam-prompt");
+  const cl=document.getElementById("cam-load");
+  const lt=document.getElementById("load-txt");
+  cp.style.display="none";
+  cl.style.display="flex";
+  lt.textContent="REQUESTING CAMERA";
   try{
-    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}}});
-    vid=document.getElementById('vid');
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:640},height:{ideal:480}}});
+    vid=document.getElementById("vid");
     vid.srcObject=stream;
-    vid.style.display='block';
-    cvs=document.getElementById('cvs');
-    ctx=cvs.getContext('2d');
-
+    vid.style.display="block";
+    cvs=document.getElementById("cvs");
+    ctx=cvs.getContext("2d");
     vid.onloadedmetadata=async()=>{
-      cvs.width=vid.videoWidth;
-      cvs.height=vid.videoHeight;
-      ['c0','c1','c2','c3'].forEach(id=>document.getElementById(id).style.display='block');
-      lt.textContent='LOADING AI VISION MODEL';
-      setBadge('LOADING','warn');
+      cvs.width=vid.videoWidth;cvs.height=vid.videoHeight;
+      ["c0","c1","c2","c3"].forEach(id=>document.getElementById(id).style.display="block");
+      lt.textContent="LOADING AI MODEL";
+      setBadge("LOADING","warn");
       try{
         model=await blazeface.load();
-        cl.style.display='none';
-        setBadge('SCANNING','scan');
+        cl.style.display="none";
+        setBadge("SCANNING","scan");
         loop();
-      }catch(e){
-        lt.textContent='MODEL LOAD FAILED — CHECK CONNECTION';
-        setBadge('ERROR','err');
-      }
+      }catch(e){lt.textContent="MODEL FAILED";setBadge("ERROR","err");}
     };
   }catch(e){
-    cl.style.display='none';
-    cp.style.display='flex';
-    cp.querySelector('p').textContent='Camera access denied. Please allow camera and reload.';
-    setBadge('DENIED','err');
+    cl.style.display="none";cp.style.display="flex";
+    cp.querySelector("p").textContent="Camera access denied. Please allow and reload.";
+    setBadge("DENIED","err");
   }
 }
 
-// ── detection loop ──
 async function loop(){
   if(!model||!vid||vid.readyState<2){requestAnimationFrame(loop);return;}
-
   const now=Date.now();
   frameCount++;
-  if(now-lastFpsT>=1000){fps=frameCount;frameCount=0;lastFpsT=now;setM('mFps',fps+' fps');}
-
+  if(now-lastFpsT>=1000){fps=frameCount;frameCount=0;lastFpsT=now;setM("mFps",fps+" fps");}
   let preds=[];
   try{preds=await model.estimateFaces(vid,false);}catch(e){}
-
   ctx.clearRect(0,0,cvs.width,cvs.height);
-
-  // Golden scan line
   scanY+=scanDir*2.5;
-  if(scanY>=cvs.height-14)scanDir=-1;
-  if(scanY<=14)scanDir=1;
+  if(scanY>=cvs.height-12)scanDir=-1;
+  if(scanY<=12)scanDir=1;
   ctx.save();
-  ctx.globalAlpha=0.25;
-  ctx.strokeStyle='#C49B42';
-  ctx.lineWidth=1;
-  ctx.setLineDash([8,14]);
-  ctx.beginPath();ctx.moveTo(20,scanY);ctx.lineTo(cvs.width-20,scanY);ctx.stroke();
-  ctx.globalAlpha=0.08;
-  ctx.lineWidth=8;
-  ctx.strokeStyle='#C49B42';
-  ctx.setLineDash([]);
-  ctx.beginPath();ctx.moveTo(20,scanY);ctx.lineTo(cvs.width-20,scanY);ctx.stroke();
+  ctx.globalAlpha=0.2;ctx.strokeStyle="#ff6b35";ctx.lineWidth=1;ctx.setLineDash([8,14]);
+  ctx.beginPath();ctx.moveTo(18,scanY);ctx.lineTo(cvs.width-18,scanY);ctx.stroke();
   ctx.restore();
-
   if(preds.length>0){
     const face=preds[0];
     const conf=Math.round(face.probability[0]*100);
-    const [x1,y1]=face.topLeft;
-    const [x2,y2]=face.bottomRight;
-    const w=x2-x1, h=y2-y1;
-    const offset=Math.abs((x1+x2)/2-cvs.width/2)/(cvs.width/2);
-    const align=offset<0.1?'CENTERED':offset<0.25?'OFF-CENTER':'MISALIGNED';
-    const col=conf>70?'#1a8080':'#C49B42';
-
+    const [x1,y1]=face.topLeft;const [x2,y2]=face.bottomRight;
+    const w=x2-x1,h=y2-y1;
+    const off=Math.abs((x1+x2)/2-cvs.width/2)/(cvs.width/2);
+    const align=off<0.1?"CENTERED":off<0.25?"OFF-CENTER":"MISALIGNED";
+    const col=conf>70?"#10b981":"#ff6b35";
     ctx.save();
-    ctx.strokeStyle=col;ctx.lineWidth=1;ctx.setLineDash([]);
-    ctx.globalAlpha=0.6;
+    ctx.strokeStyle=col;ctx.lineWidth=1;ctx.setLineDash([]);ctx.globalAlpha=0.7;
     ctx.strokeRect(x1,y1,w,h);
-
-    // Corner marks
-    ctx.globalAlpha=1;
-    ctx.lineWidth=2;
-    const cL=18;
+    ctx.globalAlpha=1;ctx.lineWidth=2.5;
+    const cL=16;
     [[x1,y1,1,1],[x2,y1,-1,1],[x1,y2,1,-1],[x2,y2,-1,-1]].forEach(([px,py,dx,dy])=>{
       ctx.beginPath();ctx.moveTo(px+dx*cL,py);ctx.lineTo(px,py);ctx.lineTo(px,py+dy*cL);ctx.stroke();
     });
-
-    // Label
-    ctx.fillStyle=col;
-    ctx.font='10px "JetBrains Mono"';
-    ctx.globalAlpha=0.85;
-    ctx.fillText('HUMAN  '+conf+'%', x1+4, Math.max(y1-8,14));
-
-    // Landmarks
-    if(face.landmarks){
-      face.landmarks.forEach(lm=>{
-        ctx.fillStyle='#1a8080';
-        ctx.globalAlpha=0.65;
-        ctx.beginPath();ctx.arc(lm[0],lm[1],2.5,0,Math.PI*2);ctx.fill();
-      });
-    }
+    ctx.fillStyle=col;ctx.font="bold 10px JetBrains Mono";ctx.globalAlpha=0.9;
+    ctx.fillText("HUMAN  "+conf+"%",x1+4,Math.max(y1-8,14));
+    if(face.landmarks){face.landmarks.forEach(lm=>{ctx.fillStyle="#ff6b35";ctx.globalAlpha=0.6;ctx.beginPath();ctx.arc(lm[0],lm[1],2.5,0,Math.PI*2);ctx.fill();});}
     ctx.restore();
-
-    setM('mFaces',preds.length);
-    setM('mConf',conf+'%');
-    setM('mAlign',align);
-
+    setM("mFaces",preds.length);setM("mConf",conf+"%");setM("mAlign",align);
     if(!detected&&conf>55){
-      detected=true;
-      setBadge('HUMAN CONFIRMED','ok');
-      const btn=document.getElementById('analyzeBtn');
-      btn.disabled=false;
+      detected=true;setBadge("HUMAN CONFIRMED","ok");
+      const btn=document.getElementById("analyzeBtn");btn.disabled=false;
     }
   } else {
-    setM('mFaces','0');setM('mConf','—');setM('mAlign','—');
-    if(detected){
-      detected=false;
-      setBadge('SCANNING','scan');
-      document.getElementById('analyzeBtn').disabled=true;
-    }
+    setM("mFaces","0");setM("mConf","—");setM("mAlign","—");
+    if(detected){detected=false;setBadge("SCANNING","scan");document.getElementById("analyzeBtn").disabled=true;}
   }
-
   requestAnimationFrame(loop);
 }
 
-// ── capture frame ──
 function captureFrame(){
-  const tc=document.createElement('canvas');
+  const tc=document.createElement("canvas");
   tc.width=vid.videoWidth;tc.height=vid.videoHeight;
-  const tcx=tc.getContext('2d');
-  tcx.drawImage(vid,0,0);
-  return{base64:tc.toDataURL('image/jpeg',0.85).split(',')[1],canvas:tc};
+  tc.getContext("2d").drawImage(vid,0,0);
+  return{base64:tc.toDataURL("image/jpeg",0.85).split(",")[1],canvas:tc};
 }
 
-// ── analyze ──
 async function analyze(){
-  if(streaming)return;
-  streaming=true;
-
+  if(analyzing)return;
+  analyzing=true;
   const{base64,canvas}=captureFrame();
-
-  // Render thumbnail
-  const thumb=document.getElementById('thumb');
+  const thumb=document.getElementById("thumb");
   thumb.width=canvas.width;thumb.height=canvas.height;
-  thumb.getContext('2d').drawImage(canvas,0,0);
+  thumb.getContext("2d").drawImage(canvas,0,0);
+  const ts=new Date().toLocaleString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+  document.getElementById("scan-ts").textContent=ts;
+  document.getElementById("report-ts-inner").textContent=ts;
+  show("s-analysis");
+  document.getElementById("findings-list").innerHTML='<div class="loading-state"><div class="spinner"></div>Analyzing your aura — this takes about 10 seconds</div>';
+  document.getElementById("summary-card").style.display="none";
+  document.getElementById("tips-card").style.display="none";
+  document.getElementById("wellness-wrap").style.display="none";
+  document.getElementById("disc-txt").textContent="";
+  document.getElementById("load-ind").style.display="inline";
 
-  // Set timestamp
-  document.getElementById('scan-ts').textContent=
-    new Date().toLocaleString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  const PROMPT=`You are Aurveil, an advanced AI visual health observation system. Analyze the visible physical appearance of the person head to upper chest with clinical precision.
 
-  // Switch screen + reset
-  show('s-analysis');
-  document.getElementById('findings-list').innerHTML='';
-  document.getElementById('summary-wrap').style.display='none';
-  document.getElementById('disc-txt').textContent='';
-  document.getElementById('load-ind').style.display='inline';
+Observe: skin complexion, eye clarity and sclera, lip color and moisture, facial symmetry, neck area, posture.
 
-  const PROMPT=`You are Aurveil, an advanced AI visual health observation system. Analyze the visible physical appearance of the person in this image — from head to upper chest — using clinical precision and compassionate framing.
+Respond in EXACTLY this format:
 
-Carefully observe:
-- Skin tone, complexion, pallor, flushing, jaundice tones, visible rashes or discoloration
-- Eyes: sclera clarity, color, puffiness, symmetry, any redness or yellowing
-- Lips: color, moisture, pallor or cyanosis
-- Facial symmetry: any notable asymmetry
-- Neck area: visible swelling or posture
-- Posture: overall body language and energy
-- Any other clinically notable visible indicators
+🟢 [AREA]: [observation if normal]
+🟡 [AREA]: [observation if needs monitoring]
+🔴 [AREA]: [observation if needs medical attention]
 
-Respond in EXACTLY this format — one line per area, no extra text before the findings:
+AREA values: COMPLEXION, EYES, LIPS, FACIAL SYMMETRY, NECK, POSTURE, OVERALL
 
-🟢 [AREA]: [specific observation — what looks healthy or within normal range]
-🟡 [AREA]: [specific observation — something that warrants gentle monitoring]
-🔴 [AREA]: [specific observation — something that may benefit from professional evaluation]
+Then:
+SUMMARY: [2 sentences overall impression]
+TIPS: [3 short wellness tips separated by | character]
+DISCLAIMER: [one sentence medical disclaimer]
 
-Use ONLY these AREA values: COMPLEXION, EYES, LIPS, FACIAL SYMMETRY, NECK, POSTURE, OVERALL
-
-After all findings, write exactly:
-SUMMARY: [2 sentences describing the overall visual impression and general wellness signals observed]
-DISCLAIMER: [One sentence medical disclaimer]
-
-Be specific about what you actually observe. If image quality, lighting, or angle limits your view of an area, note that clearly for that specific area rather than guessing.`;
+Be specific about what you actually see. Note image quality issues if relevant.`;
 
   try{
-    const res=await fetch('https://aurveil-proxy.dayo-onasanya.workers.dev',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':''},
+    const res=await fetch("https://aurveil-proxy.dayo-onasanya.workers.dev",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
+        model:"claude-sonnet-4-20250514",
         max_tokens:1000,
-        stream:true,
-        messages:[{role:'user',content:[
-          {type:'image',source:{type:'base64',media_type:'image/jpeg',data:base64}},
-          {type:'text',text:PROMPT}
+        messages:[{role:"user",content:[
+          {type:"image",source:{type:"base64",media_type:"image/jpeg",data:base64}},
+          {type:"text",text:PROMPT}
         ]}]
       })
     });
-
-    if(!res.ok){throw new Error('API '+res.status);}
-
-    const reader=res.body.getReader();
-    const decoder=new TextDecoder();
-    let buf='', textAcc='';
-
-    while(true){
-      const{done,value}=await reader.read();
-      if(done)break;
-      buf+=decoder.decode(value,{stream:true});
-      const lines=buf.split('\n');
-      buf=lines.pop();
-      for(const ln of lines){
-        if(!ln.startsWith('data: '))continue;
-        const d=ln.slice(6);
-        if(d==='[DONE]')continue;
-        try{
-          const obj=JSON.parse(d);
-          if(obj.type==='content_block_delta'&&obj.delta?.type==='text_delta'){
-            textAcc+=obj.delta.text;
-            renderFindings(textAcc,false);
-          }
-        }catch(e){}
-      }
-    }
-    renderFindings(textAcc,true);
-
+    if(!res.ok)throw new Error("HTTP "+res.status);
+    const data=await res.json();
+    const text=data.content[0].text;
+    renderFindings(text);
   }catch(e){
-    document.getElementById('findings-list').innerHTML=
-      `<div class="loading-line" style="color:var(--red);">Analysis failed: ${e.message}. Please try again.</div>`;
+    document.getElementById("findings-list").innerHTML=`<div style="color:var(--error);font-size:13px;padding:12px 0;">Analysis failed: ${e.message}. Please try again.</div>`;
   }
-
-  document.getElementById('load-ind').style.display='none';
-  streaming=false;
+  document.getElementById("load-ind").style.display="none";
+  analyzing=false;
 }
 
-// ── render findings ──
-function renderFindings(text, final){
-  const list=document.getElementById('findings-list');
-  const lines=text.split('\n').map(l=>l.trim()).filter(Boolean);
-
+function renderFindings(text){
+  const lines=text.split("\n").map(l=>l.trim()).filter(Boolean);
   const findings=[];
-  let summary='', disclaimer='';
-
+  let summary="",tips=[],disclaimer="";
   for(const ln of lines){
-    if(ln.startsWith('SUMMARY:')){summary=ln.slice(8).trim();continue;}
-    if(ln.startsWith('DISCLAIMER:')){disclaimer=ln.slice(11).trim();continue;}
-    if(ln.startsWith('🟢')||ln.startsWith('🟡')||ln.startsWith('🔴')){
-      findings.push(ln);
-    }
+    if(ln.startsWith("SUMMARY:"))summary=ln.slice(8).trim();
+    else if(ln.startsWith("TIPS:"))tips=ln.slice(5).trim().split("|").map(t=>t.trim()).filter(Boolean);
+    else if(ln.startsWith("DISCLAIMER:"))disclaimer=ln.slice(11).trim();
+    else if(ln.startsWith("🟢")||ln.startsWith("🟡")||ln.startsWith("🔴"))findings.push(ln);
   }
 
-  list.innerHTML='';
+  // Wellness score
+  let score=100;
+  findings.forEach(f=>{if(f.startsWith("🟡"))score-=10;if(f.startsWith("🔴"))score-=20;});
+  score=Math.max(0,Math.min(100,score));
+  const wDesc=score>=80?"Looking good overall":score>=60?"A few things to keep an eye on":"Consider following up with a healthcare professional";
+  document.getElementById("wellness-wrap").style.display="block";
+  document.getElementById("wellness-num").textContent=score;
+  document.getElementById("wellness-desc").textContent=wDesc;
+  setTimeout(()=>{document.getElementById("wellness-fill").style.width=score+"%";},100);
 
-  if(!findings.length&&!final){
-    list.innerHTML=`<div class="loading-line"><span class="pulse"></span> Analyzing aura — reading visible signals</div>`;
-  }
-
+  // Findings
+  const list=document.getElementById("findings-list");
+  if(!findings.length){list.innerHTML='<div style="font-size:13px;color:var(--text3);padding:12px 0;">No specific observations returned. Please try again with better lighting.</div>';return;}
+  list.innerHTML="";
   findings.forEach(ln=>{
     const emoji=ln[0];
     const rest=ln.slice(2).trim();
-    const ci=rest.indexOf(':');
-    const area=ci>-1?rest.slice(0,ci).trim():'';
+    const ci=rest.indexOf(":");
+    const area=ci>-1?rest.slice(0,ci).trim():"";
     const obs=ci>-1?rest.slice(ci+1).trim():rest;
-    const dotClass=emoji==='🟢'?'d-g':emoji==='🟡'?'d-a':'d-r';
-    const el=document.createElement('div');
-    el.className='finding';
-    el.innerHTML=`<div class="f-dot ${dotClass}"></div><div class="f-area">${area}</div><div class="f-obs">${obs}</div>`;
+    const dc=emoji==="🟢"?"d-g":emoji==="🟡"?"d-a":"d-r";
+    const tc=emoji==="🟢"?"t-g":emoji==="🟡"?"t-a":"t-r";
+    const tl=emoji==="🟢"?"NORMAL":emoji==="🟡"?"MONITOR":"CONSULT";
+    const el=document.createElement("div");
+    el.className="finding";
+    el.innerHTML=`<div class="f-dot ${dc}"></div><span class="f-tag ${tc}">${tl}</span><div class="f-area">${area}</div><div class="f-obs">${obs}</div>`;
     list.appendChild(el);
   });
 
+  // Summary
   if(summary){
-    document.getElementById('summary-wrap').style.display='block';
-    document.getElementById('summary-txt').textContent=summary;
+    document.getElementById("summary-card").style.display="block";
+    document.getElementById("summary-txt").textContent=summary;
   }
-  if(disclaimer){
-    document.getElementById('disc-txt').textContent=disclaimer;
+
+  // Tips
+  if(tips.length){
+    document.getElementById("tips-card").style.display="block";
+    const tipIcons=["🥗","💧","🚶","😴","🧘","☀️"];
+    document.getElementById("tips-list").innerHTML=tips.map((t,i)=>`<div class="tip-item"><span class="tip-icon">${tipIcons[i%tipIcons.length]}</span>${t}</div>`).join("");
   }
+
+  if(disclaimer)document.getElementById("disc-txt").textContent=disclaimer;
 }
 </script>
 </body>
