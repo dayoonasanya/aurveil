@@ -1,776 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Aurveil — AI Visual Health Observer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,400&family=JetBrains+Mono:wght@300;400&display=swap">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:"Manrope",sans-serif;background:#F9FAFB;color:#0a1831;min-height:100vh;}
-:root{
-  --navy:#0a1831;--navy2:#13224d;
-  --orange:#ff6b35;--orange2:#d85e32;
-  --bg:#F9FAFB;--bg2:#f7f7f8;
-  --border:#e5e7eb;--border2:#f1f2f4;
-  --text3:#838e9c;
-  --success:#10b981;--warning:#f59e0b;--error:#ef4444;
-  --shadow-sm:0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);
-  --shadow-lg:0 10px 15px -3px rgba(0,0,0,0.1),0 4px 6px -2px rgba(0,0,0,0.05);
-  --r-lg:1rem;--r-xl:1.25rem;--r-2xl:1.5rem;--r-full:9999px;
-  --serif:"Cormorant Garamond",serif;--mono:"JetBrains Mono",monospace;
-}
-.screen{display:none;flex-direction:column;min-height:100vh;}
-.screen.active{display:flex;}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:68px;}
-.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
-.nav-logo-mark{width:36px;height:36px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;}
-.nav-brand{font-family:var(--serif);font-size:24px;font-weight:500;color:var(--navy);letter-spacing:0.05em;}
-.nav-brand em{color:var(--orange);font-style:italic;}
-.nav-tag{font-size:11px;background:#fff3ee;color:var(--orange);border:1px solid #fde8dd;padding:3px 10px;border-radius:var(--r-full);font-weight:600;}
-#nav-badge{display:none;font-size:11px;font-weight:700;padding:5px 14px;border-radius:var(--r-full);background:var(--bg2);color:var(--text3);border:1px solid var(--border);}
-.btn{font-family:"Manrope",sans-serif;font-size:14px;font-weight:600;padding:10px 22px;border-radius:var(--r-lg);cursor:pointer;transition:all 0.2s;border:1.5px solid transparent;display:inline-flex;align-items:center;gap:7px;}
-.btn-navy{background:var(--navy);color:#fff;} .btn-navy:hover{background:var(--navy2);}
-.btn-orange{background:var(--orange);color:#fff;} .btn-orange:hover{background:var(--orange2);}
-.btn-outline{background:#fff;color:var(--navy);border-color:var(--border);} .btn-outline:hover{border-color:var(--navy);}
-.btn-ghost{background:transparent;border:none;color:var(--text3);padding:8px 14px;} .btn-ghost:hover{color:var(--navy);background:var(--bg2);}
-.btn-lg{padding:14px 32px;font-size:15px;} .btn-full{width:100%;justify-content:center;} .btn:disabled{opacity:0.3;cursor:not-allowed;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurveil — Visual Health Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
 
-/* HERO */
-#s-intro{background:#fff;padding-top:68px;}
-.hero{padding:88px 40px 72px;text-align:center;background:linear-gradient(180deg,#fff8f5,#fff);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
-.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,107,53,0.04) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;}
-.hero-pill{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--border);padding:6px 16px;border-radius:var(--r-full);font-size:12px;font-weight:600;color:#333;margin-bottom:28px;box-shadow:var(--shadow-sm);}
-.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--success);animation:pd 2s infinite;}
-@keyframes pd{0%,100%{opacity:1;}50%{opacity:0.3;}}
-.hero-title{font-family:var(--serif);font-size:70px;font-weight:300;color:var(--navy);line-height:1.05;margin-bottom:20px;}
-.hero-title em{color:var(--orange);font-style:italic;}
-.hero-sub{font-size:18px;color:var(--text3);line-height:1.75;max-width:500px;margin:0 auto 40px;}
-.hero-cta{display:flex;gap:12px;justify-content:center;margin-bottom:60px;}
-.hero-stats{display:flex;gap:48px;justify-content:center;padding-top:40px;border-top:1px solid var(--border2);flex-wrap:wrap;}
-.stat-num{font-size:28px;font-weight:800;color:var(--navy);display:block;}
-.stat-lbl{font-size:12px;color:var(--text3);font-weight:500;margin-top:2px;}
-.sec{padding:80px 40px;}
-.sec-inner{max-width:1100px;margin:0 auto;}
-.eyebrow{font-size:11px;font-weight:700;letter-spacing:0.14em;color:var(--orange);text-transform:uppercase;margin-bottom:10px;text-align:center;}
-.sec-h{font-family:var(--serif);font-size:42px;font-weight:300;color:var(--navy);text-align:center;margin-bottom:10px;}
-.sec-sub{font-size:16px;color:var(--text3);text-align:center;max-width:440px;margin:0 auto 52px;line-height:1.7;}
-.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.feat-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);padding:28px 24px;box-shadow:var(--shadow-sm);transition:all 0.2s;}
-.feat-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:#fde8dd;}
-.feat-icon{width:48px;height:48px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:22px;}
-.ic-o{background:#fff3ee;} .ic-n{background:#eef1f8;} .ic-g{background:#ecfdf5;} .ic-a{background:#fffbeb;} .ic-r{background:#fef2f2;} .ic-b{background:#eff6ff;}
-.feat-h{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px;}
-.feat-p{font-size:13px;color:var(--text3);line-height:1.65;}
-.badge-pill{display:inline-block;font-size:9px;font-weight:700;letter-spacing:0.08em;padding:2px 8px;border-radius:var(--r-full);margin-top:10px;text-transform:uppercase;}
-.b-new{background:#fff3ee;color:var(--orange);} .b-live{background:#ecfdf5;color:var(--success);}
-.how-sec{background:var(--navy);padding:80px 40px;}
-.how-inner{max-width:960px;margin:0 auto;text-align:center;}
-.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative;margin-top:52px;}
-.steps::before{content:"";position:absolute;top:24px;left:10%;right:10%;height:1px;background:rgba(255,255,255,0.1);}
-.step{text-align:center;padding:0 8px;}
-.step-num{width:48px;height:48px;border-radius:50%;background:rgba(255,107,53,0.12);border:1px solid rgba(255,107,53,0.3);color:var(--orange);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;position:relative;z-index:1;}
-.step-h{font-size:12px;font-weight:700;color:#fff;margin-bottom:5px;}
-.step-p{font-size:11px;color:#64748b;line-height:1.5;}
-.areas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px;}
-.area-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-xl);padding:20px;text-align:center;}
-.area-icon{font-size:28px;margin-bottom:10px;}
-.area-h{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;}
-.area-p{font-size:11px;color:var(--text3);line-height:1.5;}
-.cta-sec{background:linear-gradient(135deg,var(--navy),var(--navy2));padding:88px 40px;text-align:center;}
-.cta-h{font-family:var(--serif);font-size:48px;font-weight:300;color:#fff;margin-bottom:14px;}
-.cta-h em{color:var(--orange);font-style:italic;}
-.cta-sub{font-size:16px;color:#94a3b8;margin-bottom:36px;}
-footer{background:#060f1e;padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
-.footer-brand{font-family:var(--serif);font-size:20px;color:#e2e8f0;}
-.footer-brand em{color:var(--orange);font-style:italic;}
-.footer-copy{font-size:11px;color:#334155;}
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:"Manrope",sans-serif;background:#f9fafb;color:#0a1831;min-height:100vh}
+    :root{--navy:#0a1831;--navy2:#13224d;--orange:#ff6b35;--orange2:#d85e32;--green:#10b981;--yellow:#f59e0b;--red:#ef4444;--bg:#f9fafb;--muted:#6b7280;--muted2:#94a3b8;--border:#e5e7eb;--border2:#f1f5f9;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 8px 24px rgba(15,23,42,.08);--shadow-lg:0 24px 70px rgba(15,23,42,.12);--r:18px;--rf:999px;--serif:"Cormorant Garamond",serif;--mono:"JetBrains Mono",monospace}
+    .screen{display:none;min-height:100vh;flex-direction:column}.screen.active{display:flex}.container{width:min(1120px,calc(100% - 40px));margin:0 auto}
 
-/* SCANNER */
-#s-scanner{background:#060d1a;padding-top:68px;min-height:100vh;color:#e2e8f0;}
-.scan-wrap{max-width:1100px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;}
-.cam-panel{background:#0b1320;border:1px solid #1e2d45;border-radius:16px;overflow:hidden;}
-.cam-header{padding:14px 18px;border-bottom:1px solid #1e2d45;display:flex;align-items:center;justify-content:space-between;}
-.cam-title{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;color:#4a6080;text-transform:uppercase;}
-#sys-status{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:3px;background:#0d1f12;color:#10b981;border:1px solid #1a4a28;letter-spacing:0.08em;}
-.vp{position:relative;width:100%;aspect-ratio:4/3;background:#030608;}
-#vid{width:100%;height:100%;object-fit:cover;display:none;transform:scaleX(-1);}
-#cvs{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;transform:scaleX(-1);}
-.crn{position:absolute;width:24px;height:24px;display:none;}
-.c-tl{top:12px;left:12px;border-top:2px solid rgba(255,107,53,0.7);border-left:2px solid rgba(255,107,53,0.7);}
-.c-tr{top:12px;right:12px;border-top:2px solid rgba(255,107,53,0.7);border-right:2px solid rgba(255,107,53,0.7);}
-.c-bl{bottom:12px;left:12px;border-bottom:2px solid rgba(255,107,53,0.7);border-left:2px solid rgba(255,107,53,0.7);}
-.c-br{bottom:12px;right:12px;border-bottom:2px solid rgba(255,107,53,0.7);border-right:2px solid rgba(255,107,53,0.7);}
-#cam-prompt{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:16px;padding:40px;}
-#cam-prompt p{font-size:11px;color:#4a6080;text-align:center;line-height:1.7;max-width:240px;font-family:var(--mono);letter-spacing:0.04em;}
-#cam-load{display:none;position:absolute;inset:0;background:rgba(3,6,8,0.92);flex-direction:column;align-items:center;justify-content:center;gap:10px;}
-#load-txt{font-size:10px;color:#4a6080;letter-spacing:0.12em;font-family:var(--mono);}
-.ecg-panel{padding:0 18px 10px;background:#060d1a;}
-#ecg-canvas{width:100%;height:52px;display:block;}
-.cam-footer{padding:10px 18px;border-top:1px solid #1e2d45;display:flex;align-items:center;justify-content:space-between;}
-.cam-hint{font-family:var(--mono);font-size:9px;color:#2a3d55;letter-spacing:0.06em;text-transform:uppercase;}
-.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.mc{background:#0b1320;border:1px solid #1e2d45;border-radius:10px;padding:12px;}
-.mc-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;color:#4a6080;text-transform:uppercase;margin-bottom:4px;}
-.mc-val{font-family:var(--mono);font-size:18px;color:#e2e8f0;}
-.vitals-panel{display:flex;flex-direction:column;gap:14px;}
-.vitals-card{background:#0b1320;border:1px solid #1e2d45;border-radius:14px;overflow:hidden;}
-.vitals-head{padding:12px 16px;border-bottom:1px solid #1e2d45;font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:#4a6080;text-transform:uppercase;}
-.vitals-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e2d45;}
-.vital{background:#0b1320;padding:14px 16px;}
-.vital-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;color:#4a6080;text-transform:uppercase;margin-bottom:4px;}
-.vital-val{font-family:var(--mono);font-size:22px;color:#e2e8f0;line-height:1;}
-.vital-unit{font-size:10px;color:#4a6080;margin-top:2px;font-family:var(--mono);}
-.vital-status{font-size:9px;font-weight:700;margin-top:4px;font-family:var(--mono);letter-spacing:0.06em;}
-.vs-ok{color:var(--success);} .vs-warn{color:var(--warning);} .vs-meas{color:#4a6080;}
-.phase-card{background:#0b1320;border:1px solid #1e2d45;border-radius:14px;padding:16px;}
-.phase-head{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:#4a6080;text-transform:uppercase;margin-bottom:14px;}
-.phase-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #0d1a2a;}
-.phase-item:last-child{border-bottom:none;}
-.phase-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.pd-done{background:var(--success);}
-.pd-active{background:var(--orange);animation:pd 1s infinite;}
-.pd-idle{background:#1e2d45;}
-.phase-name{font-family:var(--mono);font-size:11px;color:#e2e8f0;flex:1;}
-.phase-state{font-family:var(--mono);font-size:9px;color:#4a6080;letter-spacing:0.06em;}
-.finger-card{background:#0b1320;border:1px solid #1e2d45;border-radius:14px;padding:16px;}
-.finger-head{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:#4a6080;text-transform:uppercase;margin-bottom:14px;}
-.finger-row{display:flex;gap:10px;justify-content:center;align-items:flex-end;margin-bottom:14px;height:80px;}
-.finger-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
-.finger-body{width:20px;border-radius:10px 10px 4px 4px;border:2px solid #1e2d45;transition:all 0.4s;background:#0d1a2a;}
-.finger-num{font-family:var(--mono);font-size:8px;color:#4a6080;letter-spacing:0.04em;}
-.f-done .finger-body{border-color:var(--success);background:rgba(16,185,129,0.15);}
-.f-done .finger-num{color:var(--success);}
-.f-active .finger-body{border-color:var(--orange);background:rgba(255,107,53,0.15);box-shadow:0 0 12px rgba(255,107,53,0.3);}
-.f-active .finger-num{color:var(--orange);}
-.finger-prompt{font-family:var(--mono);font-size:10px;color:#4a6080;text-align:center;letter-spacing:0.06em;min-height:16px;line-height:1.5;}
-.finger-progress{height:3px;background:#1e2d45;border-radius:2px;margin-top:10px;overflow:hidden;}
-.finger-fill{height:100%;background:var(--orange);border-radius:2px;transition:width 0.1s linear;}
-.spinner{width:18px;height:18px;border:2px solid #1e2d45;border-top-color:var(--orange);border-radius:50%;animation:spin 0.7s linear infinite;flex-shrink:0;}
-@keyframes spin{to{transform:rotate(360deg);}}
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 38px;background:rgba(255,255,255,.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .brand{display:flex;align-items:center;gap:10px;border:0;background:transparent;cursor:pointer;color:var(--navy)}
+    .brand-mark{width:38px;height:38px;border-radius:13px;background:var(--navy);display:grid;place-items:center}.brand-name{font-family:var(--serif);font-size:26px;font-weight:500;letter-spacing:.04em}.brand-name em{color:var(--orange);font-style:italic}
+    .nav-center{display:flex;align-items:center;gap:8px}.nav-link{border:0;background:transparent;color:#526071;font-size:13px;font-weight:800;cursor:pointer;padding:9px 12px;border-radius:var(--rf)}.nav-link:hover{color:var(--navy);background:#f3f4f6}.nav-actions{display:flex;align-items:center;gap:10px}
+    .status-badge{display:none;font-size:11px;font-weight:900;padding:6px 13px;border-radius:var(--rf);border:1px solid var(--border);color:var(--muted);background:#f8fafc;white-space:nowrap}
+    .btn{border:1.5px solid transparent;border-radius:14px;padding:11px 20px;font-size:14px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:.2s;white-space:nowrap;font-family:inherit}.btn-primary{background:var(--orange);color:#fff;border-color:var(--orange);box-shadow:0 10px 28px rgba(255,107,53,.24)}.btn-primary:hover{background:var(--orange2);border-color:var(--orange2);transform:translateY(-1px)}.btn-outline{background:#fff;color:var(--navy);border-color:#d1d5db}.btn-outline:hover{border-color:var(--navy);background:#f8fafc}.btn-ghost{background:transparent;color:var(--muted);border-color:transparent;box-shadow:none}.btn-ghost:hover{background:#f3f4f6;color:var(--navy)}.btn-lg{padding:15px 30px;font-size:15px;border-radius:16px}.btn-full{width:100%}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
 
-/* ANALYSIS */
-#s-analysis{background:var(--bg);padding-top:68px;}
-.analysis-wrap{max-width:860px;margin:0 auto;padding:32px 24px;}
-.page-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
-.page-h{font-size:22px;font-weight:700;color:var(--navy);}
-.page-sub{font-size:13px;color:var(--text3);margin-top:3px;}
-.vitals-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
-.vb-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);text-align:center;}
-.vb-lbl{font-size:10px;font-weight:700;letter-spacing:0.06em;color:var(--text3);text-transform:uppercase;margin-bottom:4px;}
-.vb-val{font-size:20px;font-weight:800;color:var(--navy);}
-.vb-unit{font-size:10px;color:var(--text3);}
-.report-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:16px;}
-.report-head{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;gap:16px;align-items:flex-start;background:linear-gradient(135deg,#fff8f5,#fff);}
-#thumb{width:110px;height:82px;border-radius:12px;object-fit:cover;border:2px solid #fde8dd;transform:scaleX(-1);flex-shrink:0;}
-.report-badge{font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--orange);text-transform:uppercase;background:#fff3ee;padding:3px 10px;border-radius:var(--r-full);display:inline-block;margin-bottom:6px;}
-.report-ts-txt{font-size:13px;color:var(--text3);margin-bottom:10px;}
-.legend{display:flex;gap:14px;flex-wrap:wrap;}
-.leg-item{display:flex;align-items:center;gap:5px;}
-.leg-dot{width:8px;height:8px;border-radius:50%;}
-.leg-lbl{font-size:11px;font-weight:600;color:var(--text3);}
-.wellness-wrap{padding:20px 24px;border-bottom:1px solid var(--border);}
-.wellness-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;}
-.wellness-lbl{font-size:13px;font-weight:700;color:var(--navy);}
-.wellness-num{font-size:28px;font-weight:800;color:var(--navy);}
-.wellness-unit{font-size:13px;color:var(--text3);}
-.wellness-bar-bg{height:10px;background:var(--border);border-radius:var(--r-full);overflow:hidden;}
-.wellness-fill{height:100%;border-radius:var(--r-full);background:linear-gradient(90deg,var(--orange),var(--success));transition:width 1.2s cubic-bezier(0.4,0,0.2,1);}
-.wellness-desc{font-size:12px;color:var(--text3);margin-top:6px;}
-.findings-wrap{padding:20px 24px;}
-.fp-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.finding{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2);}
-.finding:last-child{border-bottom:none;}
-.f-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
-.d-g{background:var(--success);} .d-a{background:var(--warning);} .d-r{background:var(--error);}
-.f-tag{font-size:9px;font-weight:700;letter-spacing:0.06em;padding:2px 8px;border-radius:var(--r-full);flex-shrink:0;margin-top:2px;text-transform:uppercase;}
-.t-g{background:#ecfdf5;color:var(--success);} .t-a{background:#fffbeb;color:var(--warning);} .t-r{background:#fef2f2;color:var(--error);}
-.f-area{font-size:10px;font-weight:700;color:var(--text3);min-width:100px;flex-shrink:0;padding-top:3px;letter-spacing:0.04em;text-transform:uppercase;}
-.f-obs{font-size:14px;color:var(--navy);line-height:1.6;}
-.summary-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-2xl);padding:20px 24px;margin-bottom:16px;box-shadow:var(--shadow-sm);}
-.sum-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--text3);text-transform:uppercase;margin-bottom:10px;}
-.sum-txt{font-size:14px;color:var(--navy2);line-height:1.75;}
-.tips-card{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:var(--r-2xl);padding:24px;margin-bottom:16px;}
-.tips-head{font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--orange);text-transform:uppercase;margin-bottom:14px;}
-.tip-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#e2e8f0;line-height:1.5;margin-bottom:8px;}
-.disc-note{font-size:11px;color:var(--text3);line-height:1.6;padding:12px 0;}
-.loading-state{display:flex;align-items:center;gap:10px;padding:24px 0;font-size:13px;color:var(--text3);}
-</style>
+    #intro-screen{background:#fff;padding-top:72px}.hero{position:relative;overflow:hidden;padding:92px 0 76px;background:radial-gradient(circle at 20% 20%,rgba(255,107,53,.12),transparent 32%),radial-gradient(circle at 80% 10%,rgba(10,24,49,.08),transparent 30%),linear-gradient(180deg,#fff8f5 0%,#fff 74%);border-bottom:1px solid var(--border)}.hero:after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(10,24,49,.05) 1px,transparent 1px);background-size:30px 30px;pointer-events:none}.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:58px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);color:#334155;padding:7px 14px;border-radius:var(--rf);font-size:12px;font-weight:900;box-shadow:var(--shadow-sm);margin-bottom:24px}.eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 1.6s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+    .hero-title{font-family:var(--serif);font-size:clamp(48px,7vw,78px);line-height:.98;letter-spacing:-.035em;font-weight:400;color:var(--navy);margin-bottom:24px}.hero-title em{color:var(--orange);font-style:italic}.hero-text{max-width:570px;color:#586575;font-size:18px;line-height:1.78;margin-bottom:34px}.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:34px}.trust-row{display:flex;flex-wrap:wrap;gap:14px;color:#64748b;font-size:12px;font-weight:800}.trust-item{display:inline-flex;align-items:center;gap:7px}.check-dot{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:#ecfdf5;color:var(--green);font-size:12px;font-weight:900}
+    .hero-visual{position:relative}.visual-card{position:relative;min-height:500px;border-radius:38px;overflow:hidden;background:#0a1831;box-shadow:var(--shadow-lg);border:1px solid rgba(255,255,255,.45)}.visual-card img{width:100%;height:500px;object-fit:cover;display:block;opacity:.9}.visual-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,24,49,.05),rgba(10,24,49,.62)),radial-gradient(circle at 50% 40%,transparent 0%,transparent 28%,rgba(255,107,53,.25) 29%,transparent 31%)}.scan-frame{position:absolute;inset:42px;border:1px solid rgba(255,255,255,.28);border-radius:30px}.scan-line{position:absolute;left:34px;right:34px;top:28%;height:2px;background:linear-gradient(90deg,transparent,var(--orange),transparent);animation:scanMove 3.3s ease-in-out infinite;box-shadow:0 0 20px rgba(255,107,53,.9)}@keyframes scanMove{0%,100%{top:22%}50%{top:78%}}
+    .floating-report{position:absolute;left:-32px;bottom:42px;width:min(310px,78vw);background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:22px;box-shadow:var(--shadow-lg);padding:16px}.floating-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.floating-title{font-size:12px;font-weight:900;color:var(--navy);text-transform:uppercase;letter-spacing:.06em}.floating-pill{font-size:10px;color:var(--green);background:#ecfdf5;border-radius:var(--rf);padding:4px 8px;font-weight:900}.mini-bar{height:9px;border-radius:var(--rf);background:#e5e7eb;overflow:hidden;margin-bottom:10px}.mini-fill{height:100%;width:84%;background:linear-gradient(90deg,var(--orange),var(--green));border-radius:var(--rf)}.mini-list{display:grid;gap:8px}.mini-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#64748b;font-weight:800}.mini-row strong{color:var(--navy)}
+    .stats{padding:36px 0 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat-card{border:1px solid var(--border);border-radius:22px;background:#fff;box-shadow:var(--shadow-sm);padding:22px;text-align:center}.stat-number{display:block;color:var(--navy);font-size:30px;font-weight:900;letter-spacing:-.03em;margin-bottom:4px}.stat-label{color:var(--muted);font-size:12px;font-weight:800}
+
+    .section{padding:88px 0}.section.white{background:#fff;border-bottom:1px solid var(--border)}.section.dark{background:var(--navy);color:#fff}.section-head{max-width:620px;margin:0 auto 50px;text-align:center}.section-kicker{font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;color:var(--orange);margin-bottom:10px}.section-title{font-family:var(--serif);color:var(--navy);font-size:clamp(38px,5vw,52px);line-height:1.05;font-weight:400;letter-spacing:-.02em;margin-bottom:14px}.section.dark .section-title{color:#fff}.section-subtitle{color:#64748b;font-size:16px;line-height:1.7}.section.dark .section-subtitle{color:#94a3b8}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.feature-card{background:#fff;border:1px solid var(--border);border-radius:26px;padding:26px;box-shadow:var(--shadow-sm);transition:.22s}.feature-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(255,107,53,.5)}.feature-image{width:100%;height:154px;overflow:hidden;border-radius:18px;background:#f3f4f6;margin-bottom:20px;border:1px solid #eef0f4}.feature-image img{width:100%;height:100%;object-fit:cover;display:block}.feature-title{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:9px}.feature-text{color:#6b7280;font-size:13px;line-height:1.7;margin-bottom:14px}.badge{display:inline-flex;padding:5px 10px;border-radius:var(--rf);font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;background:#fff3ee;color:var(--orange)}
+    .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:52px}.how-card{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);border-radius:24px;padding:24px 20px}.how-number{width:44px;height:44px;border-radius:50%;background:rgba(255,107,53,.12);color:var(--orange);border:1px solid rgba(255,107,53,.35);display:grid;place-items:center;font-weight:900;margin-bottom:18px}.how-title{font-size:14px;font-weight:900;color:#fff;margin-bottom:8px}.how-text{color:#94a3b8;font-size:12px;line-height:1.65}.cta{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;text-align:center;padding:92px 0}.cta-title{font-family:var(--serif);font-size:clamp(40px,6vw,58px);line-height:1.05;font-weight:400;margin-bottom:14px}.cta-title em{color:var(--orange);font-style:italic}.cta-text{color:#94a3b8;font-size:16px;line-height:1.7;margin-bottom:32px}.legal-note{margin-top:18px;color:#64748b;font-size:11px;line-height:1.6}footer{background:#060f1e;color:#94a3b8;padding:34px 0}.footer-row{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.footer-brand{font-family:var(--serif);color:#e2e8f0;font-size:22px;letter-spacing:.04em}.footer-brand em{color:var(--orange);font-style:italic}.footer-links{display:flex;gap:18px;flex-wrap:wrap}.footer-links a{color:#64748b;font-size:12px;font-weight:800;text-decoration:none}.footer-links a:hover{color:var(--orange)}
+
+    #scanner-screen,#analysis-screen{background:var(--bg);padding-top:72px}.scanner-wrap,.analysis-wrap{width:min(900px,calc(100% - 40px));margin:0 auto;padding:34px 0 52px}.page-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px}.page-title{color:var(--navy);font-size:24px;line-height:1.2;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}.page-subtitle{color:#6b7280;font-size:13px;line-height:1.6}.viewport-card{background:#fff;border:1px solid var(--border);border-radius:28px;overflow:hidden;box-shadow:var(--shadow-md)}.viewport{position:relative;width:100%;aspect-ratio:4/3;background:var(--navy);overflow:hidden}#video-feed{display:none;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}#overlay-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform:scaleX(-1)}.corner{position:absolute;width:26px;height:26px;display:none;border-color:rgba(255,107,53,.85);z-index:3}.corner.tl{top:18px;left:18px;border-top:2px solid;border-left:2px solid}.corner.tr{top:18px;right:18px;border-top:2px solid;border-right:2px solid}.corner.bl{bottom:18px;left:18px;border-bottom:2px solid;border-left:2px solid}.corner.br{bottom:18px;right:18px;border-bottom:2px solid;border-right:2px solid}.camera-prompt,.camera-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:40px;background:radial-gradient(circle at 50% 40%,rgba(255,107,53,.08),transparent 36%),var(--navy)}.camera-prompt p,.camera-loading p{max-width:320px;color:#94a3b8;font-size:13px;line-height:1.7}.camera-loading{display:none;background:rgba(10,24,49,.92);z-index:4}.spinner{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.22);border-top-color:var(--orange);animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.viewport-footer{padding:15px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.viewport-hint{color:#6b7280;font-size:12px;font-weight:800}.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}.metric-card{background:#fff;border:1px solid var(--border);border-radius:20px;padding:16px;box-shadow:var(--shadow-sm)}.metric-label{color:#6b7280;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}.metric-value{color:var(--navy);font-size:22px;line-height:1;font-weight:900;letter-spacing:-.03em}.metric-value.small{font-size:14px;line-height:1.2;padding-top:4px}.scan-actions{display:flex;gap:10px;margin-top:16px}.privacy-note{margin-top:12px;text-align:center;color:#6b7280;font-size:11px;line-height:1.6}
+
+    .report-card{background:#fff;border:1px solid var(--border);border-radius:28px;box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:16px}.report-head{display:flex;align-items:flex-start;gap:16px;padding:22px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#fff8f5,#fff)}#snapshot-thumb{width:126px;height:92px;border-radius:16px;border:2px solid #d1d5db;object-fit:cover;background:#f3f4f6;transform:scaleX(-1);flex-shrink:0}.report-label{display:inline-flex;padding:5px 10px;border-radius:var(--rf);background:#fff3ee;color:var(--orange);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px}.report-time{color:#6b7280;font-size:13px;line-height:1.5;margin-bottom:12px}.legend{display:flex;gap:12px;flex-wrap:wrap}.legend-item{display:inline-flex;align-items:center;gap:6px;color:#6b7280;font-size:11px;font-weight:800}.legend-dot{width:9px;height:9px;border-radius:50%}.score-wrap{display:none;padding:22px;border-bottom:1px solid var(--border)}.score-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}.score-title{color:var(--navy);font-size:14px;font-weight:900}.score-number{color:var(--navy);font-size:30px;font-weight:900;letter-spacing:-.04em}.score-unit{color:#6b7280;font-size:13px;font-weight:800}.score-bar{height:10px;background:#e5e7eb;border-radius:var(--rf);overflow:hidden}.score-fill{width:0;height:100%;border-radius:var(--rf);background:linear-gradient(90deg,var(--orange),var(--green));transition:width 1.1s cubic-bezier(.4,0,.2,1)}.score-desc{margin-top:7px;color:#6b7280;font-size:12px;line-height:1.6}.findings-wrap{padding:22px}.findings-head{display:flex;align-items:center;gap:8px;color:#6b7280;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.09em;margin-bottom:16px}.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.2s infinite;display:inline-flex}.loading-state{display:flex;align-items:center;gap:10px;color:#6b7280;font-size:13px;padding:18px 0}.finding{display:grid;grid-template-columns:10px 86px 130px 1fr;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #f1f5f9}.finding:last-child{border-bottom:none}.finding-dot{width:9px;height:9px;border-radius:50%;margin-top:8px}.finding-tag{border-radius:var(--rf);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;padding:5px 8px;text-align:center}.tag-normal{background:#ecfdf5;color:#059669}.tag-monitor{background:#fffbeb;color:#d97706}.tag-consult{background:#fef2f2;color:#dc2626}.dot-normal{background:var(--green)}.dot-monitor{background:var(--yellow)}.dot-consult{background:var(--red)}.finding-area{color:#64748b;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;padding-top:5px}.finding-text{color:var(--navy);font-size:14px;line-height:1.68}.summary-card,.tips-card{display:none;border-radius:28px;padding:24px;margin-bottom:16px;box-shadow:var(--shadow-sm)}.summary-card{background:#fff;border:1px solid var(--border)}.tips-card{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff}.card-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:#6b7280;margin-bottom:10px}.tips-card .card-label{color:var(--orange)}.summary-text{color:var(--navy2);font-size:14px;line-height:1.75}.tips-list{display:grid;gap:10px}.tip-item{display:flex;align-items:flex-start;gap:10px;color:#e2e8f0;font-size:13px;line-height:1.6}.tip-bullet{width:18px;height:18px;border-radius:50%;background:rgba(255,107,53,.18);color:var(--orange);display:grid;place-items:center;flex-shrink:0;font-size:11px;font-weight:900;margin-top:1px}.disclaimer{color:#6b7280;font-size:11px;line-height:1.7;padding:2px 0 14px}.error-box{color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:16px;padding:14px;font-size:13px;line-height:1.6}
+
+    @media(max-width:980px){nav{padding:0 18px}.nav-center{display:none}.hero-grid{grid-template-columns:1fr}.hero-visual{max-width:560px;margin:0 auto;width:100%}.stats,.feature-grid,.how-grid,.metrics-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){.container,.scanner-wrap,.analysis-wrap{width:min(100% - 28px,1120px)}nav{height:66px}.nav-actions .btn-outline{display:none}.nav-actions .btn-primary{padding:10px 13px;font-size:12px}#intro-screen,#scanner-screen,#analysis-screen{padding-top:66px}.brand-name{font-size:22px}.brand-mark{width:34px;height:34px}.hero{padding:64px 0 54px}.hero-actions,.scan-actions,.page-top,.report-head,.footer-row{flex-direction:column;align-items:stretch}.visual-card,.visual-card img{min-height:390px;height:390px}.floating-report{left:14px;right:14px;bottom:18px;width:auto}.stats,.feature-grid,.how-grid,.metrics-grid{grid-template-columns:1fr}.section,.cta{padding:68px 0}.finding{grid-template-columns:10px 80px 1fr}.finding-area,.finding-text{grid-column:2/4}#snapshot-thumb{width:100%;height:180px}}
+  </style>
 </head>
 <body>
-
-<nav>
-  <div class="nav-logo" onclick="show('s-intro')">
-    <div class="nav-logo-mark">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-        <ellipse cx="10" cy="10" rx="9" ry="5" stroke="#ff6b35" stroke-width="1"/>
-        <circle cx="10" cy="10" r="3" stroke="#ff6b35" stroke-width="1"/>
-        <circle cx="10" cy="10" r="1.2" fill="#ff6b35"/>
-      </svg>
+  <nav>
+    <button class="brand" type="button" onclick="showScreen('intro-screen')" aria-label="Go to homepage">
+      <span class="brand-mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2.5 11C4.4 6.7 7.2 4.5 11 4.5C14.8 4.5 17.6 6.7 19.5 11C17.6 15.3 14.8 17.5 11 17.5C7.2 17.5 4.4 15.3 2.5 11Z" stroke="#ff6b35" stroke-width="1.4"/><circle cx="11" cy="11" r="3.2" stroke="#ff6b35" stroke-width="1.4"/><circle cx="11" cy="11" r="1.25" fill="#ff6b35"/></svg></span>
+      <span class="brand-name">Aur<em>veil</em></span>
+    </button>
+    <div class="nav-center" aria-label="Main navigation">
+      <button class="nav-link" type="button" onclick="scrollToSection('features')">Features</button>
+      <button class="nav-link" type="button" onclick="scrollToSection('how-it-works')">How it works</button>
     </div>
-    <span class="nav-brand">Aur<em>veil</em></span>
-  </div>
-  <div style="display:flex;align-items:center;gap:10px;">
-    <span class="nav-tag">AI Health Observer</span>
-    <span id="nav-badge"></span>
-  </div>
-  <button class="btn btn-orange" onclick="show('s-scanner');boot()">Begin Scan</button>
-</nav>
-
-
-<!-- INTRO -->
-<div id="s-intro" class="screen active">
-  <section class="hero">
-    <div class="hero-pill"><span class="pulse-dot"></span>AI-Powered Visual Health Analysis</div>
-    <h1 class="hero-title">See What Your Body<br>Is <em>Telling</em> You</h1>
-    <p class="hero-sub">Aurveil uses your camera and Claude AI to observe visible health indicators — heart rate, skin, eyes, posture and more — in real time.</p>
-    <div class="hero-cta">
-      <button class="btn btn-orange btn-lg" onclick="show('s-scanner');boot()">Start Free Scan →</button>
-      <button class="btn btn-outline btn-lg" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Learn More</button>
+    <div class="nav-actions">
+      <span id="app-status" class="status-badge">OFFLINE</span>
+      <button class="btn btn-outline" type="button" onclick="scrollToSection('features')">Learn More</button>
+      <button class="btn btn-primary" type="button" onclick="startScanFlow()">Start Scan</button>
     </div>
-    <div class="hero-stats">
-      <div><span class="stat-num">7</span><span class="stat-lbl">Body Areas</span></div>
-      <div><span class="stat-num">rPPG</span><span class="stat-lbl">Heart Rate Detection</span></div>
-      <div><span class="stat-num">5</span><span class="stat-lbl">Biometric Stages</span></div>
-      <div><span class="stat-num">100%</span><span class="stat-lbl">Private</span></div>
-    </div>
-  </section>
+  </nav>
 
-  <section id="features" class="sec" style="background:#fff;border-bottom:1px solid var(--border);">
-    <div class="sec-inner">
-      <div class="eyebrow">What Aurveil Does</div>
-      <h2 class="sec-h">Everything in One Scan</h2>
-      <p class="sec-sub">Six powerful capabilities working together the moment you face your camera.</p>
-      <div class="feat-grid">
-        <div class="feat-card"><div class="feat-icon ic-o">❤️</div><div class="feat-h">Heart Rate via rPPG</div><p class="feat-p">Real remote photoplethysmography — Aurveil samples your forehead's green channel to detect your pulse and estimate BPM in real time.</p><span class="badge-pill b-live">REAL MEASUREMENT</span></div>
-        <div class="feat-card"><div class="feat-icon ic-n">🧠</div><div class="feat-h">Claude Vision Analysis</div><p class="feat-p">Anthropic's Claude AI reads your visible physical indicators with the precision of a clinical visual triage assessment.</p><span class="badge-pill b-new">AI-POWERED</span></div>
-        <div class="feat-card"><div class="feat-icon ic-g">✋</div><div class="feat-h">5-Finger Biometric Scan</div><p class="feat-p">Sequential finger scanning protocol — raise each finger on command while Aurveil collects biometric timing data across all five digits.</p><span class="badge-pill b-new">NEW</span></div>
-        <div class="feat-card"><div class="feat-icon ic-a">📊</div><div class="feat-h">Wellness Score</div><p class="feat-p">Every scan produces a 0–100 wellness score calculated from the ratio of normal to flagged observations across all body areas.</p><span class="badge-pill b-new">NEW</span></div>
-        <div class="feat-card"><div class="feat-icon ic-r">🔒</div><div class="feat-h">100% Private</div><p class="feat-p">Camera feed never leaves your device. No video stored or transmitted. Analysis happens through a secure encrypted proxy.</p><span class="badge-pill b-live">SECURE</span></div>
-        <div class="feat-card"><div class="feat-icon ic-b">💡</div><div class="feat-h">Personalized Tips</div><p class="feat-p">Based on what Aurveil observes, you receive targeted wellness tips relevant to your specific visible health indicators.</p><span class="badge-pill b-new">DETAILED</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="how-sec">
-    <div class="how-inner">
-      <div class="eyebrow">How It Works</div>
-      <h2 class="sec-h" style="color:#fff;">Five Biometric Stages</h2>
-      <p style="font-size:16px;color:#64748b;max-width:420px;margin:0 auto;">One complete health snapshot from your camera.</p>
-      <div class="steps">
-        <div class="step"><div class="step-num">1</div><div class="step-h">Face Lock</div><p class="step-p">AI confirms human presence at high confidence</p></div>
-        <div class="step"><div class="step-num">2</div><div class="step-h">Pulse Capture</div><p class="step-p">rPPG samples forehead for heart rate</p></div>
-        <div class="step"><div class="step-num">3</div><div class="step-h">Finger Scan</div><p class="step-p">5-finger sequential biometric protocol</p></div>
-        <div class="step"><div class="step-num">4</div><div class="step-h">AI Observes</div><p class="step-p">Claude Vision analyzes 7 body areas</p></div>
-        <div class="step"><div class="step-num">5</div><div class="step-h">Full Report</div><p class="step-p">Vitals, findings, score and wellness tips</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec" style="background:#fff;border-top:1px solid var(--border);">
-    <div class="sec-inner" style="text-align:center;">
-      <div class="eyebrow">Body Areas</div>
-      <h2 class="sec-h">7 Areas Observed Per Scan</h2>
-      <p class="sec-sub">Every scan covers these clinically relevant visible indicators.</p>
-      <div class="areas-grid">
-        <div class="area-card"><div class="area-icon">🎨</div><div class="area-h">Complexion</div><p class="area-p">Skin tone, pallor, jaundice, flushing</p></div>
-        <div class="area-card"><div class="area-icon">👁️</div><div class="area-h">Eyes</div><p class="area-p">Sclera clarity, redness, puffiness</p></div>
-        <div class="area-card"><div class="area-icon">💋</div><div class="area-h">Lips</div><p class="area-p">Color, moisture, pallor, cyanosis</p></div>
-        <div class="area-card"><div class="area-icon">🔄</div><div class="area-h">Facial Symmetry</div><p class="area-p">Asymmetry, FAST stroke signals</p></div>
-        <div class="area-card"><div class="area-icon">🫙</div><div class="area-h">Neck</div><p class="area-p">Swelling, thyroid, posture angle</p></div>
-        <div class="area-card"><div class="area-icon">🧍</div><div class="area-h">Posture</div><p class="area-p">Energy, lean, fatigue indicators</p></div>
-        <div class="area-card"><div class="area-icon">❤️</div><div class="area-h">Heart Rate</div><p class="area-p">rPPG real-time BPM estimation</p></div>
-        <div class="area-card" style="background:linear-gradient(135deg,#fff8f5,#fff);border-color:#fde8dd;"><div class="area-icon">✨</div><div class="area-h" style="color:var(--orange);">Wellness Score</div><p class="area-p">0–100 aggregate from all findings</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta-sec">
-    <h2 class="cta-h">Ready to See What <em>Aurveil</em> Sees?</h2>
-    <p class="cta-sub">Takes 60 seconds. No signup. No credit card. Completely private.</p>
-    <button class="btn btn-orange btn-lg" onclick="show('s-scanner');boot()">Start Your Free Scan →</button>
-    <p style="font-size:11px;color:#334155;margin-top:16px;">Not a medical device · For health awareness purposes only · Onada Innovative Ltd</p>
-  </section>
-
-  <footer>
-    <span class="footer-brand">Aur<em>veil</em></span>
-    <span class="footer-copy">© 2026 Onada Innovative Ltd. All rights reserved.</span>
-  </footer>
-</div>
-
-
-<!-- SCANNER -->
-<div id="s-scanner" class="screen">
-  <div class="scan-wrap">
-    <div>
-      <div class="cam-panel">
-        <div class="cam-header">
-          <span class="cam-title">AURVEIL BIOMETRIC SCANNER v2.0</span>
-          <span id="sys-status">OFFLINE</span>
-        </div>
-        <div class="vp" id="viewport">
-          <video id="vid" autoplay muted playsinline></video>
-          <canvas id="cvs"></canvas>
-          <div class="crn c-tl" id="c0"></div>
-          <div class="crn c-tr" id="c1"></div>
-          <div class="crn c-bl" id="c2"></div>
-          <div class="crn c-br" id="c3"></div>
-          <div id="cam-prompt">
-            <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-              <rect x="4" y="14" width="44" height="30" rx="4" stroke="#2a3d55" stroke-width="1.5" fill="none"/>
-              <circle cx="26" cy="29" r="10" stroke="#2a3d55" stroke-width="1.5" fill="none"/>
-              <circle cx="26" cy="29" r="4" fill="#2a3d55"/>
-              <path d="M19 11h14a2 2 0 0 1 2 2v1H17v-1a2 2 0 0 1 2-2z" fill="#2a3d55"/>
-            </svg>
-            <p>ENABLE CAMERA TO BEGIN<br>BIOMETRIC SCAN PROTOCOL</p>
-            <button class="btn btn-orange" onclick="boot()" style="font-size:12px;padding:9px 20px;">INITIALIZE SCANNER</button>
-          </div>
-          <div id="cam-load">
-            <div class="spinner"></div>
-            <p id="load-txt">INITIALIZING</p>
-          </div>
-        </div>
-        <div class="ecg-panel">
-          <canvas id="ecg-canvas" height="52"></canvas>
-        </div>
-        <div class="cam-footer">
-          <span class="cam-hint">🔒 NO DATA STORED OR TRANSMITTED</span>
-          <button class="btn btn-ghost" onclick="show('s-intro')" style="font-size:11px;color:#2a3d55;">← EXIT</button>
-        </div>
-      </div>
-      <div class="metrics-row" style="margin-top:14px;">
-        <div class="mc"><div class="mc-lbl">Humans</div><div class="mc-val" id="mFaces">—</div></div>
-        <div class="mc"><div class="mc-lbl">Confidence</div><div class="mc-val" id="mConf">—</div></div>
-        <div class="mc"><div class="mc-lbl">Alignment</div><div class="mc-val" id="mAlign" style="font-size:13px;padding-top:3px;">—</div></div>
-        <div class="mc"><div class="mc-lbl">Scan Rate</div><div class="mc-val" id="mFps">—</div></div>
-      </div>
-    </div>
-
-    <div class="vitals-panel">
-      <div class="vitals-card">
-        <div class="vitals-head">Live Biometrics</div>
-        <div class="vitals-grid">
-          <div class="vital">
-            <div class="vital-lbl">Heart Rate</div>
-            <div class="vital-val" id="v-hr">—</div>
-            <div class="vital-unit">BPM (rPPG)</div>
-            <div class="vital-status vs-meas" id="v-hr-s">MEASURING</div>
-          </div>
-          <div class="vital">
-            <div class="vital-lbl">HRV</div>
-            <div class="vital-val" id="v-hrv">—</div>
-            <div class="vital-unit">MS</div>
-            <div class="vital-status vs-meas" id="v-hrv-s">MEASURING</div>
-          </div>
-          <div class="vital">
-            <div class="vital-lbl">Skin Signal</div>
-            <div class="vital-val" id="v-perf">—</div>
-            <div class="vital-unit">AMPLITUDE</div>
-            <div class="vital-status vs-meas" id="v-perf-s">SAMPLING</div>
-          </div>
-          <div class="vital">
-            <div class="vital-lbl">Face Lock</div>
-            <div class="vital-val" id="v-conf">—</div>
-            <div class="vital-unit">CONFIDENCE</div>
-            <div class="vital-status vs-meas" id="v-conf-s">WAITING</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="phase-card">
-        <div class="phase-head">Scan Protocol</div>
-        <div class="phase-item"><div class="phase-dot pd-idle" id="pd1"></div><span class="phase-name">Face Lock</span><span class="phase-state" id="ps1">WAITING</span></div>
-        <div class="phase-item"><div class="phase-dot pd-idle" id="pd2"></div><span class="phase-name">Pulse Capture (rPPG)</span><span class="phase-state" id="ps2">WAITING</span></div>
-        <div class="phase-item"><div class="phase-dot pd-idle" id="pd3"></div><span class="phase-name">Finger Biometrics</span><span class="phase-state" id="ps3">WAITING</span></div>
-        <div class="phase-item"><div class="phase-dot pd-idle" id="pd4"></div><span class="phase-name">AI Vision Analysis</span><span class="phase-state" id="ps4">WAITING</span></div>
-      </div>
-
-      <div class="finger-card">
-        <div class="finger-head">Finger Biometric Protocol</div>
-        <div class="finger-row" id="finger-row">
-          <div class="finger-wrap" id="f1"><div class="finger-body" style="height:48px;"></div><div class="finger-num">I</div></div>
-          <div class="finger-wrap" id="f2"><div class="finger-body" style="height:60px;"></div><div class="finger-num">II</div></div>
-          <div class="finger-wrap" id="f3"><div class="finger-body" style="height:64px;"></div><div class="finger-num">III</div></div>
-          <div class="finger-wrap" id="f4"><div class="finger-body" style="height:58px;"></div><div class="finger-num">IV</div></div>
-          <div class="finger-wrap" id="f5"><div class="finger-body" style="height:44px;"></div><div class="finger-num">V</div></div>
-        </div>
-        <div class="finger-prompt" id="finger-prompt">AWAITING PULSE CAPTURE</div>
-        <div class="finger-progress"><div class="finger-fill" id="finger-fill" style="width:0%"></div></div>
-      </div>
-
-      <button id="analyzeBtn" class="btn btn-orange btn-full" disabled onclick="analyze()" style="padding:14px;font-size:13px;letter-spacing:0.04em;">BEGIN CLINICAL ANALYSIS →</button>
-      <p style="font-family:var(--mono);font-size:9px;color:#2a3d55;text-align:center;letter-spacing:0.05em;text-transform:uppercase;">Complete all stages to unlock</p>
-    </div>
-  </div>
-</div>
-
-
-<!-- ANALYSIS -->
-<div id="s-analysis" class="screen">
-  <div class="analysis-wrap">
-    <div class="page-top">
-      <div><div class="page-h">Aurveil Report</div><div class="page-sub" id="scan-ts"></div></div>
-      <button class="btn btn-outline" onclick="show('s-scanner')">← Rescan</button>
-    </div>
-    <div class="vitals-bar">
-      <div class="vb-card"><div class="vb-lbl">Heart Rate</div><div class="vb-val"><span id="r-hr">—</span><span class="vb-unit"> bpm</span></div></div>
-      <div class="vb-card"><div class="vb-lbl">HRV</div><div class="vb-val"><span id="r-hrv">—</span><span class="vb-unit"> ms</span></div></div>
-      <div class="vb-card"><div class="vb-lbl">Skin Signal</div><div class="vb-val"><span id="r-perf">—</span></div></div>
-      <div class="vb-card"><div class="vb-lbl">Wellness</div><div class="vb-val"><span id="r-score">—</span><span class="vb-unit">/100</span></div></div>
-    </div>
-    <div class="report-card">
-      <div class="report-head">
-        <canvas id="thumb"></canvas>
+  <main id="intro-screen" class="screen active">
+    <section class="hero">
+      <div class="container hero-grid">
         <div>
-          <span class="report-badge">Aurveil Visual Observation Report</span>
-          <div class="report-ts-txt" id="report-ts"></div>
-          <div class="legend">
-            <div class="leg-item"><div class="leg-dot" style="background:var(--success);"></div><span class="leg-lbl">Normal</span></div>
-            <div class="leg-item"><div class="leg-dot" style="background:var(--warning);"></div><span class="leg-lbl">Monitor</span></div>
-            <div class="leg-item"><div class="leg-dot" style="background:var(--error);"></div><span class="leg-lbl">Consult Doctor</span></div>
-          </div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Private visual health scan</div>
+          <h1 class="hero-title">Check visible health signals in <em>seconds</em>.</h1>
+          <p class="hero-text">Aurveil uses your camera to review visible signs such as skin tone, eyes, lips, facial symmetry, neck area, and posture. It gives you a simple report for awareness, not a diagnosis.</p>
+          <div class="hero-actions"><button class="btn btn-primary btn-lg" type="button" onclick="startScanFlow()">Start Free Scan <span aria-hidden="true">→</span></button><button class="btn btn-outline btn-lg" type="button" onclick="scrollToSection('features')">See How It Works</button></div>
+          <div class="trust-row"><span class="trust-item"><span class="check-dot">✓</span>No signup required</span><span class="trust-item"><span class="check-dot">✓</span>No video stored</span><span class="trust-item"><span class="check-dot">✓</span>Awareness only</span></div>
+        </div>
+        <div class="hero-visual" aria-label="Visual health scan preview">
+          <div class="visual-card"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=1100&q=80" alt="Human face used for visual health scan preview"/><div class="visual-overlay"></div><div class="scan-frame"></div><div class="scan-line"></div></div>
+          <div class="floating-report"><div class="floating-top"><span class="floating-title">Sample Report</span><span class="floating-pill">Ready</span></div><div class="mini-bar"><div class="mini-fill"></div></div><div class="mini-list"><div class="mini-row"><span>Face alignment</span><strong>Centered</strong></div><div class="mini-row"><span>Lighting quality</span><strong>Good</strong></div><div class="mini-row"><span>Privacy mode</span><strong>Enabled</strong></div></div></div>
         </div>
       </div>
-      <div class="wellness-wrap" id="wellness-wrap" style="display:none;">
-        <div class="wellness-top"><span class="wellness-lbl">Wellness Score</span><span><span class="wellness-num" id="w-num">0</span><span class="wellness-unit"> / 100</span></span></div>
-        <div class="wellness-bar-bg"><div class="wellness-fill" id="w-fill" style="width:0%;"></div></div>
-        <div class="wellness-desc" id="w-desc"></div>
+      <div class="container"><div class="stats"><div class="stat-card"><span class="stat-number">7</span><span class="stat-label">Visible areas checked</span></div><div class="stat-card"><span class="stat-number">30s</span><span class="stat-label">Typical scan time</span></div><div class="stat-card"><span class="stat-number">0</span><span class="stat-label">Videos stored</span></div><div class="stat-card"><span class="stat-number">100%</span><span class="stat-label">Awareness focused</span></div></div></div>
+    </section>
+
+    <section id="features" class="section white">
+      <div class="container">
+        <div class="section-head"><p class="section-kicker">What Aurveil does</p><h2 class="section-title">A simple scan with clear results.</h2><p class="section-subtitle">The experience is designed to be calm, understandable, and useful without making medical claims.</p></div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="feature-image"><img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=900&q=80" alt="Human face scan example"/></div><h3 class="feature-title">Live human detection</h3><p class="feature-text">The scanner checks for a face in real time and only enables the scan when the person is properly visible.</p><span class="badge">Live</span></article>
+          <article class="feature-card"><div class="feature-image"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80" alt="Skin and complexion close-up"/></div><h3 class="feature-title">Visible feature review</h3><p class="feature-text">Aurveil reviews visible signals including complexion, eyes, lips, neck area, facial symmetry, and posture.</p><span class="badge">Private</span></article>
+          <article class="feature-card"><div class="feature-image"><img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=80" alt="Health report review"/></div><h3 class="feature-title">Clear health report</h3><p class="feature-text">Results are organized as normal, monitor, or consult a professional so users understand what needs attention.</p><span class="badge">Readable</span></article>
+          <article class="feature-card"><div class="feature-image"><img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80" alt="Healthcare professional consultation"/></div><h3 class="feature-title">Practical wellness tips</h3><p class="feature-text">Each report includes simple next steps such as hydration, better lighting for rescan, rest, or professional follow-up.</p><span class="badge">Helpful</span></article>
+          <article class="feature-card"><div class="feature-image"><img src="https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80" alt="Patient privacy and security"/></div><h3 class="feature-title">Built for privacy</h3><p class="feature-text">The camera preview stays in the browser. The captured image is only used to generate the report and is not stored by this page.</p><span class="badge">Secure</span></article>
+          <article class="feature-card"><div class="feature-image"><img src="https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&w=900&q=80" alt="Wellness check and medical awareness"/></div><h3 class="feature-title">Awareness, not diagnosis</h3><p class="feature-text">Aurveil is not a medical device. It helps users notice visible changes and decide when to seek professional advice.</p><span class="badge">Responsible</span></article>
+        </div>
       </div>
-      <div class="findings-wrap">
-        <div class="fp-head">Observations <span id="load-ind" style="display:none;"><div class="spinner" style="width:12px;height:12px;border-width:1.5px;display:inline-block;vertical-align:middle;margin-left:4px;"></div></span></div>
-        <div id="findings-list"><div class="loading-state"><div class="spinner"></div>Analyzing — please wait about 10 seconds...</div></div>
-      </div>
+    </section>
+
+    <section id="how-it-works" class="section dark"><div class="container"><div class="section-head"><p class="section-kicker">How it works</p><h2 class="section-title">From camera to report in four steps.</h2><p class="section-subtitle">No download, no complicated setup, and no unnecessary wording.</p></div><div class="how-grid"><article class="how-card"><div class="how-number">1</div><h3 class="how-title">Enable camera</h3><p class="how-text">Allow camera access and position your head and upper chest clearly inside the frame.</p></article><article class="how-card"><div class="how-number">2</div><h3 class="how-title">Confirm visibility</h3><p class="how-text">The scanner confirms that a human face is visible and centered enough for review.</p></article><article class="how-card"><div class="how-number">3</div><h3 class="how-title">Run scan</h3><p class="how-text">A single image is captured and reviewed for visible health-related indicators.</p></article><article class="how-card"><div class="how-number">4</div><h3 class="how-title">Read report</h3><p class="how-text">You receive a simple report with observations, score, summary, and next-step tips.</p></article></div></div></section>
+
+    <section class="cta"><div class="container"><h2 class="cta-title">Ready to run your <em>visual scan?</em></h2><p class="cta-text">Start with your camera, get a clear report, and use it as a wellness awareness tool.</p><button class="btn btn-primary btn-lg" type="button" onclick="startScanFlow()">Start Free Scan →</button><p class="legal-note">Aurveil is not a medical device and does not provide diagnosis or treatment. For urgent symptoms or medical concerns, contact a licensed healthcare professional.</p></div></section>
+    <footer><div class="container footer-row"><span class="footer-brand">Aur<em>veil</em></span><div class="footer-links"><a href="#" onclick="return false;">Privacy</a><a href="#" onclick="return false;">Terms</a><a href="https://dayoonasanya.com" target="_blank" rel="noopener">Adedayo A.Onasanya</a></div><span style="font-size:11px;color:#475569">© 2026 Adedayo A. Onasanya. All rights reserved.</span></div></footer>
+  </main>
+
+  <main id="scanner-screen" class="screen">
+    <div class="scanner-wrap">
+      <div class="page-top"><div><h1 class="page-title">Live Visual Health Scan</h1><p class="page-subtitle">Use good lighting. Keep your face, neck, and upper chest visible inside the frame.</p></div><button class="btn btn-outline" type="button" onclick="showScreen('intro-screen')">← Back Home</button></div>
+      <section class="viewport-card"><div id="viewport" class="viewport"><video id="video-feed" autoplay muted playsinline></video><canvas id="overlay-canvas"></canvas><span class="corner tl" id="corner-tl"></span><span class="corner tr" id="corner-tr"></span><span class="corner bl" id="corner-bl"></span><span class="corner br" id="corner-br"></span><div id="camera-prompt" class="camera-prompt"><svg width="58" height="58" viewBox="0 0 58 58" fill="none" aria-hidden="true"><rect x="7" y="17" width="44" height="32" rx="5" stroke="#94a3b8" stroke-width="1.8"/><circle cx="29" cy="33" r="10" stroke="#94a3b8" stroke-width="1.8"/><circle cx="29" cy="33" r="4" fill="#94a3b8"/><path d="M22 13H34C35.7 13 37 14.3 37 16V17H19V16C19 14.3 20.3 13 22 13Z" fill="#94a3b8"/></svg><p>Allow camera access to begin. Your live preview stays on this page.</p><button class="btn btn-primary" type="button" onclick="bootCamera()">Enable Camera</button></div><div id="camera-loading" class="camera-loading"><div class="spinner"></div><p id="loading-text">Preparing camera...</p></div></div><div class="viewport-footer"><span class="viewport-hint">Private mode: no live video is saved by this page.</span><button class="btn btn-ghost" type="button" onclick="resetScanner()">Reset Camera</button></div></section>
+      <div class="metrics-grid"><div class="metric-card"><div class="metric-label">Human detected</div><div id="metric-faces" class="metric-value">—</div></div><div class="metric-card"><div class="metric-label">Confidence</div><div id="metric-confidence" class="metric-value">—</div></div><div class="metric-card"><div class="metric-label">Alignment</div><div id="metric-alignment" class="metric-value small">—</div></div><div class="metric-card"><div class="metric-label">Scan rate</div><div id="metric-fps" class="metric-value">—</div></div></div>
+      <div class="scan-actions"><button id="scan-button" class="primary btn-full" type="button" disabled onclick="runAnalysis()">Run Health Scan →</button></div><p class="privacy-note">This scan is for general wellness awareness only. It cannot diagnose illness or replace a doctor.</p>
     </div>
-    <div class="summary-card" id="summary-card" style="display:none;"><div class="sum-head">Summary</div><div class="sum-txt" id="summary-txt"></div></div>
-    <div class="tips-card" id="tips-card" style="display:none;"><div class="tips-head">💡 Wellness Tips</div><div id="tips-list"></div></div>
-    <p class="disc-note" id="disc-txt"></p>
-    <button class="btn btn-orange btn-full" onclick="show('s-scanner')" style="margin-top:8px;">New Scan →</button>
-  </div>
-</div>
+  </main>
 
+  <main id="analysis-screen" class="screen">
+    <div class="analysis-wrap">
+      <div class="page-top"><div><h1 class="page-title">Aurveil Visual Health Report</h1><p id="scan-time" class="page-subtitle"></p></div><button class="btn btn-outline" type="button" oncck="showScreen('scanner-screen')">← Scan Again</button></div>
+      <section class="report-card"><div class="report-head"><canvas id="snapshot-thumb"></canvas><div><span class="report-label">Visual observation report</span><div id="report-time" class="report-time"></div><div class="legend"><span class="legend-item"><span class="legend-dot" style="background:var(--green)"></span>Normal</span><span class="legend-item"><span class="legend-dot" style="background:var(--yellow)"></span>Monitor</span><span classlegend-item"><span class="legend-dot" style="background:var(--red)"></span>Consult professional</span></div></div></div><div id="score-wrap" class="score-wrap"><div class="score-top"><span class="score-title">Wellness awareness score</span><span><span id="score-number" class="score-number">0</span><span class="score-unit"> / 100</span></span></div><div class="score-bar"><div id="score-fill" class="score-fill"></div></div><p id="score-desc" class="score-desc"></p></div><div class="findings-wrap"><div class="findings-head">Observations <span id="report-loading-dot" class="pulse-dot" style="display:none"></span></div><div id="findings-list"><div class="loading-state"><div class="spinner"></div>Preparing report...</div></div></div></section>
+      <section id="summary-card" class="summary-card"><div class="card-label">Summary</div><p id="summary-text" class="summary-text"></p></section><section id="tips-card" class="tips-card"><div class="card-label">Wellness tips</div><div id="tips-list" class="tips-list"></div></section><p id="disclaimer-text" class="disclaimer"></p><div class="scan-actions"><button class="btn btn-primary btn-full" type="button" onclick="showScreen('scanner-screen')">New Scan →</button></div>
+    </div>
+  </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.0.7/dist/blazeface.js"></script>
-<script>
-let model=null,vid=null,cvs=null,ctx=null;
-let scanY=0,scanDir=1,frameCount=0,lastFpsT=Date.now(),fps=0;
-let faceDetected=false,analyzing=false,phase=0;
-let greenSamples=[],sampleTimes=[];
-let estimatedHR=null,estimatedHRV=null,skinAmplitude=null;
-let fingerStep=0,fingerInterval=null;
-let ecgOffset=0,ecgBPM=72;
-const ecgCvs=document.getElementById('ecg-canvas');
-const ecgCtx=ecgCvs.getContext('2d');
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.0.7/dist/blazeface.js"></script>
+  <script>
+    let faceModel=null,videoFeed=null,overlayCanvas=null,overlayContext=ll,cameraStream=null,scanLineY=0,scanDirection=1,frameCount=0,lastFpsTime=Date.now(),currentFps=0,humanDetected=false,analysisInProgress=false,animationFrameId=null;
+    const PROXY_ENDPOINT="https://aurveil-proxy.dayo-onasanya.workers.dev";
+    const ids={status:"app-status",cameraPrompt:"camera-prompt",cameraLoading:"camera-loading",loadingText:"loading-text",video:"video-feed",canvas:"overlay-canvas",scanButton:"scan-button",faces:"metric-faces",confidence:"metric-confidence",alignment:"metric-alignment",fps:"metric-fps",findingsList:"findings-list",reportLoadingDot:"report-loading-dot",scoreWrap:"score-wrap",scoreNumber:"score-number",scoreFill:"score-fill",scoreDesc:"score-desc",summaryCard:"summary-card",summaryText:"summary-text",tipsCard:"tips-card",tipsList:"tips-list",disclaimerText:"disclaimer-text",scanTime:"scan-time",reportTime:"report-time",snapshotThumb:"snapshot-thumb"};
+    function el(id){return document.getElementById(id)}
+    function showScreen(screenId){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(screenId).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});el(ids.status).style.display=screenId==="intro-screen"?"none":"inline-flex"}
+    function scrollToSection(sectionId){showScreen("intro-screen");setTimeout(()=>{const section=el(sectionId);if(section)section.scrollIntoView({behavior:"smooth",block:"start"})},100)}
+    function startScanFlow(){showScreen("scanner-screen");bootCamera()}
+    function setStatus(text,type="offline"){const s=el(ids.status);const styles={offline:["#f8fafc","#64748b","#e5e7eb"],loading:["#fffbeb","#d97706","#fde68a"],scanning:["#eff6ff","#2563eb","#bfdbfe"],ready:["#ecfdf5","#059669","#bbf7d0"],error:["#fef2f2","#dc2626","#fecaca"]}[type]||["#f8fafc","#64748b","#e5e7eb"];s.textContent=text;s.style.background=styles[0];s.style.color=styles[1];s.style.borderColor=styles[2]}
+    function setMetric(id,value){const node=el(id);if(node)node.textContent=value}
+    async function bootCamera(){if(faceModel&&cameraStream)return;const prompt=el(ids.cameraPrompt),loading=el(ids.cameraLoading),loadingText=el(ids.loadingText);prompt.style.display="none";loading.style.display="flex";loadingText.textContent="Requesting camera access...";setStatus("CAMERA","loading");try{cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:800},height:{ideal:600}},audio:false});videoFeed=el(ids.video);overlayCanvas=el(ids.canvas);overlayContext=overlayCanvas.getContext("2d");videoFeed.srcObject=cameraStream;videoFeed.style.display="block";videoFeed.onloadedmetadata=async()=>{overlayCanvas.width=videoFeed.videoWidth;overlayCanvas.height=videoFeed.videoHeight;["corner-tl","corner-tr","corner-bl","corner-br"].forEach(id=>el(id).style.display="block");loadingText.textContent="Loading face detection model...";setStatus("LOADING","loading");faceModel=await blazeface.load();loading.style.display="none";setStatus("SCANNING","scanning");detectionLoop()}}catch(error){loading.style.display="none";prompt.style.display="flex";prompt.querySelector("p").textContent="Camera access was blocked. Please allow camera permission and try again.";setStatus("CAMERA BLOCKED","error")}}
+    function resetScanner(){if(animationFrameId)cancelAnimationFrame(animationFrameId);if(cameraStream)cameraStream.getTracks().forEach(track=>track.stop());cameraStream=null;faceModel=null;videoFeed=null;overlayCanvas=null;overlayContext=null;humanDetected=false;el(ids.video).style.display="none";el(ids.video).srcObject=null;el(ids.cameraPrompt).style.display="flex";el(ids.cameraLoading).style.display="none";el(ids.scanButton).disabled=true;["corner-tl","corner-tr","corner-bl","corner-br"].forEach(id=>el(id).style.display="none");setMetric(ids.faces,"—");setMetric(ids.confidence,"—");setMetric(ids.alignment,"—");setMetric(ids.fps,"—");setStatus("OFFLINE","offline")}
+    async function detectionLoop(){if(!faceModel||!videoFeed||videoFeed.readyState<2){animationFrameId=requestAnimationFrame(detectionLoop);return}const now=Date.now();frameCount++;if(FpsTime>=1000){currentFps=frameCount;frameCount=0;lastFpsTime=now;setMetric(ids.fps,currentFps+" fps")}let predictions=[];try{predictions=await faceModel.estimateFaces(videoFeed,false)}catch(error){predictions=[]}drawOverlay(predictions);animationFrameId=requestAnimationFrame(detectionLoop)}
+    function drawOverlay(predictions){const ctx=overlayContext,canvas=overlayCanvas;ctx.clearRect(0,0,canvas.width,canvas.height);scanLineY+=scanDirection*2.5;if(scanLineY>=canvas.height-16)scanDirection=-1;if(scanLineY<=16)scanDirection=1;ctx.save();ctx.globalAlpha=.26;ctx.strokeStyle="#ff6b35";ctx.lineWidth=1;ctx.setLineDash([8,14]);ctx.beginPath();ctx.moveTo(22,scanLineY);ctx.lineTo(canvas.width-22,scanLineY);ctx.stroke();ctx.restore();if(!predictions.length){setMetric(ids.faces,"0");setMetric(ids.confidence,"—");setMetric(ids.alignment,"—");if(humanDetected){humanDetected=false;el(ids.scanButton).disabled=true;setStatus("SCANNING","scanning")}return}const face=predictions[0],confidence=Math.round((face.probability]||0)*100),[x1,y1]=face.topLeft,[x2,y2]=face.bottomRight,width=x2-x1,height=y2-y1,centerOffset=Math.abs((x1+x2)/2-canvas.width/2)/(canvas.width/2),alignment=centerOffset<.1?"CENTERED":centerOffset<.25?"SLIGHTLY OFF":"REPOSITION",color=confidence>=65?"#10b981":"#ff6b35";ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.globalAlpha=.78;ctx.strokeRect(x1,y1,width,height);ctx.globalAlpha=1;ctx.lineWidth=2.8;const cornerLength=18;[[x1,y1,1,1],[x2,y1,-1,1],[x1,y2,1,-1],[x2,y2,-1,-1]].forEach(([px,py,dx,dy])=>{ctx.beginPath();ctx.moveTo(px+dx*cornerLength,py);ctx.lineTo(px,py);ctx.lineTo(px,py+dy*cornerLength);ctx.stroke()});ctx.fillStyle=color;ctx.font="700 11px JetBrains Mono";ctx.fillText("HUMAN "+confidence+"%",x1+6,Math.max(y1-10,16));if(face.landmarks){face.landmarks.forEach(l=>{ctx.fillStyle="#ff6b35";ctx.globalAlpha=.72;ctx.beginPath();ctx.arc(l[0],l[1],2.8,0,Math.PI*2);ctx.fill()})}ctx.restore();setMetric(ids.faces,String(predictions.length));setMetric(ids.confidence,confidence+"%");setMetric(ids.alignment,alignment);if(!humanDetected&&confidence>=55){humanDetected=true;el(ids.scanButton).disabled=false;setStatus("READY","ready")}}
+    function captureFrame(){const c=document.createElement("canvas");c.width=videoFeed.videoWidth;c.height=videoFeed.videoHeight;c.getContext("2d").drawImage(videoFeed,0,0,c.width,c.height);return{base64:c.toDataURL("image/jpeg",.86).split(",")[1],canvas:c}}
+    async function runAnalysis(){if(analysisInProgress||!videoFeed)return;analysisInProgress=true;const captured=captureFrame();renderSnapshot(captured.canvas);prepareReportScreen();showScreen("analysis-screen");const prompt=`You are Aurveil, a visual wellness awareness assistant. Review the visible appearance of the person from head to upper chest. This is not a diagnosis. Only describe visible signs that can be seen in the image.
 
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const nb=document.getElementById('nav-badge');
-  nb.style.display=(id==='s-scanner'||id==='s-analysis')?'inline-block':'none';
-}
+Review these areas only: complexion, eyes, lips, facial symmetry, neck area, posture, and overall appearance.
 
-function setSysStatus(txt,col){
-  const el=document.getElementById('sys-status');
-  el.textContent=txt;
-  const m={ok:'background:#0d1f12;color:#10b981;border:1px solid #1a4a28',warn:'background:#1a1200;color:#f59e0b;border:1px solid #3a2800',err:'background:#1a0a0a;color:#ef4444;border:1px solid #3a1010',info:'background:#0a1225;color:#3b82f6;border:1px solid #1a2a50',off:'background:#0d1320;color:#4a6080;border:1px solid #1e2d45'};
-  el.style.cssText='font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:3px;letter-spacing:0.08em;'+(m[col]||m.off);
-}
+Respond in EXACTLY this format:
 
-function setPhase(n,state,dot){
-  const ps=document.getElementById('ps'+n);
-  const pd=document.getElementById('pd'+n);
-  if(ps)ps.textContent=state;
-  if(pd){pd.className='phase-dot';pd.classList.add(dot==='done'?'pd-done':dot==='active'?'pd-active':'pd-idle');}
-}
+🟢 [AREA]: [normal visible observation]
+🟡 [ARE[visible observation worth monitoring]
+🔴 [AREA]: [visible observation where professional advice may be appropriate]
 
-function setVital(id,val,sid,status,cls){
-  const e=document.getElementById(id);if(e)e.textContent=val;
-  const se=document.getElementById(sid);if(se){se.textContent=status;se.className='vital-status '+cls;}
-}
+AREA values must be one of: COMPLEXION, EYES, LIPS, FACIAL SYMMETRY, NECK, POSTURE, OVERALL
 
-function setM(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+Then add:
+SUMMARY: [two short sentences in plain human language]
+TIPS: [three short wellness tips separated by | character]
+DISCLAIMER: This is not a medical diagnosis. For symptoms, urgent concerns, or health questions, consult a licensed healthcare professional.
 
-// ECG
-function drawECG(){
-  const w=ecgCvs.offsetWidth||600;
-  ecgCvs.width=w;
-  ecgCtx.fillStyle='#060d1a';
-  ecgCtx.fillRect(0,0,w,52);
-  ecgCtx.strokeStyle=estimatedHR?'#10b981':'#1a3d28';
-  ecgCtx.lineWidth=1.5;
-  ecgCtx.beginPath();
-  const period=w*60/(ecgBPM*2);
-  for(let x=0;x<w;x++){
-    const t=((x+ecgOffset)%period)/period;
-    let y=26;
-    if(t<0.08)y=26;
-    else if(t<0.13){y=26-(t-0.08)*1200;}
-    else if(t<0.17){y=26+(t-0.13)*1800;}
-    else if(t<0.21){y=26-(t-0.17)*500;}
-    else if(t<0.28){y=26+(t-0.21)*150;}
-    else if(t<0.36){y=26-(t-0.28)*80;}
-    else y=26;
-    y=Math.max(5,Math.min(48,y));
-    x===0?ecgCtx.moveTo(x,y):ecgCtx.lineTo(x,y);
-  }
-  ecgCtx.stroke();
-  ecgOffset=(ecgOffset+2.5)%period;
-}
-setInterval(drawECG,33);
-
-async function boot(){
-  if(model)return;
-  const cp=document.getElementById('cam-prompt');
-  const cl=document.getElementById('cam-load');
-  const lt=document.getElementById('load-txt');
-  cp.style.display='none';cl.style.display='flex';
-  lt.textContent='REQUESTING CAMERA ACCESS';
-  setSysStatus('CONNECTING','warn');
-  try{
-    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}}});
-    vid=document.getElementById('vid');vid.srcObject=stream;vid.style.display='block';
-    cvs=document.getElementById('cvs');ctx=cvs.getContext('2d');
-    vid.onloadedmetadata=async()=>{
-      cvs.width=vid.videoWidth;cvs.height=vid.videoHeight;
-      ['c0','c1','c2','c3'].forEach(id=>document.getElementById(id).style.display='block');
-      lt.textContent='LOADING AI DETECTION MODEL';setSysStatus('LOADING','warn');
-      try{
-        model=await blazeface.load();
-        cl.style.display='none';setSysStatus('SCANNING','ok');
-        setPhase(1,'ACTIVE','active');phase=1;loop();
-      }catch(e){lt.textContent='MODEL LOAD FAILED';setSysStatus('ERROR','err');}
-    };
-  }catch(e){
-    cl.style.display='none';cp.style.display='flex';
-    cp.querySelector('p').textContent='CAMERA ACCESS DENIED\nPLEASE ALLOW PERMISSION AND RELOAD';
-    setSysStatus('DENIED','err');
-  }
-}
-
-function sampleForehead(){
-  if(!vid||vid.readyState<2)return;
-  const rX=Math.floor(cvs.width*0.35),rY=Math.floor(cvs.height*0.08);
-  const rW=Math.floor(cvs.width*0.3),rH=Math.floor(cvs.height*0.18);
-  const tmp=document.createElement('canvas');tmp.width=rW;tmp.height=rH;
-  const tc=tmp.getContext('2d');tc.drawImage(vid,rX,rY,rW,rH,0,0,rW,rH);
-  const d=tc.getImageData(0,0,rW,rH).data;
-  let g=0;for(let i=0;i<d.length;i+=4)g+=d[i+1];
-  greenSamples.push(g/(rW*rH));sampleTimes.push(Date.now());
-  if(greenSamples.length>180){greenSamples.shift();sampleTimes.shift();}
-  if(phase===2){
-    ctx.save();
-    ctx.strokeStyle='rgba(255,107,53,0.5)';ctx.lineWidth=1;ctx.setLineDash([4,6]);
-    ctx.strokeRect(rX,rY,rW,rH);
-    ctx.fillStyle='rgba(255,107,53,0.07)';ctx.fillRect(rX,rY,rW,rH);
-    ctx.fillStyle='rgba(255,107,53,0.8)';ctx.font='9px JetBrains Mono';ctx.setLineDash([]);
-    ctx.fillText('PULSE ROI',rX+4,rY-5);
-    ctx.restore();
-    if(greenSamples.length>60)computeHR();
-  }
-}
-
-function computeHR(){
-  const s=greenSamples.slice(-90);
-  const mean=s.reduce((a,b)=>a+b,0)/s.length;
-  const norm=s.map(v=>v-mean);
-  const amp=Math.max(...norm)-Math.min(...norm);
-  skinAmplitude=amp.toFixed(1);
-  const peaks=[];
-  for(let i=2;i<norm.length-2;i++){
-    if(norm[i]>norm[i-1]&&norm[i]>norm[i-2]&&norm[i]>norm[i+1]&&norm[i]>norm[i+2]&&norm[i]>0.4){
-      if(!peaks.length||i-peaks[peaks.length-1]>8)peaks.push(i);
-    }
-  }
-  if(peaks.length>=3){
-    const intervals=[];
-    for(let i=1;i<peaks.length;i++)intervals.push(peaks[i]-peaks[i-1]);
-    const avgInt=intervals.reduce((a,b)=>a+b,0)/intervals.length;
-    const bpm=Math.round(60*(fps||15)/avgInt);
-    if(bpm>=40&&bpm<=180){
-      estimatedHR=bpm;ecgBPM=bpm;
-      const spread=intervals.reduce((a,b)=>a+Math.abs(b-avgInt),0)/intervals.length;
-      estimatedHRV=Math.round(Math.min(120,Math.max(20,spread*1000/(fps||15))));
-      setVital('v-hr',bpm,'v-hr-s',bpm<60?'LOW':bpm>100?'ELEVATED':'NORMAL',bpm<60||bpm>100?'vs-warn':'vs-ok');
-      setVital('v-hrv',estimatedHRV,'v-hrv-s','MEASURED','vs-ok');
-      setVital('v-perf',amp.toFixed(1),'v-perf-s','DETECTED','vs-ok');
-    }
-  }
-}
-
-async function loop(){
-  if(!model||!vid||vid.readyState<2){requestAnimationFrame(loop);return;}
-  const now=Date.now();frameCount++;
-  if(now-lastFpsT>=1000){fps=frameCount;frameCount=0;lastFpsT=now;setM('mFps',fps+' fps');}
-  let preds=[];
-  try{preds=await model.estimateFaces(vid,false);}catch(e){}
-  ctx.clearRect(0,0,cvs.width,cvs.height);
-  scanY+=scanDir*2.5;
-  if(scanY>=cvs.height-10)scanDir=-1;if(scanY<=10)scanDir=1;
-  ctx.save();ctx.globalAlpha=0.15;ctx.strokeStyle='#ff6b35';ctx.lineWidth=1;ctx.setLineDash([8,14]);
-  ctx.beginPath();ctx.moveTo(16,scanY);ctx.lineTo(cvs.width-16,scanY);ctx.stroke();ctx.restore();
-
-  if(preds.length>0){
-    const face=preds[0];
-    const conf=Math.round(face.probability[0]*100);
-    const [x1,y1]=face.topLeft;const [x2,y2]=face.bottomRight;
-    const w=x2-x1,h=y2-y1;
-    const off=Math.abs((x1+x2)/2-cvs.width/2)/(cvs.width/2);
-    const align=off<0.1?'CENTERED':off<0.25?'OFF-CENTER':'MISALIGNED';
-    const col=conf>70?'#10b981':'#ff6b35';
-    ctx.save();ctx.strokeStyle=col;ctx.lineWidth=1;ctx.setLineDash([]);ctx.globalAlpha=0.65;ctx.strokeRect(x1,y1,w,h);
-    ctx.globalAlpha=1;ctx.lineWidth=2.5;
-    const cL=16;
-    [[x1,y1,1,1],[x2,y1,-1,1],[x1,y2,1,-1],[x2,y2,-1,-1]].forEach(([px,py,dx,dy])=>{ctx.beginPath();ctx.moveTo(px+dx*cL,py);ctx.lineTo(px,py);ctx.lineTo(px,py+dy*cL);ctx.stroke();});
-    ctx.fillStyle=col;ctx.font='bold 10px JetBrains Mono';ctx.globalAlpha=0.9;
-    ctx.fillText('HUMAN  '+conf+'%',x1+4,Math.max(y1-8,14));
-    if(face.landmarks)face.landmarks.forEach(lm=>{ctx.fillStyle=col;ctx.globalAlpha=0.6;ctx.beginPath();ctx.arc(lm[0],lm[1],2.5,0,Math.PI*2);ctx.fill();});
-    ctx.restore();
-    setM('mFaces',preds.length);setM('mConf',conf+'%');setM('mAlign',align);
-    setVital('v-conf',conf+'%','v-conf-s',conf>80?'LOCKED':'TRACKING',conf>80?'vs-ok':'vs-meas');
-    if(phase===1&&conf>75){
-      faceDetected=true;setPhase(1,'COMPLETE','done');setSysStatus('PULSE CAPTURE','ok');
-      phase=2;setPhase(2,'ACTIVE','active');
-      document.getElementById('finger-prompt').textContent='HOLD STILL — DETECTING PULSE...';
-      setTimeout(()=>{if(phase===2)startFingerScan();},11000);
-    }
-    if(phase>=2)sampleForehead();
-  } else {
-    setM('mFaces','0');setM('mConf','—');setM('mAlign','—');
-  }
-  requestAnimationFrame(loop);
-}
-
-function startFingerScan(){
-  setPhase(2,'COMPLETE','done');setSysStatus('FINGER SCAN','ok');
-  phase=3;setPhase(3,'ACTIVE','active');fingerStep=0;nextFinger();
-}
-
-function nextFinger(){
-  gerStep>=5){
-    setPhase(3,'COMPLETE','done');setSysStatus('READY','ok');phase=4;
-    document.getElementById('finger-prompt').textContent='BIOMETRIC SCAN COMPLETE ✓';
-    document.getElementById('finger-fill').style.width='100%';
-    const btn=document.getElementById('analyzeBtn');
-    btn.disabled=false;btn.style.background=var_green();btn.textContent='BEGIN CLINICAL ANALYSIS →';
-    return;
-  }
-  const names=['INDEX','MIDDLE','RING','LITTLE','THUMB'];
-  const roman=['I','II','III','IV','V'];
-  fingep++;
-  document.getElementById('finger-prompt').textContent='RAISE FINGER '+roman[fingerStep-1]+' — '+names[fingerStep-1];
-  for(let i=1;i<=5;i++){
-    const f=document.getElementById('f'+i);
-    f.className='finger-wrap';
-    if(i<fingerStep)f.classList.add('f-done');
-    if(i===fingerStep)f.classList.add('f-active');
-  }
-  let p=(fingerStep-1)*20;const target=fingerStep*20;
-  clearInterval(fingerInterval);
-  fingerInterval=setInterval(()=>{
-    p+=0.67;document.getElementById('finger-fill').style.width='%';
-    if(p>=target){clearInterval(fingerInterval);nextFinger();}
-  },100);
-}
-
-function var_green(){return'#10b981';}
-
-function captureFrame(){
-  const tc=document.createElement('canvas');tc.width=vid.videoWidth;tc.height=vid.videoHeight;
-  tc.getContext('2d').drawImage(vid,0,0);
-  return{base64:tc.toDataURL('image/jpeg',0.85).split(',')[1],canvas:tc};
-}
-
-async function analyze(){
-  if(analyzing)return;analyzing=true;
-  const{base64,canvas}=captureFrame();
-  const thumb=document.getElementById('thumb');
-  thumb.width=canvas.width;thumb.height=canvas.height;thumb.getContext('2d').drawImage(canvas,0,0);
-  const ts=new Date().toLocaleString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  document.getElementById('scan-ts').textContent=ts;document.getElementById('report-ts').textContent=ts;
-  document.getElementById('r-hr').textContent=estimatedHR||'N/A';
-  document.getElementById('r-hrv').textContent=estimatedHRV||'N/A';
-  document.getElementById('r-perf').textContent=skinAmplitude||'N/A';
-  setPhase(4,'ACTIVE','active');setSysStatus('ANALYZING','info');
-  show('s-analysis');
-  document.getElementById('findings-list').innerHTML='<div class="loading-state"><div class="spinner"></div>Claude AI is analyzing your aura...</div>';
-  document.getElementById('summary-card').style.display='none';document.getElementById('tips-card').style.display='none';
-  document.getElementById('wellness-wrap').style.display='none';document.getElementById('disc-txt').textContent='';
-  document.getElementById('load-ind').style.display='inline';
-  const hrInfo=estimatedHR?`Measured Heart Rate via rPPG: ${estimatedHR} BPM. HRV: ${estimatedHRV} ms. Skin perfusion amplitude: ${skinAmplitude}.`:'Heart rate measurement was inconclusive — advise better lighting.';
-  const PROMPT=`You are Aurveil, an advanced AI visual health observation system. Analyze the visible physical appearance of this person — head to upper chest — with clinical precision.
-
-Additional biometric context: ${hrInfoerve: skin complexion, eye clarity and sclera color, lip color and moisture, facial symmetry, neck area, posture and energy level.
-
-Respond in EXACTLY this format — one line per area:
-
-🟢 [AREA]: [observation if normal]
-🟡 [AREA]: [observation if needs monitoring]
-🔴 [AREA]: [observation if needs medical attention]
-
-AREA values: COMPLEXION, EYES, LIPS, FACIAL SYMMETRY, NECK, POSTURE, OVERALL
-
-Then on separate lines:
-SUMMARY: [2 sentences overall impression, include heart rate context if measured]
-TIhort wellness tips separated by | character]
-DISCLAIMER: [one sentence medical disclaimer]
-
-Be specific about what you actually observe. Note image quality issues if relevant.`;
-  try{
-    const res=await fetch('https://aurveil-proxy.dayo-onasanya.workers.dev',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:base64}},{type:'text',text:PROMPT}]}]})
-    });
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    renderFindings(data.content[0].text);
-    setPhase(4,'COMPLETE','done');setSysStatus('REPORT READY','ok');
-  }catch(e){
-    document.getElementById('findings-list').innerHTML='<div style="color:var(--error);font-size:13px;padding:12px 0;">Analysis failed: '+e.message+'. Please rescan and try again.</div>';
-  }
-  document.getElementById('load-ind').style.display='none';analyzing=false;
-}
-
-function renderFindings(text){
-  const lines=text.split('\n').map(l=>l.trim()).filter(Boolean);
-  const findings=[];let summary='',tips=[],disclaimer='';
-  for(const ln of lines){
-    if(ln.startsWith('SUMMARY:'))summary=ln.slice(8).trim();
-    else if(ln.startsWith('TIPS:'))tips=ln.slice(5).trim().split('|').map(t=>t.trim()).filter(Boolean);
-    else if(ln.startsWith('DISCLAIMER:'))disclaimer=ln.slice(11).trim();
-    else if(ln.startsWith('🟢')||ln.startsWith('🟡')||ln.startsWith('🔴'))findings.n);
-  }
-  let score=100;
-  findings.forEach(f=>{if(f.startsWith('🟡'))score-=10;if(f.startsWith('🔴'))score-=20;});
-  score=Math.max(0,Math.min(100,score));
-  const desc=score>=80?'Looking good overall — keep up healthy habits':score>=60?'A few indicators worth monitoring — stay attentive':'Consider following up with a healthcare professional soon';
-  document.getElementById('r-score').textContent=score;
-  document.getElementById('wellness-wrap').style.display='block';
-  document.getElementById('w-ntContent=score;document.getElementById('w-desc').textContent=desc;
-  setTimeout(()=>document.getElementById('w-fill').style.width=score+'%',100);
-  const list=document.getElementById('findings-list');
-  if(!findings.length){list.innerHTML='<div style="font-size:13px;color:var(--text3);padding:12px 0;">No observations returned. Try again with better lighting.</div>';return;}
-  list.innerHTML='';
-  findings.forEach(ln=>{
-    const e=ln[0];const rest=ln.slice(2).trim();const ci=rest.indexOf(':');
-    const area=ci>-1?rest.slice(0,ci).trim():'';const obs=ci>-1?rest.slice(ci+1).trim():rest;
-    const dc=e==='🟢'?'d-g':e==='🟡'?'d-a':'d-r';
-    const tc=e==='🟢'?'t-g':e==='🟡'?'t-a':'t-r';
-    const tl=e==='🟢'?'NORMAL':e==='🟡'?'MONITOR':'CONSULT';
-    const el=document.createElement('div');el.className='finding';
-    el.innerHTML='<div class="f-dot '+dc+'"></div><span class="f-tag '+tc+'">'+tl+'</span><div class="f-area">'+area+'</div><div class="f-obs">'+obs+'</div>';
-    list.appendChild(el);
-  });
-){document.getElementById('summary-card').style.display='block';document.getElementById('summary-txt').textContent=summary;}
-  if(tips.length){
-    document.getElementById('tips-card').style.display='block';
-    const icons=['🥗','💧','🚶','😴','🧘','☀️'];
-    document.getElementById('tips-list').innerHTML=tips.map((t,i)=>'<div class="tip-item"><span style="flex-shrink:0;">'+icons[i%icons.length]+'</span>'+t+'</div>').join('');
-  }
-  if(disclaimer)document.getElementById('disc-txt').textConten}
-</script>
+Rules:
+- Do not use dramatic langge.
+- Do not claim certainty.
+- Mention image quality or lighting if it limits the review.
+- Be specific, calm, and practical.`;try{const response=await fetch(PROXY_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:[{type:"image",source:{type:"base64",media_type:"image/jpeg",data:captured.base64}},{type:"text",text:prompt}]}]})});if(!response.ok)throw new Error("Report service returned HTTP "+response.status);const data=await response.json();const text=data?.content?.[0]?.text;if(!text)throw new Error("No report text was returned");renderReport(text)}catch(error){el(ids.findingsList).innerHTML=`<div class="error-box">The scan could not be completed. ${escapeHtml(error.message)}. Please try again with better lighting or check the report service.</div>`}finally{el(ids.reportLoadingDot).style.display="none";analysisInProgress=false}}
+    function renderSnapshot(sourceCanvas){const thumb=el(ids.snapshotThumb);thumb.width=sourceCanvas.width;thumb.height=sourceCanvas.height;thumb.getContext("2d").drawImage(sourceCanvas,0,0)}
+    function prepareReportScreen(){const ts=new Date().toLocaleString("en-US",{weekday:"short",year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});el(ids.scanTime).textContent=ts;el(ids.reportTime).textContent=ts;el(ids.findingsList).innerHTML=`<div class="loading-state"><div class="spinner"></div>Analyzing your image. This usually takes a few seconds...</div>`;el(ids.reportLoadingDot).style.display="inline-flex";el(ids.scoreWrap).style.display="none";el(ids.summaryCard).style.display="none";el(ids.tipsCard).style.display="none";el(ids.disclaimerText).textContent="";el(ids.scoreFill).style.width="0%"}
+    function renderReport(text){const lines=text.split("
+").map(line=>line.trim()).filter(Boolean),findings=[];let summary="",tips=[],disclaimer="";for(const line of lines){if(line.startsWith("SUMMARY:"))summary=line.replace("SUMMARY:","").trim();else if(line.startsWith("TIPS:"))tips=line.replace("TIPS:","").split("|").map(t=>t.trim()).filter(Boolean);else if(line.startsWith("DISCLAIMER:"))disclaimer=line.replace("DISCLAIMER:","").trim();else if(line.startsWith("🟢")||line.startsWith("🟡")||line.startsWith("🔴"))findings.push(line)}renderScore(findings);renderFindings(findings);renderSummary(summary);renderTips(tips);el(ids.disclaimerText).textContent=disclaimer||"This is not a medical diagnosis. For symptoms, urgent concerns, or health questions, consult icensed healthcare professional."}
+    function renderScore(findings){let score=100;findings.forEach(f=>{if(f.startsWith("🟡"))score-=10;if(f.startsWith("🔴"))score-=22});score=Math.max(0,Math.min(100,score));let desc="The visible scan appears generally normal based on the available image.";if(score<80&&score>=60)desc="A few visible items may be worth monitoring or rescanning in better lighting.";if(score<60)desc="Some visible items may deserve closer attention or professional advice.";el(ids.scoreWrap)le.display="block";el(ids.scoreNumber).textContent=score;el(ids.scoreDesc).textContent=desc;setTimeout(()=>{el(ids.scoreFill).style.width=score+"%"},80)}
+    function renderFindings(findings){const list=el(ids.findingsList);if(!findings.length){list.innerHTML=`<div class="error-box">No clear observations were returned. Please try again with better lighting and keep your face centered.</div>`;return}list.innerHTML="";findings.forEach(f=>{const level=f.startsWith("🟢")?"normal":f.startsWith("🟡")?"monitorconsult",label=level==="normal"?"Normal":level==="monitor"?"Monitor":"Consult",clean=f.slice(2).trim(),ci=clean.indexOf(":"),area=ci>-1?clean.slice(0,ci).trim():"Observation",obs=ci>-1?clean.slice(ci+1).trim():clean,row=document.createElement("div");row.className="finding";row.innerHTML=`<span class="finding-dot dot-${level}"></span><span class="finding-tag tag-${level}">${label}</span><span class="finding-area">${escapeHtml(area)}</span><span class="finding-text">${escapeHtml(obs)}</span>`;list.appendChild(row)})}
+    function renderSummary(summary){if(!summary)return;el(ids.summaryCard).style.display="block";el(ids.summaryText).textContent=summary}
+    function renderTips(tips){if(!tips.length)return;el(ids.tipsCard).style.display="block";el(ids.tipsList).innerHTML=tips.map((tip,i)=>`<div class="tip-item"><span class="tip-bullet">${i+1}</span><span>${escapeHtml(tip)}</span></div>`).join("")}
+    function escapeHtml(value){return String(value).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
+  </script>
 </body>
 </html>
 
