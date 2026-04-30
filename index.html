@@ -52,7 +52,7 @@
     <div class="nav-actions">
       <span id="app-status" class="status-badge">OFFLINE</span>
       <button class="btn btn-outline" type="button" onclick="scrollToSection('features')">Learn More</button>
-      <button class="btn btn-primary" type="button" onclick="startScanFlow()">Start Scan</button>
+      <button class="btn btn-primary" type="button" onclick="showScreen('scanner-screen')">Start Scan</button>
     </div>
   </nav>
 
@@ -63,7 +63,7 @@
           <div class="eyebrow"><span class="eyebrow-dot"></span> Private visual health scan</div>
           <h1 class="hero-title">Check visible health signals in <em>seconds</em>.</h1>
           <p class="hero-text">Aurveil uses your camera to review visible signs such as skin tone, eyes, lips, facial symmetry, neck area, and posture. It gives you a simple report for awareness, not a diagnosis.</p>
-          <div class="hero-actions"><button class="btn btn-primary btn-lg" type="button" onclick="startScanFlow()">Start Free Scan <span aria-hidden="true">→</span></button><button class="btn btn-outline btn-lg" type="button" onclick="scrollToSection('features')">See How It Works</button></div>
+          <div class="hero-actions"><button class="btn btn-primary btn-lg" type="button" onclick="showScreen('scanner-screen')">Start Free Scan <span aria-hidden="true">→</span></button><button class="btn btn-outline btn-lg" type="button" onclick="scrollToSection('features')">See How It Works</button></div>
           <div class="trust-row"><span class="trust-item"><span class="check-dot">✓</span>No signup required</span><span class="trust-item"><span class="check-dot">✓</span>No video stored</span><span class="trust-item"><span class="check-dot">✓</span>Awareness only</span></div>
         </div>
         <div class="hero-visual" aria-label="Visual health scan preview">
@@ -90,7 +90,7 @@
 
     <section id="how-it-works" class="section dark"><div class="container"><div class="section-head"><p class="section-kicker">How it works</p><h2 class="section-title">From camera to report in four steps.</h2><p class="section-subtitle">No download, no complicated setup, and no unnecessary wording.</p></div><div class="how-grid"><article class="how-card"><div class="how-number">1</div><h3 class="how-title">Enable camera</h3><p class="how-text">Allow camera access and position your head and upper chest clearly inside the frame.</p></article><article class="how-card"><div class="how-number">2</div><h3 class="how-title">Confirm visibility</h3><p class="how-text">The scanner confirms that a human face is visible and centered enough for review.</p></article><article class="how-card"><div class="how-number">3</div><h3 class="how-title">Run scan</h3><p class="how-text">A single image is captured and reviewed for visible health-related indicators.</p></article><article class="how-card"><div class="how-number">4</div><h3 class="how-title">Read report</h3><p class="how-text">You receive a simple report with observations, score, summary, and next-step tips.</p></article></div></div></section>
 
-    <section class="cta"><div class="container"><h2 class="cta-title">Ready to run your <em>visual scan?</em></h2><p class="cta-text">Start with your camera, get a clear report, and use it as a wellness awareness tool.</p><button class="btn btn-primary btn-lg" type="button" onclick="startScanFlow()">Start Free Scan →</button><p class="legal-note">Aurveil is not a medical device and does not provide diagnosis or treatment. For urgent symptoms or medical concerns, contact a licensed healthcare professional.</p></div></section>
+    <section class="cta"><div class="container"><h2 class="cta-title">Ready to run your <em>visual scan?</em></h2><p class="cta-text">Start with your camera, get a clear report, and use it as a wellness awareness tool.</p><button class="btn btn-primary btn-lg" type="button" onclick="showScreen('scanner-screen')">Start Free Scan →</button><p class="legal-note">Aurveil is not a medical device and does not provide diagnosis or treatment. For urgent symptoms or medical concerns, contact a licensed healthcare professional.</p></div></section>
     <footer><div class="container footer-row"><span class="footer-brand">Aur<em>veil</em></span><div class="footer-links"><a href="#" onclick="return false;">Privacy</a><a href="#" onclick="return false;">Terms</a><a href="https://dayoonasanya.com" target="_blank" rel="noopener">Adedayo A.Onasanya</a></div><span style="font-size:11px;color:#475569">© 2026 Adedayo A. Onasanya. All rights reserved.</span></div></footer>
   </main>
 
@@ -120,7 +120,7 @@
     function el(id){return document.getElementById(id)}
     function showScreen(screenId){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(screenId).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});el(ids.status).style.display=screenId==="intro-screen"?"none":"inline-flex"}
     function scrollToSection(sectionId){showScreen("intro-screen");setTimeout(()=>{const section=el(sectionId);if(section)section.scrollIntoView({behavior:"smooth",block:"start"})},100)}
-    function startScanFlow(){showScreen("scanner-screen");bootCamera()}
+    function showScreen("scanner-screen"){showScreen("scanner-screen");bootCamera()}
     function setStatus(text,type="offline"){const s=el(ids.status);const styles={offline:["#f8fafc","#64748b","#e5e7eb"],loading:["#fffbeb","#d97706","#fde68a"],scanning:["#eff6ff","#2563eb","#bfdbfe"],ready:["#ecfdf5","#059669","#bbf7d0"],error:["#fef2f2","#dc2626","#fecaca"]}[type]||["#f8fafc","#64748b","#e5e7eb"];s.textContent=text;s.style.background=styles[0];s.style.color=styles[1];s.style.borderColor=styles[2]}
     function setMetric(id,value){const node=el(id);if(node)node.textContent=value}
     async function bootCamera(){if(faceModel&&cameraStream)return;const prompt=el(ids.cameraPrompt),loading=el(ids.cameraLoading),loadingText=el(ids.loadingText);prompt.style.display="none";loading.style.display="flex";loadingText.textContent="Requesting camera access...";setStatus("CAMERA","loading");try{cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:800},height:{ideal:600}},audio:false});videoFeed=el(ids.video);overlayCanvas=el(ids.canvas);overlayContext=overlayCanvas.getContext("2d");videoFeed.srcObject=cameraStream;videoFeed.style.display="block";videoFeed.onloadedmetadata=async()=>{overlayCanvas.width=videoFeed.videoWidth;overlayCanvas.height=videoFeed.videoHeight;["corner-tl","corner-tr","corner-bl","corner-br"].forEach(id=>el(id).style.display="block");loadingText.textContent="Loading face detection model...";setStatus("LOADING","loading");faceModel=await blazeface.load();loading.style.display="none";setStatus("SCANNING","scanning");detectionLoop()}}catch(error){loading.style.display="none";prompt.style.display="flex";prompt.querySelector("p").textContent="Camera access was blocked. Please allow camera permission and try again.";setStatus("CAMERA BLOCKED","error")}}
