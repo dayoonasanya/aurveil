@@ -292,7 +292,7 @@ footer{background:#060f1e;padding:28px 40px;display:flex;align-items:center;just
     <h2 class="cta-h">Ready to See What <em>Aurveil</em> Sees?</h2>
     <p class="cta-sub">Takes 60 seconds. No signup. No credit card. Completely private.</p>
     <button class="btn btn-orange btn-lg" onclick="show('s-scanner');boot()">Start Your Free Scan →</button>
-    <p style="font-size:11px;color:#334155;margin-top:16px;">Not a medical device · For health awareness purposes only · Adedayo A.Onasanya</p>
+    <p style="font-size:11px;color:#334155;margin-top:16px;">Not a medical device · For health awareness purposes only · Onada Innovative Ltd</p>
   </section>
 
   <footer>
@@ -645,11 +645,11 @@ async function loop(){
 
 function startFingerScan(){
   setPhase(2,'COMPLETE','done');setSysStatus('FINGER SCAN','ok');
-  phase=3;setPhase(3,'ACTIVE','');fingerStep=0;nextFinger();
+  phase=3;setPhase(3,'ACTIVE','active');fingerStep=0;nextFinger();
 }
 
 function nextFinger(){
-  if(fingerStep>=5){
+  gerStep>=5){
     setPhase(3,'COMPLETE','done');setSysStatus('READY','ok');phase=4;
     document.getElementById('finger-prompt').textContent='BIOMETRIC SCAN COMPLETE ✓';
     document.getElementById('finger-fill').style.width='100%';
@@ -657,9 +657,9 @@ function nextFinger(){
     btn.disabled=false;btn.style.background=var_green();btn.textContent='BEGIN CLINICAL ANALYSIS →';
     return;
   }
-  const names=['INDEX','MIDDLE','RING','LI','THUMB'];
+  const names=['INDEX','MIDDLE','RING','LITTLE','THUMB'];
   const roman=['I','II','III','IV','V'];
-  fingerStep++;
+  fingep++;
   document.getElementById('finger-prompt').textContent='RAISE FINGER '+roman[fingerStep-1]+' — '+names[fingerStep-1];
   for(let i=1;i<=5;i++){
     const f=document.getElementById('f'+i);
@@ -669,7 +669,8 @@ function nextFinger(){
   }
   let p=(fingerStep-1)*20;const target=fingerStep*20;
   clearInterval(fingerInterval);
-  fingerInterval=setInterval(()=>{   p+=0.67;document.getElementById('finger-fill').style.width=p+'%';
+  fingerInterval=setInterval(()=>{
+    p+=0.67;document.getElementById('finger-fill').style.width='%';
     if(p>=target){clearInterval(fingerInterval);nextFinger();}
   },100);
 }
@@ -699,11 +700,9 @@ async function analyze(){
   document.getElementById('wellness-wrap').style.display='none';document.getElementById('disc-txt').textContent='';
   document.getElementById('load-ind').style.display='inline';
   const hrInfo=estimatedHR?`Measured Heart Rate via rPPG: ${estimatedHR} BPM. HRV: ${estimatedHRV} ms. Skin perfusion amplitude: ${skinAmplitude}.`:'Heart rate measurement was inconclusive — advise better lighting.';
-  const PROMPT=`You are Aurveil, an advanced AI visual health observation system. Analyze the visible physical appearance of this person — head to upper chest — linical precision.
+  const PROMPT=`You are Aurveil, an advanced AI visual health observation system. Analyze the visible physical appearance of this person — head to upper chest — with clinical precision.
 
-Additional biometric context: ${hrInfo}
-
-Observe: skin complexion, eye clarity and sclera color, lip color and moisture, facial symmetry, neck area, posture and energy level.
+Additional biometric context: ${hrInfoerve: skin complexion, eye clarity and sclera color, lip color and moisture, facial symmetry, neck area, posture and energy level.
 
 Respond in EXACTLY this format — one line per area:
 
@@ -714,8 +713,8 @@ Respond in EXACTLY this format — one line per area:
 AREA values: COMPLEXION, EYES, LIPS, FACIAL SYMMETRY, NECK, POSTURE, OVERALL
 
 Then on separate lines:
-SUMMARY: [2 sentencel impression, include heart rate context if measured]
-TIPS: [3 short wellness tips separated by | character]
+SUMMARY: [2 sentences overall impression, include heart rate context if measured]
+TIhort wellness tips separated by | character]
 DISCLAIMER: [one sentence medical disclaimer]
 
 Be specific about what you actually observe. Note image quality issues if relevant.`;
@@ -741,15 +740,15 @@ function renderFindings(text){
     if(ln.startsWith('SUMMARY:'))summary=ln.slice(8).trim();
     else if(ln.startsWith('TIPS:'))tips=ln.slice(5).trim().split('|').map(t=>t.trim()).filter(Boolean);
     else if(ln.startsWith('DISCLAIMER:'))disclaimer=ln.slice(11).trim();
-    else if(ln.startsWith('🟢')||ln.startsWith('🟡')||ln.startsWith('🔴'))findings.push(ln);
+    else if(ln.startsWith('🟢')||ln.startsWith('🟡')||ln.startsWith('🔴'))findings.n);
   }
   let score=100;
   findings.forEach(f=>{if(f.startsWith('🟡'))score-=10;if(f.startsWith('🔴'))score-=20;});
   score=Math.max(0,Math.min(100,score));
   const desc=score>=80?'Looking good overall — keep up healthy habits':score>=60?'A few indicators worth monitoring — stay attentive':'Consider following up with a healthcare professional soon';
   document.getElementById('r-score').textContent=score;
-  document.getElementById(').style.display='block';
-  document.getElementById('w-num').textContent=score;document.getElementById('w-desc').textContent=desc;
+  document.getElementById('wellness-wrap').style.display='block';
+  document.getElementById('w-ntContent=score;document.getElementById('w-desc').textContent=desc;
   setTimeout(()=>document.getElementById('w-fill').style.width=score+'%',100);
   const list=document.getElementById('findings-list');
   if(!findings.length){list.innerHTML='<div style="font-size:13px;color:var(--text3);padding:12px 0;">No observations returned. Try again with better lighting.</div>';return;}
@@ -761,16 +760,16 @@ function renderFindings(text){
     const tc=e==='🟢'?'t-g':e==='🟡'?'t-a':'t-r';
     const tl=e==='🟢'?'NORMAL':e==='🟡'?'MONITOR':'CONSULT';
     const el=document.createElement('div');el.className='finding';
-    el.innerHTML='<div class="f-dot '+dc+'"></div><span class="f-tag '+tc+'">'+tl+'</span><div class="f-area">'+area+'</div><dibs">'+obs+'</div>';
+    el.innerHTML='<div class="f-dot '+dc+'"></div><span class="f-tag '+tc+'">'+tl+'</span><div class="f-area">'+area+'</div><div class="f-obs">'+obs+'</div>';
     list.appendChild(el);
   });
-  if(summary){document.getElementById('summary-card').style.display='block';document.getElementById('summary-txt').textContent=summary;}
+){document.getElementById('summary-card').style.display='block';document.getElementById('summary-txt').textContent=summary;}
   if(tips.length){
     document.getElementById('tips-card').style.display='block';
     const icons=['🥗','💧','🚶','😴','🧘','☀️'];
     document.getElementById('tips-list').innerHTML=tips.map((t,i)=>'<div class="tip-item"><span style="flex-shrink:0;">'+icons[i%icons.length]+'</span>'+t+'</div>').join('');
-  mer)document.getElementById('disc-txt').textContent=disclaimer;
-}
+  }
+  if(disclaimer)document.getElementById('disc-txt').textConten}
 </script>
 </body>
 </html>
