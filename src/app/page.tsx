@@ -264,7 +264,7 @@ export default function Home() {
           <span className="font-serif text-2xl text-slate-200">
             Aur<span className="italic text-orange-500">veil</span>
           </span>
-          <span className="text-xs">© 2026 Onada Innovative Ltd. All rights reserved.</span>
+          <span className="text-xs">© 2026 Adedayo A.Onasanya. All rights reserved.</span>
         </div>
       </footer>
     </main>
